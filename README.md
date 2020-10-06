@@ -8,5 +8,5 @@ Test av Chris 2. 13:53.
 Martin: OK
 Kristin: OK
 Sophie: OK
-Simon:
+Simon: OK
 Christoffer:
