@@ -8,5 +8,5 @@ STIN
 Martin:
 Krisin:
 Sopihe:
-Simon: OK
+Simon:
 Christoffer:
