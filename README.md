@@ -5,7 +5,7 @@ Hello from Sophie
 Test av Chris 2. 13:53. 
 
 
-Martin:
+Martin: OK
 Kristin: OK
 Sophie: OK
 Simon:
