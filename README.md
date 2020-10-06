@@ -7,6 +7,6 @@ Test av Chris 2. 13:53.
 STIN
 Martin: ok
 Krisin:
-Sopihe:
+Sophie: OK
 Simon:
 Christoffer:
