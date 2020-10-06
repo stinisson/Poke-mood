@@ -4,9 +4,9 @@ Hello from Sophie
 # Chris test. 
 Test av Chris 2. 13:53. 
 
-STIN
-Martin: ok
-Krisin:
-Sopihe:
+
+Martin:
+Kristin: OK
+Sophie: OK
 Simon:
 Christoffer:
