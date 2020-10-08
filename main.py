@@ -59,7 +59,7 @@ def main():
 
     print("Time to play!")
     while True:
-        user_choose = input("Do you wanna attack or standby?")
+        user_choose = input("Do you wanna attack or standby?") # Går ej vidare i loopen.
         if user_choose == "Attack":
             cpu_pokemon.health -= user_pokemon.attack
             print(f"Aggressive Ada now has {cpu_pokemon.health} in health")
