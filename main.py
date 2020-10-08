@@ -34,12 +34,16 @@ def main():
     cpu = User("CPU")
     user.add_team(user_pokemon)
     cpu.add_team(cpu_pokemon)
-    print(user)
-    print(cpu)
+    print(f"Du valde {user_pokemon.name}")
+    print(f"Din motståndare: {cpu_pokemon.name}")
+    print(f"{user.name}, det är din tur! ")
+    print(f"Välj en stad du tror att det är mycket {user_pokemon.mood} content i.")
+
 
     city_dic = {"Göteborg": 25, "Stockholm": 5} #Namn+gläjde
 
     city = input("Välj mellan Göteborg eller Stockholm: ")
+    print("Beräknar mood'content...")
 
     if city == "Göteborg":
         user_pokemon.health += city_dic["Göteborg"]
