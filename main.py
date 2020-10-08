@@ -8,14 +8,20 @@ class Poketer:
         self.health = health
         self.attack = attack
 
+    def __repr__(self):
+        return f'Poketer: {self.name} Mood: {self.mood}'
+
 
 class User:
-    def __init__(self, name, team =""):
+    def __init__(self, name):
         self.name = name
         self.team = []
 
     def add_team(self, poketer):
         self.team.append(poketer)
+
+    def __repr__(self):
+        return f'Namn: {self.name}, Team: {self.team}'
 
 
 def main():
@@ -25,7 +31,13 @@ def main():
     print(f"Din motståndare valde {cpu_pokemon.name}")
 
     user = User("Martin")
+    cpu = User("CPU")
     user.add_team(user_pokemon)
+    cpu.add_team(cpu_pokemon)
+    print(user)
+    print(cpu)
+
+    city = input("Välj stad: ")
 
 
 if __name__ == '__main__':
