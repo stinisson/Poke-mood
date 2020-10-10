@@ -44,6 +44,7 @@ def tweet_search(api, city, number_of_tweets, language='sv'):
         print(idx, tweet.full_text)
     return tweets
 
+quit()
 
 # TODO For sprint 1
 twitter_api = twitter_connect()
