@@ -1,6 +1,6 @@
 "Pokemon Battle GO!"
 from random import randint
-
+import time
 
 class Poketer:
     def __init__(self, name, mood, health, attack):
@@ -28,9 +28,11 @@ class User:
 def block():
     block_chance = randint(1, 11)
     if block_chance <= 7:
+        time.sleep(2)
         print("Lyckad Block")
         block_sucess = True
     elif block_chance >= 8:
+        time.sleep(2)
         print("Misslyckad Block")
         block_sucess = False
     return block_sucess
@@ -42,7 +44,8 @@ def main():
 
     username = input("Vad heter du? ")
     user = User(username)
-    cpu = User("CPU")
+    rival = input("Vad heter din motståndare? ")
+    cpu = User(rival)
     user.add_team(user_pokemon)
     cpu.add_team(cpu_pokemon)
     print(f"Hej {user.name}. Din poketer är {user_pokemon.name}")
@@ -59,44 +62,49 @@ def main():
     if city == "Göteborg":
         user_pokemon.health += happy_city_dic["Göteborg"]
         cpu_pokemon.health += angry_city_dic['Stockholm']
-        print(f"{user_pokemon.name} valde {city} med mycket happy-content!")
+        print(f"{user.name} valde {city} med mycket happy-content!")
         print(f"Happy Hasse hälsa ökade med {happy_city_dic['Göteborg']}. Total hälsa: {user_pokemon.health}\n")
 
-        print(f"{cpu_pokemon.name} valde Stockholm med mycket angry-content!")
+        print(f"{cpu.name} valde Stockholm med mycket angry-content!")
         print(f"Aggressive Ada hälsa ökade med {angry_city_dic['Stockholm']}. Total hälsa: {cpu_pokemon.health}\n")
 
     elif city == "Stockholm":
         user_pokemon.health += happy_city_dic["Stockholm"]
         cpu_pokemon.health += angry_city_dic['Göteborg']
-        print(f"{user_pokemon.name} valde {city} med inte så mycket happy-content.")
+        print(f"{user.name} valde {city} med inte så mycket happy-content.")
         print(f"Happy Hasse hälsa ökade med {happy_city_dic['Stockholm']}. Total hälsa: {user_pokemon.health}\n")
 
-        print(f"{cpu_pokemon.name} valde Göteborg med inte så mycket angry-content.")
+        print(f"{cpu.name} valde Göteborg med inte så mycket angry-content.")
         print(f"Aggressive Ada hälsa ökade med {angry_city_dic['Göteborg']}. Total hälsa: {cpu_pokemon.health}\n")
 
     print("*** Dags för battle! ***")
     while True:
-        user_choose = int(input("Vill du [1] attackera eller [2] blockera?"))
+        user_choose = int(input("Vill du [1] attackera eller [2] blockera? "))
         if user_choose == 1:
             cpu_pokemon.health -= user_pokemon.attack
             print(f"Du ==> Attackerade ==> {cpu_pokemon.name} ")
             print(f"Aggressive Ada hälsa: {cpu_pokemon.health}\n")
+            user_pokemon.health -= cpu_pokemon.attack
+            time.sleep(2)
+            print(f"{cpu_pokemon.name} ==> Attackerade ==> {user_pokemon.name} ")
         elif user_choose == 2:
             print(f"Du =/= Blockerar =/= ")
             x = block()
             if x == False:
                 user_pokemon.health -= cpu_pokemon.attack
-                print(f"Du tog {cpu_pokemon.attack}!")
+                print(f"{cpu_pokemon.name} ==> Attackerade ==> {user_pokemon.name} ")
+                print(f"Du tog {cpu_pokemon.attack} skada!")
             elif x == True:
                 user_pokemon.health -= cpu_pokemon.attack // 2
+                print(f"{cpu_pokemon.name} ==> Attackerade ==> {user_pokemon.name} ")
                 print(f"Du tog {cpu_pokemon.attack // 2 } skada!")
 
         if cpu_pokemon.health <= 0:
             print(f'*** Din motståndare svimmade. Du vann! ***')
             break
 
-        print(f"{cpu_pokemon.name} ==> Attackerade ==> {user_pokemon.name} ")
         print(f"Din hälsa: {user_pokemon.health}\n")
+
         if user_pokemon.health <= 0:
             print(f'*** Din poketer svimmade. {cpu.name} vann! ***')
             break
