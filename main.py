@@ -27,8 +27,6 @@ class User:
 def main():
     user_pokemon = Poketer("Happy Hasse", "happy", 100, 25)
     cpu_pokemon = Poketer("Aggressive Ada", "angry", 100, 25)
-    print(f"Du valde {user_pokemon.name}")
-    print(f"Din motståndare valde {cpu_pokemon.name}")
 
     username = input("Vad heter du? ")
     user = User(username)
@@ -45,21 +43,28 @@ def main():
     angry_city_dic = {"Göteborg": 5, "Stockholm": 25}
 
     city = input("Välj mellan Göteborg eller Stockholm: ")
-    print("Beräknar mood'content...")
+    print("\nBeräknar mood'content...")
 
     if city == "Göteborg":
         user_pokemon.health += happy_city_dic["Göteborg"]
         cpu_pokemon.health += angry_city_dic['Stockholm']
-        print(f"Happy Hasse Health increased by {happy_city_dic['Göteborg']}. Total Health: {user_pokemon.health}")
-        print(f"Aggressive Ada Health increased by {angry_city_dic['Stockholm']}. Total Health: {cpu_pokemon.health}")
+        print(f"{user_pokemon.name} valde {city} med mycket happy-content!")
+        print(f"Happy Hasse Health increased by {happy_city_dic['Göteborg']}. Total Health: {user_pokemon.health}\n")
+
+        print(f"{cpu_pokemon.name} valde Stockholm med mycket angry-content!")
+        print(f"Aggressive Ada Health increased by {angry_city_dic['Stockholm']}. Total Health: {cpu_pokemon.health}\n")
 
     elif city == "Stockholm":
         user_pokemon.health += happy_city_dic["Stockholm"]
         cpu_pokemon.health += angry_city_dic['Göteborg']
-        print(f"Happy Hasse Health increased by {happy_city_dic['Stockholm']}. Total Health: {user_pokemon.health}")
-        print(f"Aggressive Ada Health increased by {angry_city_dic['Göteborg']}. Total Health: {cpu_pokemon.health}")
+        print(f"{user_pokemon.name} valde {city} med inte så mycket happy-content.")
+        print(f"Happy Hasse Health increased by {happy_city_dic['Stockholm']}. Total Health: {user_pokemon.health}\n")
 
-    print("Time to play!")
+        print(f"{cpu_pokemon.name} valde Göteborg med inte så mycket angry-content.")
+        print(f"Aggressive Ada Health increased by {angry_city_dic['Göteborg']}. Total Health: {cpu_pokemon.health}\n")
+
+
+    print("***Time to play!***")
     while True:
         user_choose = int(input("Do you wanna [1] attack or [2] standby?"))
         if user_choose == 1:
