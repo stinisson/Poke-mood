@@ -1,5 +1,5 @@
 "Pokemon Battle GO!"
-
+from random import randint
 
 class Poketer:
     def __init__(self, name, mood, health, attack):
@@ -22,6 +22,13 @@ class User:
 
     def __repr__(self):
         return f'Namn: {self.name}, Team: {self.team}'
+
+def block():
+    block_chance = randint(1,11)
+    if block_chance <= 7:
+        print("Lyckad Block")
+    elif block_chance >= 8:
+        print("Misslyckad Block")
 
 
 def main():
@@ -64,13 +71,14 @@ def main():
 
     print("*** Dags för battle! ***")
     while True:
-        user_choose = int(input("Vill du [1] attackera eller [2] avvakta?"))
+        user_choose = int(input("Vill du [1] attackera eller [2] blockera?"))
         if user_choose == 1:
             cpu_pokemon.health -= user_pokemon.attack
             print(f"Du ==> Attackerade ==> {cpu_pokemon.name} ")
             print(f"Aggressive Ada hälsa: {cpu_pokemon.health}\n")
         elif user_choose == 2:
-            print(f"Du =/= Avvaktar =/= ")
+            print(f"Du =/= Blockerar =/= ")
+            block()
 
         if cpu_pokemon.health <= 0:
             print(f'*** Din motståndare svimmade. Du vann! ***')
