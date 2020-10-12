@@ -1,6 +1,7 @@
 "Pokemon Battle GO!"
 from random import randint
 
+
 class Poketer:
     def __init__(self, name, mood, health, attack):
         self.name = name
@@ -23,12 +24,16 @@ class User:
     def __repr__(self):
         return f'Namn: {self.name}, Team: {self.team}'
 
+
 def block():
-    block_chance = randint(1,11)
+    block_chance = randint(1, 11)
     if block_chance <= 7:
         print("Lyckad Block")
+        block_sucess = True
     elif block_chance >= 8:
         print("Misslyckad Block")
+        block_sucess = False
+    return block_sucess
 
 
 def main():
@@ -45,7 +50,7 @@ def main():
     print(f"{user.name}, det är din tur! ")
     print(f"Välj en stad du tror att det är mycket {user_pokemon.mood} content i.")
 
-    happy_city_dic = {"Göteborg": 25, "Stockholm": 5} #Namn+gläjde
+    happy_city_dic = {"Göteborg": 25, "Stockholm": 5}  # Namn+gläjde
     angry_city_dic = {"Göteborg": 5, "Stockholm": 25}
 
     city = input("Välj mellan Göteborg eller Stockholm: ")
@@ -78,13 +83,18 @@ def main():
             print(f"Aggressive Ada hälsa: {cpu_pokemon.health}\n")
         elif user_choose == 2:
             print(f"Du =/= Blockerar =/= ")
-            block()
+            x = block()
+            if x == False:
+                user_pokemon.health -= cpu_pokemon.attack
+                print(f"Du tog {cpu_pokemon.attack}!")
+            elif x == True:
+                user_pokemon.health -= cpu_pokemon.attack // 2
+                print(f"Du tog {cpu_pokemon.attack // 2 } skada!")
 
         if cpu_pokemon.health <= 0:
             print(f'*** Din motståndare svimmade. Du vann! ***')
             break
 
-        user_pokemon.health -= cpu_pokemon.attack
         print(f"{cpu_pokemon.name} ==> Attackerade ==> {user_pokemon.name} ")
         print(f"Din hälsa: {user_pokemon.health}\n")
         if user_pokemon.health <= 0:
