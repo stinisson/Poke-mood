@@ -33,8 +33,8 @@ def main():
     cpu = User("CPU")
     user.add_team(user_pokemon)
     cpu.add_team(cpu_pokemon)
-    print(f"Hej {user.name}. Du valde {user_pokemon.name}")
-    print(f"Din motståndare: {cpu_pokemon.name}")
+    print(f"Hej {user.name}. Din poketer är {user_pokemon.name}")
+    print(f"Din motståndares poketer är {cpu_pokemon.name}\n")
     print(f"{user.name}, det är din tur! ")
     print(f"Välj en stad du tror att det är mycket {user_pokemon.mood} content i.")
 
@@ -64,23 +64,26 @@ def main():
         print(f"Aggressive Ada Health increased by {angry_city_dic['Göteborg']}. Total Health: {cpu_pokemon.health}\n")
 
 
-    print("***Time to play!***")
+    print("*** Time to play! ***")
     while True:
         user_choose = int(input("Do you wanna [1] attack or [2] standby?"))
         if user_choose == 1:
             cpu_pokemon.health -= user_pokemon.attack
-            print(f"Aggressive Ada now has {cpu_pokemon.health} in health")
+            print(f"Du ==> Attackerade ==> {cpu_pokemon.name} ")
+            print(f"Aggressive Ada now has {cpu_pokemon.health} in health\n")
         elif user_choose == 2:
-            print("You chose to standby.")
+            print(f"Du =/= Avaktar =/= ")
 
         if cpu_pokemon.health <= 0:
-            print(f'Din motståndare svimmade. Du vann!')
-
+            print(f'*** Din motståndare svimmade. Du vann! ***')
+            break
 
         user_pokemon.health -= cpu_pokemon.attack
-        print(f"Aggressive Ada attacked you! Your health is now at {user_pokemon.health}")
+        print(f"{cpu_pokemon.name} ==> Attackerade ==> {user_pokemon.name} ")
+        print(f"Your health is now at {user_pokemon.health}\n")
         if user_pokemon.health <= 0:
-            print(f'Din poketer svimmade. {cpu.name} vann!')
+            print(f'*** Din poketer svimmade. {cpu.name} vann! ***')
+            break
 
 if __name__ == '__main__':
     main()
