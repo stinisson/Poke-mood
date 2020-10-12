@@ -38,7 +38,6 @@ def main():
     print(f"{user.name}, det är din tur! ")
     print(f"Välj en stad du tror att det är mycket {user_pokemon.mood} content i.")
 
-
     happy_city_dic = {"Göteborg": 25, "Stockholm": 5} #Namn+gläjde
     angry_city_dic = {"Göteborg": 5, "Stockholm": 25}
 
@@ -49,30 +48,29 @@ def main():
         user_pokemon.health += happy_city_dic["Göteborg"]
         cpu_pokemon.health += angry_city_dic['Stockholm']
         print(f"{user_pokemon.name} valde {city} med mycket happy-content!")
-        print(f"Happy Hasse Health increased by {happy_city_dic['Göteborg']}. Total Health: {user_pokemon.health}\n")
+        print(f"Happy Hasse hälsa ökade med {happy_city_dic['Göteborg']}. Total hälsa: {user_pokemon.health}\n")
 
         print(f"{cpu_pokemon.name} valde Stockholm med mycket angry-content!")
-        print(f"Aggressive Ada Health increased by {angry_city_dic['Stockholm']}. Total Health: {cpu_pokemon.health}\n")
+        print(f"Aggressive Ada hälsa ökade med {angry_city_dic['Stockholm']}. Total hälsa: {cpu_pokemon.health}\n")
 
     elif city == "Stockholm":
         user_pokemon.health += happy_city_dic["Stockholm"]
         cpu_pokemon.health += angry_city_dic['Göteborg']
         print(f"{user_pokemon.name} valde {city} med inte så mycket happy-content.")
-        print(f"Happy Hasse Health increased by {happy_city_dic['Stockholm']}. Total Health: {user_pokemon.health}\n")
+        print(f"Happy Hasse hälsa ökade med {happy_city_dic['Stockholm']}. Total hälsa: {user_pokemon.health}\n")
 
         print(f"{cpu_pokemon.name} valde Göteborg med inte så mycket angry-content.")
-        print(f"Aggressive Ada Health increased by {angry_city_dic['Göteborg']}. Total Health: {cpu_pokemon.health}\n")
+        print(f"Aggressive Ada hälsa ökade med {angry_city_dic['Göteborg']}. Total hälsa: {cpu_pokemon.health}\n")
 
-
-    print("*** Time to play! ***")
+    print("*** Dags för battle! ***")
     while True:
-        user_choose = int(input("Do you wanna [1] attack or [2] standby?"))
+        user_choose = int(input("Vill du [1] attackera eller [2] avvakta?"))
         if user_choose == 1:
             cpu_pokemon.health -= user_pokemon.attack
             print(f"Du ==> Attackerade ==> {cpu_pokemon.name} ")
-            print(f"Aggressive Ada now has {cpu_pokemon.health} in health\n")
+            print(f"Aggressive Ada hälsa: {cpu_pokemon.health}\n")
         elif user_choose == 2:
-            print(f"Du =/= Avaktar =/= ")
+            print(f"Du =/= Avvaktar =/= ")
 
         if cpu_pokemon.health <= 0:
             print(f'*** Din motståndare svimmade. Du vann! ***')
@@ -80,10 +78,11 @@ def main():
 
         user_pokemon.health -= cpu_pokemon.attack
         print(f"{cpu_pokemon.name} ==> Attackerade ==> {user_pokemon.name} ")
-        print(f"Your health is now at {user_pokemon.health}\n")
+        print(f"Din hälsa: {user_pokemon.health}\n")
         if user_pokemon.health <= 0:
             print(f'*** Din poketer svimmade. {cpu.name} vann! ***')
             break
+
 
 if __name__ == '__main__':
     main()
