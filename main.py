@@ -7,6 +7,7 @@ from termcolor import colored, cprint
 import colorama
 colorama.init()
 
+
 class Poketer:
     def __init__(self, name, mood, health, max_health, attack):
         self.name = name
@@ -26,7 +27,7 @@ class Poketer:
             self.health += health_score
             self.max_health += health_score
             print(f"{user_name} valde {city} med mycket {self.mood}-content!")
-            print(f"{self.name}s hälsa ökade med {health_score}. Total hälsa: {self.max_health}\n")
+            print(f"{self.name} hälsa ökade med {health_score}. Total hälsa: {self.max_health}\n")
 
     def __repr__(self):
         return f'Poketer: {self.name} Mood: {self.mood}'
@@ -74,8 +75,7 @@ def main():
 
     username = input("Vad heter du? ")
     user = User(colored(username, 'blue'))
-    rival = input("Vad heter din motståndare? ")
-    cpu = User(colored(rival, 'red'))
+    cpu = User(colored("Olof", 'red'))
     user.add_team(user_pokemon)
     cpu.add_team(cpu_pokemon)
     print(f"Hej {user.name}. Din poketer är {user_pokemon.name}.")
@@ -87,7 +87,8 @@ def main():
     angry_city_dic = {"Göteborg": 5, "Stockholm": 25}
 
     city = input("Välj mellan Göteborg eller Stockholm: ")
-    print("\nBeräknar mood'content...")
+    delay_print("Beräknar mood'content", ".....","")
+    #print("\nBeräknar mood'content...")
 
     if city == "Göteborg":
         user_pokemon.update_max_health_by_city_mood("Göteborg", user.name)
@@ -121,10 +122,10 @@ def main():
         if user_choose == 1:
             cpu_pokemon.health -= user_pokemon.attack
             print(f"Du ==> Attackerade ==> {cpu_pokemon.name} ")
-            print(f"Aggressive Ada hälsa: {cpu_pokemon.health}\n")
+            print(f"{cpu_pokemon.name}hälsa: {cpu_pokemon.health}\n")
             user_pokemon.health -= cpu_pokemon.attack
             time.sleep(2)
-            delay_print(" ", "3 2 1...", "Boom!")
+            delay_print("", "3 2 1...", "Boom!")
 
             print(f"{cpu_pokemon.name} ==> Attackerade ==> {user_pokemon.name} ")
         elif user_choose == 2:
@@ -144,8 +145,6 @@ def main():
         if cpu_pokemon.health <= 0:
             print(f'*** Din motståndare svimmade. Du vann! ***')
             break
-
-
 
         if user_pokemon.health >= user_pokemon.max_health / 2:
             print(f"Din hälsa: {colored(user_pokemon.health, 'green')}\n")
