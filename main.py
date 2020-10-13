@@ -4,7 +4,6 @@ import time
 from termcolor import colored, cprint
 
 
-
 class Poketer:
     def __init__(self, name, mood, health, attack):
         self.name = name
@@ -109,12 +108,13 @@ def main():
         current_hp = 125
 
         if user_pokemon.health >= current_hp / 2:
-            print(f"Din hälsa: {colored(user_pokemon.health, 'yellow')}\n")
+            print(f"Din hälsa: {colored(user_pokemon.health, 'green')}\n")
         elif current_hp / 4 <= user_pokemon.health <= current_hp / 2:
-            print(f"Din hälsa: {colored(user_pokemon.health, 'red')}\n")
+            print(f"Din hälsa: {colored(user_pokemon.health, 'yellow')}\n")
         elif user_pokemon.health <= current_hp / 4:
-            print(f"Din hälsa: {colored(user_pokemon.health, 'white')}\n")
-        elif user_pokemon.health <= 0:
+            print(f"Din hälsa: {colored(user_pokemon.health, 'red')}\n")
+
+        if user_pokemon.health <= 0:
             print(f'*** Din poketer svimmade. {cpu.name} vann! ***')
             break
 
