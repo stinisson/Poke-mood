@@ -16,7 +16,7 @@ def load_tweets(city):
         return []
 
 
-def mood_score(mood, city):
+def calc_mood_score(mood, city):
 
     # TODO handle keywords
     keywords = {}
@@ -37,9 +37,9 @@ def mood_score(mood, city):
         for keyword in keywords.get(mood):
             if keyword in tweet:
                 tweets_with_mood_content += 1
-                print(tweet)
+                #print(tweet)
 
-    print(tweets_with_mood_content)
+    #print(tweets_with_mood_content)
 
     # TODO implement a better mood score algorithm
     mood_score = (tweets_with_mood_content/number_of_tweets) + 1
