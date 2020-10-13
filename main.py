@@ -67,13 +67,12 @@ def delay_print(intro_text, s, a):
     print(a)
     time.sleep(0.5)
 
-#delay_print("3 2 1... ", "Boom!\n")
 
 def main():
     user_pokemon = Poketer(colored("Happy Hasse", 'blue'), "happy", 100, 100, 25)
     cpu_pokemon = Poketer(colored("Aggressive Ada", 'red'), "angry", 100, 100, 25)
 
-    cprint(f'    Varmt välkomna till PokéMood !', 'cyan')
+    cprint(f'    Varmt välkomna till PokéMood!', 'cyan')
 
     cprint(colored("""⢀⣠⣾⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿
     ⣿⣿⣿⣿⣿⡏⠉⠛⢿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⡿⣿
@@ -88,7 +87,7 @@ def main():
     ⣿⣿⣿⣿⣿⣿⣿⣿⣧⠀⠀⠀⠀⠀⠀⠀⠈⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢹⣿⣿
     ⣿⣿⣿⣿⣿⣿⣿⣿⣿⠃⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢸⣿⣿\n""", "yellow"))
 
-    username = input("Engarde Pokettränare! \nVänligen ange ditt namn: ")
+    username = input("Vänligen ange ditt namn: ")
     user = User(colored(username, 'blue'))
     cpu = User(colored("Olof", 'red'))
     user.add_team(user_pokemon)
@@ -96,40 +95,18 @@ def main():
     print(f"Hej {user.name}. Din poketer är {user_pokemon.name}.")
     print(f"Din motståndares poketer är {cpu_pokemon.name}.\n")
     print(f"{user.name}, det är din tur! ")
+
     print(f"Välj en stad du tror att det är mycket {user_pokemon.mood} content i.")
-
-    happy_city_dic = {"Göteborg": 25, "Stockholm": 5}  # Namn+gläjde
-    angry_city_dic = {"Göteborg": 5, "Stockholm": 25}
-
     city = input("Välj mellan Göteborg eller Stockholm: ")
-    delay_print("Beräknar mood'content", ".....","")
-    #print("\nBeräknar mood'content...")
+    delay_print("Beräknar mood'content", ".....", "")
 
     if city == "Göteborg":
         user_pokemon.update_max_health_by_city_mood("Göteborg", user.name)
         cpu_pokemon.update_max_health_by_city_mood("Stockholm", cpu.name)
 
-        #user_pokemon.health += happy_city_dic["Göteborg"]
-        #user_pokemon.max_health += happy_city_dic["Göteborg"]
-        #cpu_pokemon.health += angry_city_dic['Stockholm']
-        #cpu_pokemon.max_health += angry_city_dic['Stockholm']
-        #print(f"{user.name} valde {city} med mycket happy-content!")
-        #print(f"Happy Hasse hälsa ökade med {happy_city_dic['Göteborg']}. Total hälsa: {user_pokemon.health}\n")
-
-        #print(f"{cpu.name} valde Stockholm med mycket angry-content!")
-        #print(f"Aggressive Ada hälsa ökade med {angry_city_dic['Stockholm']}. Total hälsa: {cpu_pokemon.health}\n")
-
     elif city == "Stockholm":
         user_pokemon.update_max_health_by_city_mood("Stockholm", user.name)
         cpu_pokemon.update_max_health_by_city_mood("Göteborg", cpu.name)
-
-        #user_pokemon.health += happy_city_dic["Stockholm"]
-        #cpu_pokemon.health += angry_city_dic['Göteborg']
-        #print(f"{user.name} valde {city} med inte så mycket happy-content.")
-        #print(f"Happy Hasse hälsa ökade med {happy_city_dic['Stockholm']}. Total hälsa: {user_pokemon.health}\n")
-
-        #print(f"{cpu.name} valde Göteborg med inte så mycket angry-content.")
-        #print(f"Aggressive Ada hälsa ökade med {angry_city_dic['Göteborg']}. Total hälsa: {cpu_pokemon.health}\n")
 
     print("*** Dags för battle! ***")
     while True:
