@@ -3,7 +3,7 @@ from random import randint
 import time
 from termcolor import colored, cprint
 import colorama
-
+colorama.init()
 
 class Poketer:
     def __init__(self, name, mood, health, attack):
