@@ -6,10 +6,11 @@ import colorama
 colorama.init()
 
 class Poketer:
-    def __init__(self, name, mood, health, attack):
+    def __init__(self, name, mood, health, max_health, attack):
         self.name = name
         self.mood = mood
         self.health = health
+        self.max_health = max_health
         self.attack = attack
 
     def __repr__(self):
@@ -42,8 +43,8 @@ def block():
 
 
 def main():
-    user_pokemon = Poketer(colored("Happy Hasse", 'blue'), "happy", 100, 25)
-    cpu_pokemon = Poketer(colored("Aggressive Ada", 'red'), "angry", 100, 25)
+    user_pokemon = Poketer(colored("Happy Hasse", 'blue'), "happy", 100, 100, 25)
+    cpu_pokemon = Poketer(colored("Aggressive Ada", 'red'), "angry", 100, 100, 25)
 
     username = input("Vad heter du? ")
     user = User(colored(username, 'blue'))
@@ -64,7 +65,9 @@ def main():
 
     if city == "Göteborg":
         user_pokemon.health += happy_city_dic["Göteborg"]
+        user_pokemon.max_health += happy_city_dic["Göteborg"]
         cpu_pokemon.health += angry_city_dic['Stockholm']
+        cpu_pokemon.max_health += angry_city_dic['Stockholm']
         print(f"{user.name} valde {city} med mycket happy-content!")
         print(f"Happy Hasse hälsa ökade med {happy_city_dic['Göteborg']}. Total hälsa: {user_pokemon.health}\n")
 
@@ -106,13 +109,13 @@ def main():
             print(f'*** Din motståndare svimmade. Du vann! ***')
             break
 
-        max_hp = 125
 
-        if user_pokemon.health >= max_hp / 2:
+
+        if user_pokemon.health >= user_pokemon.max_health / 2:
             print(f"Din hälsa: {colored(user_pokemon.health, 'green')}\n")
-        elif max_hp / 4 <= user_pokemon.health <= max_hp / 2:
+        elif user_pokemon.max_health / 4 <= user_pokemon.health <= user_pokemon.max_health / 2:
             print(f"Din hälsa: {colored(user_pokemon.health, 'yellow')}\n")
-        elif user_pokemon.health <= max_hp / 4:
+        elif user_pokemon.health <= user_pokemon.max_health / 4:
             print(f"Din hälsa: {colored(user_pokemon.health, 'red')}\n")
 
         if user_pokemon.health <= 0:
