@@ -137,7 +137,7 @@ def main():
         if user_choose == 1:
             cpu_pokemon.health -= user_pokemon.attack
             print(f"Du ==> Attackerade ==> {cpu_pokemon.name} ")
-            print(f"{cpu_pokemon.name}hälsa: {cpu_pokemon.health}\n")
+            print(f"{cpu_pokemon.name} hälsa: {cpu_pokemon.health}\n")
             user_pokemon.health -= cpu_pokemon.attack
             time.sleep(2)
             delay_print("", "3 2 1...", "Boom!")
