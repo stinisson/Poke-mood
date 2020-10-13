@@ -106,10 +106,15 @@ def main():
             print(f'*** Din motståndare svimmade. Du vann! ***')
             break
 
-        #if user_pokemon.health
-        print(f"Din hälsa: {user_pokemon.health}\n")
+        current_hp = 125
 
-        if user_pokemon.health <= 0:
+        if user_pokemon.health >= current_hp / 2:
+            print(f"Din hälsa: {colored(user_pokemon.health, 'yellow')}\n")
+        elif current_hp / 4 >= user_pokemon.health <= current_hp / 2:
+            print(f"Din hälsa: {colored(user_pokemon.health, 'red')}\n")
+        elif user_pokemon.health <= current_hp / 4:
+            print(f"Din hälsa: {colored(user_pokemon.health, 'white')}\n")
+        elif user_pokemon.health <= 0:
             print(f'*** Din poketer svimmade. {cpu.name} vann! ***')
             break
 
