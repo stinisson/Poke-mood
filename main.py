@@ -106,13 +106,13 @@ def main():
             print(f'*** Din motståndare svimmade. Du vann! ***')
             break
 
-        current_hp = 125
+        max_hp = 125
 
-        if user_pokemon.health >= current_hp / 2:
+        if user_pokemon.health >= max_hp / 2:
             print(f"Din hälsa: {colored(user_pokemon.health, 'green')}\n")
-        elif current_hp / 4 <= user_pokemon.health <= current_hp / 2:
+        elif max_hp / 4 <= user_pokemon.health <= max_hp / 2:
             print(f"Din hälsa: {colored(user_pokemon.health, 'yellow')}\n")
-        elif user_pokemon.health <= current_hp / 4:
+        elif user_pokemon.health <= max_hp / 4:
             print(f"Din hälsa: {colored(user_pokemon.health, 'red')}\n")
 
         if user_pokemon.health <= 0:
