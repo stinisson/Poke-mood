@@ -100,7 +100,7 @@ def main():
             elif x == True:
                 user_pokemon.health -= cpu_pokemon.attack // 2
                 print(f"{cpu_pokemon.name} ==> Attackerade ==> {user_pokemon.name} ")
-                print(f"Du tog {cpu_pokemon.attack // 2 } skada!")
+                print(f"Du tog {cpu_pokemon.attack // 2} skada!")
 
         if cpu_pokemon.health <= 0:
             print(f'*** Din motståndare svimmade. Du vann! ***')
@@ -110,7 +110,7 @@ def main():
 
         if user_pokemon.health >= current_hp / 2:
             print(f"Din hälsa: {colored(user_pokemon.health, 'yellow')}\n")
-        elif current_hp / 4 >= user_pokemon.health <= current_hp / 2:
+        elif current_hp / 4 <= user_pokemon.health <= current_hp / 2:
             print(f"Din hälsa: {colored(user_pokemon.health, 'red')}\n")
         elif user_pokemon.health <= current_hp / 4:
             print(f"Din hälsa: {colored(user_pokemon.health, 'white')}\n")
