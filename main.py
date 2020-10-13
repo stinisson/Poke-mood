@@ -1,5 +1,5 @@
 "Pokemon Battle GO!"
-from mood_score import mood_score
+from mood_score import calc_mood_score
 import sys
 from random import randint
 import time
@@ -17,13 +17,13 @@ class Poketer:
         self.attack = attack
 
     def update_max_health_by_city_mood(self, city, user_name):
-        pok_mood_score = mood_score(self.mood, city)
+        mood_score = calc_mood_score(self.mood, city)
         if mood_score == -1:
             print("Tyvärr denna staden är ej tillgänglig, men du får 20 extra i hälsa. ")
             self.max_health += 20
             self.health += 20
         else:
-            health_score = round(pok_mood_score * self.health)
+            health_score = round(mood_score * self.health)
             self.health += health_score
             self.max_health += health_score
             print(f"{user_name} valde {city} med mycket {self.mood}-content!")
