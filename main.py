@@ -1,4 +1,5 @@
 "Pokemon Battle GO!"
+from mood_score import mood_score
 import sys
 from random import randint
 import time
@@ -14,8 +15,18 @@ class Poketer:
         self.max_health = max_health
         self.attack = attack
 
-    def update_max_health_by_city_mood(self, city):
-        pass
+    def update_max_health_by_city_mood(self, city, user_name):
+        pok_mood_score = mood_score(self.mood, city)
+        if mood_score == -1:
+            print("Tyvärr denna staden är ej tillgänglig, men du får 20 extra i hälsa. ")
+            self.max_health += 20
+            self.health += 20
+        else:
+            health_score = round(pok_mood_score * self.health)
+            self.health += health_score
+            self.max_health += health_score
+            print(f"{user_name} valde {city} med mycket {self.mood}-content!")
+            print(f"{self.name}s hälsa ökade med {health_score}. Total hälsa: {self.max_health}\n")
 
     def __repr__(self):
         return f'Poketer: {self.name} Mood: {self.mood}'
@@ -79,24 +90,30 @@ def main():
     print("\nBeräknar mood'content...")
 
     if city == "Göteborg":
-        user_pokemon.health += happy_city_dic["Göteborg"]
-        user_pokemon.max_health += happy_city_dic["Göteborg"]
-        cpu_pokemon.health += angry_city_dic['Stockholm']
-        cpu_pokemon.max_health += angry_city_dic['Stockholm']
-        print(f"{user.name} valde {city} med mycket happy-content!")
-        print(f"Happy Hasse hälsa ökade med {happy_city_dic['Göteborg']}. Total hälsa: {user_pokemon.health}\n")
+        user_pokemon.update_max_health_by_city_mood("Göteborg", user.name)
+        cpu_pokemon.update_max_health_by_city_mood("Stockholm", cpu.name)
 
-        print(f"{cpu.name} valde Stockholm med mycket angry-content!")
-        print(f"Aggressive Ada hälsa ökade med {angry_city_dic['Stockholm']}. Total hälsa: {cpu_pokemon.health}\n")
+        #user_pokemon.health += happy_city_dic["Göteborg"]
+        #user_pokemon.max_health += happy_city_dic["Göteborg"]
+        #cpu_pokemon.health += angry_city_dic['Stockholm']
+        #cpu_pokemon.max_health += angry_city_dic['Stockholm']
+        #print(f"{user.name} valde {city} med mycket happy-content!")
+        #print(f"Happy Hasse hälsa ökade med {happy_city_dic['Göteborg']}. Total hälsa: {user_pokemon.health}\n")
+
+        #print(f"{cpu.name} valde Stockholm med mycket angry-content!")
+        #print(f"Aggressive Ada hälsa ökade med {angry_city_dic['Stockholm']}. Total hälsa: {cpu_pokemon.health}\n")
 
     elif city == "Stockholm":
-        user_pokemon.health += happy_city_dic["Stockholm"]
-        cpu_pokemon.health += angry_city_dic['Göteborg']
-        print(f"{user.name} valde {city} med inte så mycket happy-content.")
-        print(f"Happy Hasse hälsa ökade med {happy_city_dic['Stockholm']}. Total hälsa: {user_pokemon.health}\n")
+        user_pokemon.update_max_health_by_city_mood("Stockholm", user.name)
+        cpu_pokemon.update_max_health_by_city_mood("Göteborg", cpu.name)
 
-        print(f"{cpu.name} valde Göteborg med inte så mycket angry-content.")
-        print(f"Aggressive Ada hälsa ökade med {angry_city_dic['Göteborg']}. Total hälsa: {cpu_pokemon.health}\n")
+        #user_pokemon.health += happy_city_dic["Stockholm"]
+        #cpu_pokemon.health += angry_city_dic['Göteborg']
+        #print(f"{user.name} valde {city} med inte så mycket happy-content.")
+        #print(f"Happy Hasse hälsa ökade med {happy_city_dic['Stockholm']}. Total hälsa: {user_pokemon.health}\n")
+
+        #print(f"{cpu.name} valde Göteborg med inte så mycket angry-content.")
+        #print(f"Aggressive Ada hälsa ökade med {angry_city_dic['Göteborg']}. Total hälsa: {cpu_pokemon.health}\n")
 
     print("*** Dags för battle! ***")
     while True:
@@ -107,7 +124,7 @@ def main():
             print(f"Aggressive Ada hälsa: {cpu_pokemon.health}\n")
             user_pokemon.health -= cpu_pokemon.attack
             time.sleep(2)
-            delay_print("3 2 1... ", "Boom!")
+            delay_print(" ", "3 2 1...", "Boom!")
 
             print(f"{cpu_pokemon.name} ==> Attackerade ==> {user_pokemon.name} ")
         elif user_choose == 2:
@@ -115,12 +132,12 @@ def main():
             x = block()
             if x == False:
                 user_pokemon.health -= cpu_pokemon.attack
-                delay_print("3 2 1... ", "Boom!")
+                delay_print(" ", "3 2 1...", "Boom!")
                 print(f"{cpu_pokemon.name} ==> Attackerade ==> {user_pokemon.name} ")
                 print(f"Du tog {cpu_pokemon.attack} skada!")
             elif x == True:
                 user_pokemon.health -= cpu_pokemon.attack // 2
-                delay_print("3 2 1... ", "Boom!")
+                delay_print(" ", "3 2 1...", "Boom!")
                 print(f"{cpu_pokemon.name} ==> Attackerade ==> {user_pokemon.name} ")
                 print(f"Du tog {cpu_pokemon.attack // 2} skada!")
 
