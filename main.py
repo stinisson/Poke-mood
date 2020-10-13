@@ -2,6 +2,7 @@
 from random import randint
 import time
 from termcolor import colored, cprint
+import colorama
 
 
 class Poketer:
