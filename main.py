@@ -88,7 +88,7 @@ def main():
     ⣿⣿⣿⣿⣿⣿⣿⣿⣧⠀⠀⠀⠀⠀⠀⠀⠈⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢹⣿⣿
     ⣿⣿⣿⣿⣿⣿⣿⣿⣿⠃⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢸⣿⣿\n""", "yellow"))
 
-    username = input("Vad heter du? ")
+    username = input("Engarde Pokettränare! \nVänligen ange ditt namn: ")
     user = User(colored(username, 'blue'))
     cpu = User(colored("Olof", 'red'))
     user.add_team(user_pokemon)
