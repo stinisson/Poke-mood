@@ -115,7 +115,7 @@ def main():
             if cpu_pokemon.health <= 0:
                 print(f'*** Din motståndare svimmade. Du vann! ***')
                 break
-            elif user_pokemon.health <= 0:
+            if user_pokemon.health <= 0:
                 print(f'*** Din poketer {user_pokemon.name} svimmade. {cpu.name} vann! ***')
                 break
 
