@@ -27,7 +27,7 @@ class Poketer:
             self.health += health_score
             self.max_health += health_score
             print(f"{user_name} valde {city} med mycket {self.mood}-content!")
-            print(f"{self.name} hälsa ökade med {health_score}. Total hälsa: {self.max_health}\n")
+            print(f"Hälsan för {self.name} ökade med {health_score}. Total hälsa: {self.max_health}\n")
 
     def __repr__(self):
         return f'Poketer: {self.name} Mood: {self.mood}'
