@@ -12,7 +12,7 @@ def load_tweets(city):
             tweets = pickle.load(f)
             return tweets
     except FileNotFoundError:
-        print("Sorry, couldn't not find any such file.")
+        print("Sorry, couldn't find any such file.")
         return []
 
 
@@ -30,7 +30,7 @@ def calc_mood_score(mood, city):
         return -1
 
     if mood not in keywords:
-        print("Mood not available. (Sorry, this time you get 0 in mood score).")
+        print("Mood not available.")
 
     tweets_with_mood_content = 0
     for tweet in tweets:
