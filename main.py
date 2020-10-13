@@ -1,4 +1,5 @@
 "Pokemon Battle GO!"
+import sys
 from random import randint
 import time
 from termcolor import colored, cprint
@@ -12,6 +13,9 @@ class Poketer:
         self.health = health
         self.max_health = max_health
         self.attack = attack
+
+    def update_max_health_by_city_mood(self, city):
+        pass
 
     def __repr__(self):
         return f'Poketer: {self.name} Mood: {self.mood}'
@@ -42,6 +46,17 @@ def block():
     return block_sucess
 
 
+def delay_print(intro_text, s, a):
+    print(intro_text)
+    for i in s:
+        sys.stdout.write(i)
+        sys.stdout.flush()
+        time.sleep(0.4)
+    print(a)
+    time.sleep(0.5)
+
+#delay_print("3 2 1... ", "Boom!\n")
+
 def main():
     user_pokemon = Poketer(colored("Happy Hasse", 'blue'), "happy", 100, 100, 25)
     cpu_pokemon = Poketer(colored("Aggressive Ada", 'red'), "angry", 100, 100, 25)
@@ -52,8 +67,8 @@ def main():
     cpu = User(colored(rival, 'red'))
     user.add_team(user_pokemon)
     cpu.add_team(cpu_pokemon)
-    print(f"Hej {user.name}. Din poketer är {user_pokemon.name}")
-    print(f"Din motståndares poketer är {cpu_pokemon.name}\n")
+    print(f"Hej {user.name}. Din poketer är {user_pokemon.name}.")
+    print(f"Din motståndares poketer är {cpu_pokemon.name}.\n")
     print(f"{user.name}, det är din tur! ")
     print(f"Välj en stad du tror att det är mycket {user_pokemon.mood} content i.")
 
@@ -92,16 +107,20 @@ def main():
             print(f"Aggressive Ada hälsa: {cpu_pokemon.health}\n")
             user_pokemon.health -= cpu_pokemon.attack
             time.sleep(2)
+            delay_print("3 2 1... ", "Boom!")
+
             print(f"{cpu_pokemon.name} ==> Attackerade ==> {user_pokemon.name} ")
         elif user_choose == 2:
             print(f"Du =/= Blockerar =/= ")
             x = block()
             if x == False:
                 user_pokemon.health -= cpu_pokemon.attack
+                delay_print("3 2 1... ", "Boom!")
                 print(f"{cpu_pokemon.name} ==> Attackerade ==> {user_pokemon.name} ")
                 print(f"Du tog {cpu_pokemon.attack} skada!")
             elif x == True:
                 user_pokemon.health -= cpu_pokemon.attack // 2
+                delay_print("3 2 1... ", "Boom!")
                 print(f"{cpu_pokemon.name} ==> Attackerade ==> {user_pokemon.name} ")
                 print(f"Du tog {cpu_pokemon.attack // 2} skada!")
 
