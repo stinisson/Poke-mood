@@ -1,6 +1,9 @@
 "Pokemon Battle GO!"
 from random import randint
 import time
+from termcolor import colored, cprint
+
+
 
 class Poketer:
     def __init__(self, name, mood, health, attack):
@@ -39,13 +42,13 @@ def block():
 
 
 def main():
-    user_pokemon = Poketer("Happy Hasse", "happy", 100, 25)
-    cpu_pokemon = Poketer("Aggressive Ada", "angry", 100, 25)
+    user_pokemon = Poketer(colored("Happy Hasse", 'blue'), "happy", 100, 25)
+    cpu_pokemon = Poketer(colored("Aggressive Ada", 'red'), "angry", 100, 25)
 
     username = input("Vad heter du? ")
-    user = User(username)
+    user = User(colored(username, 'blue'))
     rival = input("Vad heter din motståndare? ")
-    cpu = User(rival)
+    cpu = User(colored(rival, 'red'))
     user.add_team(user_pokemon)
     cpu.add_team(cpu_pokemon)
     print(f"Hej {user.name}. Din poketer är {user_pokemon.name}")
@@ -103,6 +106,7 @@ def main():
             print(f'*** Din motståndare svimmade. Du vann! ***')
             break
 
+        #if user_pokemon.health
         print(f"Din hälsa: {user_pokemon.health}\n")
 
         if user_pokemon.health <= 0:
