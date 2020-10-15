@@ -22,7 +22,7 @@ class Poketer:
         opponent_pokemon.health -= self.attack
         print(f"{self.name} ==> Attackerade ==> {opponent_pokemon.name} ")
         print(f"{opponent_pokemon.name} hälsa: {opponent_pokemon.health}\n")
-        self.health -= opponent_pokemon.attack
+        #self.health -= opponent_pokemon.attack
 
     def block(self, opponent, opponent_pokemon):
         block_chance = randint(1, 11)
@@ -133,10 +133,10 @@ def main():
     while (user_pokemon.health >= 0) and (cpu_pokemon.health >= 0):
         if user_pokemon.health <= 0 or cpu_pokemon.health <= 0:
             if cpu_pokemon.health <= 0:
-                print(f'*** Din motståndare svimmade. Du vann! ***')
+                #print(f'*** Din motståndare svimmade. Du vann! ***')
                 break
             if user_pokemon.health <= 0:
-                print(f'*** Din poketer {user_pokemon.name} svimmade. {cpu.name} vann! ***')
+                #print(f'*** Din poketer {user_pokemon.name} svimmade. {cpu.name} vann! ***')
                 break
 
         else:
@@ -144,6 +144,8 @@ def main():
             user_choose = int(input("Vill du [1] attackera eller [2] blockera? "))
             if user_choose == 1:
                 user_pokemon.attack_fnc(cpu_pokemon)
+                cpu_pokemon.attack_fnc(user_pokemon)
+                ''' Dubbel print från funktion och här i kodblock. Stuva om i denna IF sats kanske?'''
                 #cpu_pokemon.health -= user_pokemon.attack
                 #print(f"{user_pokemon.name} ==> Attackerade ==> {cpu_pokemon.name} ")
                 #print(f"{cpu_pokemon.name} hälsa: {cpu_pokemon.health}\n")
