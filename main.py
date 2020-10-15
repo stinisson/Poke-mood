@@ -29,7 +29,7 @@ class Poketer:
             self.health += health_score
             self.max_health += health_score
             print(f"{user_name} valde {city} med mycket {self.mood}-content!")
-            print(f"Hälsan för {self.name} ökade med {health_score}. Total hälsa: {self.max_health}\n")
+            print(f"Hälsan för {self.name} ökade med {health_score}. Total hälsa: {colored(self.max_health, 'green')}\n")
 
     def __repr__(self):
         return f'Poketer: {self.name} Mood: {self.mood}'
@@ -95,7 +95,7 @@ def main():
     user.add_team(user_pokemon)
     cpu.add_team(cpu_pokemon)
     print(f"Hej {user.name}. Din poketer är {user_pokemon.name}.")
-    print(f"Din motståndares poketer är {cpu_pokemon.name}.\n")
+    print(f"Din motståndare är {cpu.name} och har valt poketer {cpu_pokemon.name}.\n")
     print(f"{user.name}, det är din tur! ")
 
     print(f"Välj en stad du tror att det är mycket {user_pokemon.mood} content i.")
@@ -114,7 +114,7 @@ def main():
         print("Tyvärr denna staden är ej tillgänglig, men du får 20 extra i hälsa. ")
         user_pokemon.max_health += 20
         user_pokemon.health += 20
-        print(f"Hälsan för {user_pokemon.name} ökade med 20. Total hälsa: {user_pokemon.max_health}\n")
+        print(f"Hälsan för {user_pokemon.name} ökade med 20. Total hälsa: {colored(user_pokemon.max_health, 'green')}\n")
         cpu_pokemon.update_max_health_by_city_mood("Stockholm", cpu.name)
 
     print("*** Dags för battle! ***")
