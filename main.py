@@ -18,25 +18,29 @@ class Poketer:
         self.max_health = max_health
         self.attack = attack
 
+    def attack_fnc(self, opponent_pokemon):
+        opponent_pokemon.health -= self.attack
+        print(f"{self.name} ==> Attackerade ==> {opponent_pokemon.name} ")
+        print(f"{opponent_pokemon.name} hälsa: {opponent_pokemon.health}\n")
+        self.health -= opponent_pokemon.attack
+
     def block(self, opponent, opponent_pokemon):
         block_chance = randint(1, 11)
         if block_chance <= 7:
             time.sleep(1)
-            print(f"{self.name} =|= Blockerar =|= Lyckad Block\n")
+            print(f"{self.name} =|= Blockerar =|= {(colored('Lyckad Block', 'green'))}\n")
             self.health -= opponent_pokemon.attack // 2
             delay_print(f"{opponent.name} attackerade med {opponent_pokemon.name}", "3 2 1...", "Boom!")
             print(f"{opponent_pokemon.name} ==> Attackerade ==> {self.name}\n")
             print(f"{self.name} tog {opponent_pokemon.attack // 2} i skada!")
-            #block_sucess = True
         elif block_chance >= 8:
             time.sleep(1)
-            print(f"{self.name} =|= Blockerar =|= Misslyckad Block\n")
+            print(f"{self.name} =|= Blockerar =|= {(colored('Misslyckad Block', 'red'))}\n")
             self.health -= opponent_pokemon.attack
             delay_print(f"{opponent.name} attackerade med {opponent_pokemon.name}", "3 2 1...", "Boom!")
             print(f"{opponent_pokemon.name} ==> Attackerade ==> {self.name}\n")
             print(f"{self.name} tog {opponent_pokemon.attack} i skada!")
-            #block_sucess = False
-        #return block_sucess
+
 
     def update_max_health_by_city_mood(self, city, user_name):
         mood_score = calc_mood_score(self.mood, city)
@@ -65,19 +69,6 @@ class User:
 
     def __repr__(self):
         return f'Namn: {self.name}, Team: {self.team}'
-
-
-# def block(pokemon):
-#     block_chance = randint(1, 11)
-#     if block_chance <= 7:
-#         time.sleep(1)
-#         print(f"{pokemon.name} =|= Blockerar =|= Lyckad Block")
-#         block_sucess = True
-#     elif block_chance >= 8:
-#         time.sleep(1)
-#         print(f"{pokemon.name} =|= Blockerar =|= Misslyckad Block")
-#         block_sucess = False
-#     return block_sucess
 
 
 def delay_print(intro_text, s, a):
@@ -152,10 +143,11 @@ def main():
             print(f"{user.name}, det är din tur ! ")
             user_choose = int(input("Vill du [1] attackera eller [2] blockera? "))
             if user_choose == 1:
-                cpu_pokemon.health -= user_pokemon.attack
-                print(f"{user_pokemon.name} ==> Attackerade ==> {cpu_pokemon.name} ")
-                print(f"{cpu_pokemon.name} hälsa: {cpu_pokemon.health}\n")
-                user_pokemon.health -= cpu_pokemon.attack
+                user_pokemon.attack_fnc(cpu_pokemon)
+                #cpu_pokemon.health -= user_pokemon.attack
+                #print(f"{user_pokemon.name} ==> Attackerade ==> {cpu_pokemon.name} ")
+                #print(f"{cpu_pokemon.name} hälsa: {cpu_pokemon.health}\n")
+                #user_pokemon.health -= cpu_pokemon.attack
                 time.sleep(1)
                 if user_pokemon.health <= 0 or cpu_pokemon.health <= 0:
                     if cpu_pokemon.health <= 0:
