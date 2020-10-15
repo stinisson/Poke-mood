@@ -18,6 +18,26 @@ class Poketer:
         self.max_health = max_health
         self.attack = attack
 
+    def block(self, opponent, opponent_pokemon):
+        block_chance = randint(1, 11)
+        if block_chance <= 7:
+            time.sleep(1)
+            print(f"{self.name} =|= Blockerar =|= Lyckad Block\n")
+            self.health -= opponent_pokemon.attack // 2
+            delay_print(f"{opponent.name} attackerade med {opponent_pokemon.name}", "3 2 1...", "Boom!")
+            print(f"{opponent_pokemon.name} ==> Attackerade ==> {self.name}\n")
+            print(f"{self.name} tog {opponent_pokemon.attack // 2} i skada!")
+            #block_sucess = True
+        elif block_chance >= 8:
+            time.sleep(1)
+            print(f"{self.name} =|= Blockerar =|= Misslyckad Block\n")
+            self.health -= opponent_pokemon.attack
+            delay_print(f"{opponent.name} attackerade med {opponent_pokemon.name}", "3 2 1...", "Boom!")
+            print(f"{opponent_pokemon.name} ==> Attackerade ==> {self.name}\n")
+            print(f"{self.name} tog {opponent_pokemon.attack} i skada!")
+            #block_sucess = False
+        #return block_sucess
+
     def update_max_health_by_city_mood(self, city, user_name):
         mood_score = calc_mood_score(self.mood, city)
         if mood_score == -1:
@@ -47,17 +67,17 @@ class User:
         return f'Namn: {self.name}, Team: {self.team}'
 
 
-def block():
-    block_chance = randint(1, 11)
-    if block_chance <= 7:
-        time.sleep(1)
-        print("Lyckad Block")
-        block_sucess = True
-    elif block_chance >= 8:
-        time.sleep(1)
-        print("Misslyckad Block")
-        block_sucess = False
-    return block_sucess
+# def block(pokemon):
+#     block_chance = randint(1, 11)
+#     if block_chance <= 7:
+#         time.sleep(1)
+#         print(f"{pokemon.name} =|= Blockerar =|= Lyckad Block")
+#         block_sucess = True
+#     elif block_chance >= 8:
+#         time.sleep(1)
+#         print(f"{pokemon.name} =|= Blockerar =|= Misslyckad Block")
+#         block_sucess = False
+#     return block_sucess
 
 
 def delay_print(intro_text, s, a):
@@ -150,18 +170,19 @@ def main():
                     print(f"{cpu_pokemon.name} ==> Attackerade ==> {user_pokemon.name} ")
                     print(f"Din poketer {user_pokemon.name} tog {cpu_pokemon.attack} i skada!")
             elif user_choose == 2:
-                print(f"Du =/= Blockerar =/= ")
-                x = block()
-                if not x:
-                    user_pokemon.health -= cpu_pokemon.attack
-                    delay_print(f"{cpu.name} attackerade med {cpu_pokemon.name}", "3 2 1...", "Boom!")
-                    print(f"{cpu_pokemon.name} ==> Attackerade ==> {user_pokemon.name} ")
-                    print(f"{user_pokemon.name} tog {cpu_pokemon.attack} i skada!")
-                elif x:
-                    user_pokemon.health -= cpu_pokemon.attack // 2
-                    delay_print(f"{cpu.name} attackerade med {cpu_pokemon.name}", "3 2 1...", "Boom!")
-                    print(f"{cpu_pokemon.name} ==> Attackerade ==> {user_pokemon.name} ")
-                    print(f"{user_pokemon.name} tog {cpu_pokemon.attack // 2} i skada!")
+                #print(f"Du =/= Blockerar =/= ")
+                user_pokemon.block(cpu, cpu_pokemon)
+                # x = block()
+                # if not x:
+                #     user_pokemon.health -= cpu_pokemon.attack
+                #     delay_print(f"{cpu.name} attackerade med {cpu_pokemon.name}", "3 2 1...", "Boom!")
+                #     print(f"{cpu_pokemon.name} ==> Attackerade ==> {user_pokemon.name} ")
+                #     print(f"{user_pokemon.name} tog {cpu_pokemon.attack} i skada!")
+                # elif x:
+                #     user_pokemon.health -= cpu_pokemon.attack // 2
+                #     delay_print(f"{cpu.name} attackerade med {cpu_pokemon.name}", "3 2 1...", "Boom!")
+                #     print(f"{cpu_pokemon.name} ==> Attackerade ==> {user_pokemon.name} ")
+                #     print(f"{user_pokemon.name} tog {cpu_pokemon.attack // 2} i skada!")
 
             if user_pokemon.health >= user_pokemon.max_health / 2:
                 print(f"{user_pokemon.name} hälsa: {colored(user_pokemon.health, 'green')}\n")
