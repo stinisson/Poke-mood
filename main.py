@@ -6,6 +6,8 @@ import time
 from termcolor import colored, cprint
 import colorama
 colorama.init()
+#TODO:
+# 1- Rad printen på rad 24 bör ligga och fånga stadsinput som en else på rad 112 t.ex
 
 
 class Poketer:
@@ -63,14 +65,14 @@ def delay_print(intro_text, s, a):
     for i in s:
         sys.stdout.write(i)
         sys.stdout.flush()
-        time.sleep(0.4)
+        time.sleep(0.3)
     print(a)
     time.sleep(0.5)
 
 
 def main():
-    user_pokemon = Poketer(colored("Happy Hasse", 'blue'), "happy", 100, 100, 25)
-    cpu_pokemon = Poketer(colored("Aggressive Ada", 'red'), "angry", 100, 100, 25)
+    user_pokemon = Poketer(colored("Happy Hasse", 'blue'), "happy", 10, 10, 5)
+    cpu_pokemon = Poketer(colored("Aggressive Ada", 'red'), "angry", 10, 10, 5)
 
     cprint(f'    Varmt välkomna till PokéMood!', 'cyan')
 
@@ -120,6 +122,7 @@ def main():
                 break
 
         else:
+            print(f"{user.name}, det är din tur ! ")
             user_choose = int(input("Vill du [1] attackera eller [2] blockera? "))
             if user_choose == 1:
                 cpu_pokemon.health -= user_pokemon.attack
@@ -138,6 +141,7 @@ def main():
                     delay_print(f"{cpu.name} attackerade med {cpu_pokemon.name}", "3 2 1...", "Boom!")
 
                     print(f"{cpu_pokemon.name} ==> Attackerade ==> {user_pokemon.name} ")
+                    print(f"Din poketer {user_pokemon.name} tog {cpu_pokemon.attack} i skada!")
             elif user_choose == 2:
                 print(f"Du =/= Blockerar =/= ")
                 x = block()
@@ -145,12 +149,12 @@ def main():
                     user_pokemon.health -= cpu_pokemon.attack
                     delay_print(f"{cpu.name} attackerade med {cpu_pokemon.name}", "3 2 1...", "Boom!")
                     print(f"{cpu_pokemon.name} ==> Attackerade ==> {user_pokemon.name} ")
-                    print(f"{user_pokemon.name} tog {cpu_pokemon.attack} skada!")
+                    print(f"{user_pokemon.name} tog {cpu_pokemon.attack} i skada!")
                 elif x:
                     user_pokemon.health -= cpu_pokemon.attack // 2
                     delay_print(f"{cpu.name} attackerade med {cpu_pokemon.name}", "3 2 1...", "Boom!")
                     print(f"{cpu_pokemon.name} ==> Attackerade ==> {user_pokemon.name} ")
-                    print(f"{user_pokemon.name} tog {cpu_pokemon.attack // 2} skada!")
+                    print(f"{user_pokemon.name} tog {cpu_pokemon.attack // 2} i skada!")
 
             if user_pokemon.health >= user_pokemon.max_health / 2:
                 print(f"{user_pokemon.name} hälsa: {colored(user_pokemon.health, 'green')}\n")
