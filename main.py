@@ -110,6 +110,13 @@ def main():
         user_pokemon.update_max_health_by_city_mood("Stockholm", user.name)
         cpu_pokemon.update_max_health_by_city_mood("Göteborg", cpu.name)
 
+    else:
+        print("Tyvärr denna staden är ej tillgänglig, men du får 20 extra i hälsa. ")
+        user_pokemon.max_health += 20
+        user_pokemon.health += 20
+        print(f"Hälsan för {user_pokemon.name} ökade med 20. Total hälsa: {user_pokemon.max_health}\n")
+        cpu_pokemon.update_max_health_by_city_mood("Stockholm", cpu.name)
+
     print("*** Dags för battle! ***")
 
     while (user_pokemon.health >= 0) and (cpu_pokemon.health >= 0):
