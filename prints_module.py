@@ -29,7 +29,7 @@ def successful_block(blocker):
     for i in text:
         sys.stdout.write(i)
         sys.stdout.flush()
-        time.sleep(0.3)
+        time.sleep(0.1)
     print("Hel sköld!")
 
 def unsuccessful_block(blocker):
@@ -38,5 +38,5 @@ def unsuccessful_block(blocker):
     for i in text:
         sys.stdout.write(i)
         sys.stdout.flush()
-        time.sleep(0.3)
+        time.sleep(0.1)
     print("Halv sköld!")
