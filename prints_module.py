@@ -29,8 +29,17 @@ def successful_block(blocker):
     for i in text:
         sys.stdout.write(i)
         sys.stdout.flush()
-        time.sleep(0.3)
-    print("Hel sköld!")
+        time.sleep(0.1)
+    print('''
+      |`-._/\_.-`|
+      |    ||    |
+      |___o()o___|
+      |__((<>))__|
+      \   o\/o   /
+       \   ||   /
+        \  ||  /
+         '.||.'
+    ''')
 
 def unsuccessful_block(blocker):
     print(f"{blocker} försöker blockera")
@@ -38,5 +47,14 @@ def unsuccessful_block(blocker):
     for i in text:
         sys.stdout.write(i)
         sys.stdout.flush()
-        time.sleep(0.3)
-    print("Halv sköld!")
+        time.sleep(0.1)
+    print('''
+      |`-._/<    <\_.-`|
+      |    |>    >|    |
+      |___o(<    <)o___|
+      |__((<>    >>))__|
+      \   o\>   > /o   /
+       \   |<    <|   /
+        \  |>    <|  /
+          '.|>   <|.'
+    ''')
