@@ -21,7 +21,7 @@ def calc_mood_score(mood, city):
     # TODO handle keywords
     keywords = {}
     import os
-    print(os.getcwd())
+    #print(os.getcwd()) #detta för att se var den plockar keyword? från rätt ställe på burken //CL
     keywords['happy'] = set(Path('keywords/happy_keywords.csv').read_text(encoding='utf8').split(','))
     keywords['angry'] = set(Path('keywords/angry_keywords.csv').read_text(encoding='utf8').split(','))
 
