@@ -21,9 +21,14 @@ class Poketer:
 
     def attack_fnc(self, opponent_pokemon):
         opponent_pokemon.health -= self.attack
-        print(f"{self.name} ==> Attackerade ==> {opponent_pokemon.name} ")
-        print(f"{opponent_pokemon.name} hälsa: {opponent_pokemon.health}\n")
-        #self.health -= opponent_pokemon.attack
+        atk_txt(self.name, opponent_pokemon.name, "3 2 1...")
+        if self.health >= self.max_health / 2:
+                print(f"{self.name} hälsa: {colored(self.health, 'green')}\n")
+        elif self.max_health / 4 <= self.health <= self.max_health / 2:
+                print(f"{self.name} hälsa: {colored(self.health, 'yellow')}\n")
+        elif self.health <= self.max_health / 4:
+                print(f"{self.name} hälsa: {colored(self.health, 'red')}\n")
+
 
     def block(self, opponent, opponent_pokemon):
         block_chance = randint(1, 11)
@@ -70,16 +75,6 @@ class User:
 
     def __repr__(self):
         return f'Namn: {self.name}, Team: {self.team}'
-
-
-def delay_print(intro_text, s, a):
-    print(intro_text)
-    for i in s:
-        sys.stdout.write(i)
-        sys.stdout.flush()
-        time.sleep(0.3)
-    print(a)
-    time.sleep(0.5)
 
 
 def main():
@@ -134,10 +129,10 @@ def main():
     while (user_pokemon.health >= 0) and (cpu_pokemon.health >= 0):
         if user_pokemon.health <= 0 or cpu_pokemon.health <= 0:
             if cpu_pokemon.health <= 0:
-                #print(f'*** Din motståndare svimmade. Du vann! ***')
+
                 break
             if user_pokemon.health <= 0:
-                #print(f'*** Din poketer {user_pokemon.name} svimmade. {cpu.name} vann! ***')
+                print(f'*** Din poketer {user_pokemon.name} svimmade. {cpu.name} vann! ***')
                 break
 
         else:
@@ -145,46 +140,19 @@ def main():
             user_choose = int(input("Vill du [1] attackera eller [2] blockera? "))
             if user_choose == 1:
                 user_pokemon.attack_fnc(cpu_pokemon)
-                cpu_pokemon.attack_fnc(user_pokemon)
-                ''' Dubbel print från funktion och här i kodblock. Stuva om i denna IF sats kanske?'''
-                #cpu_pokemon.health -= user_pokemon.attack
-                #print(f"{user_pokemon.name} ==> Attackerade ==> {cpu_pokemon.name} ")
-                #print(f"{cpu_pokemon.name} hälsa: {cpu_pokemon.health}\n")
-                #user_pokemon.health -= cpu_pokemon.attack
+
+
                 time.sleep(1)
                 if user_pokemon.health <= 0 or cpu_pokemon.health <= 0:
-                    if cpu_pokemon.health <= 0:
-                        print(f'*** Din motståndare svimmade. Du vann! ***')
-                        break
+                    if cpu_pokemon.health > 0:
+                        print(f'*** Det är {cpu.name} tur.. ***')
+                        cpu_pokemon.attack_fnc(user_pokemon)
                     elif user_pokemon.health <= 0:
-                        print(f'*** Din poketer {user_pokemon.name} svimmade. {cpu.name} vann! ***')
+                        print(f'*** {cpu.name} poketer {cpu_pokemon.name} svimmade. Du vann!! ***')
                         break
-                else:
-                    delay_print(f"{cpu.name} attackerade med {cpu_pokemon.name}", "3 2 1...", "Boom!")
 
-                    print(f"{cpu_pokemon.name} ==> Attackerade ==> {user_pokemon.name} ")
-                    print(f"Din poketer {user_pokemon.name} tog {cpu_pokemon.attack} i skada!")
             elif user_choose == 2:
-                #print(f"Du =/= Blockerar =/= ")
                 user_pokemon.block(cpu, cpu_pokemon)
-                # x = block()
-                # if not x:
-                #     user_pokemon.health -= cpu_pokemon.attack
-                #     delay_print(f"{cpu.name} attackerade med {cpu_pokemon.name}", "3 2 1...", "Boom!")
-                #     print(f"{cpu_pokemon.name} ==> Attackerade ==> {user_pokemon.name} ")
-                #     print(f"{user_pokemon.name} tog {cpu_pokemon.attack} i skada!")
-                # elif x:
-                #     user_pokemon.health -= cpu_pokemon.attack // 2
-                #     delay_print(f"{cpu.name} attackerade med {cpu_pokemon.name}", "3 2 1...", "Boom!")
-                #     print(f"{cpu_pokemon.name} ==> Attackerade ==> {user_pokemon.name} ")
-                #     print(f"{user_pokemon.name} tog {cpu_pokemon.attack // 2} i skada!")
-
-            if user_pokemon.health >= user_pokemon.max_health / 2:
-                print(f"{user_pokemon.name} hälsa: {colored(user_pokemon.health, 'green')}\n")
-            elif user_pokemon.max_health / 4 <= user_pokemon.health <= user_pokemon.max_health / 2:
-                print(f"{user_pokemon.name} hälsa: {colored(user_pokemon.health, 'yellow')}\n")
-            elif user_pokemon.health <= user_pokemon.max_health / 4:
-                print(f"{user_pokemon.name} hälsa: {colored(user_pokemon.health, 'red')}\n")
 
 
 if __name__ == '__main__':
