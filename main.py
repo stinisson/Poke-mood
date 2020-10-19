@@ -39,18 +39,16 @@ class Poketer:
         block_chance = randint(1, 11)
         if block_chance <= 7:
             time.sleep(1)
-            successful_block(self.name)
             self.health -= opponent_pokemon.attack // 2
-            delay_print(f"{opponent.name} attackerade med {opponent_pokemon.name}", "3 2 1...", "Boom!")
-            print(f"{opponent_pokemon.name} ==> Attackerade ==> {self.name}\n")
+            delay_print(f"{opponent.name} attackerar {self.name}", "3 2 1...", "Boom!") # Ändrade så att det stod "attackerar" som de andra printsatserna
+            successful_block(self.name) # Flyttade ner denna så att den hamnar efter attacken, ser bättre ut
             print(f"{self.name} tog {opponent_pokemon.attack // 2} i skada!\n")
 
         elif block_chance >= 8:
             time.sleep(1)
-            unsuccessful_block(self.name)
             self.health -= opponent_pokemon.attack
-            delay_print(f"{opponent.name} attackerade med {opponent_pokemon.name}", "3 2 1...", "Boom!")
-            print(f"{opponent_pokemon.name} ==> Attackerade ==> {self.name}\n")
+            delay_print(f"{opponent.name} attackerar med {opponent_pokemon.name}", "3 2 1...", "Boom!")
+            unsuccessful_block(self.name)
             print(f"{self.name} tog {opponent_pokemon.attack} i skada!\n")
 
     def update_max_health_by_city_mood(self, city, user_name):
@@ -131,7 +129,7 @@ def main():
             f"Hälsan för {user_pokemon.name} ökade med 20. Total hälsa: {colored(user_pokemon.max_health, 'green')}\n")
         cpu_pokemon.update_max_health_by_city_mood("Stockholm", cpu.name)
 
-    print("*** Dags för battle! ***")
+    print("*** Dags för battle! ***\n")
 
     while (user_pokemon.health >= 0) and (cpu_pokemon.health >= 0):
         if user_pokemon.health <= 0 or cpu_pokemon.health <= 0:
@@ -142,12 +140,12 @@ def main():
                 break
 
         else:
-            print(f"{user.name}, det är din tur ! ")
+            print(f"*** Det är {colored('din', 'blue')} tur ***")
             user_choose = int(input("Vill du [1] attackera eller [2] blockera? "))
             if user_choose == 1:
                 user_pokemon.attack_fnc(cpu_pokemon)
                 if cpu_pokemon.health > 0:
-                    print(f'*** Det är {cpu.name} tur.. ***')
+                    print(f'*** Det är {cpu.name} tur ***')
                     cpu_pokemon.attack_fnc(user_pokemon)
                 elif user_pokemon.health <= 0:
                     print(f'*** {cpu.name} poketer {cpu_pokemon.name} svimmade. Du vann!! ***')
