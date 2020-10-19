@@ -43,14 +43,15 @@ class Poketer:
             self.health -= opponent_pokemon.attack // 2
             delay_print(f"{opponent.name} attackerade med {opponent_pokemon.name}", "3 2 1...", "Boom!")
             print(f"{opponent_pokemon.name} ==> Attackerade ==> {self.name}\n")
-            print(f"{self.name} tog {opponent_pokemon.attack // 2} i skada!")
+            print(f"{self.name} tog {opponent_pokemon.attack // 2} i skada!\n")
+
         elif block_chance >= 8:
             time.sleep(1)
             unsuccessful_block(self.name)
             self.health -= opponent_pokemon.attack
             delay_print(f"{opponent.name} attackerade med {opponent_pokemon.name}", "3 2 1...", "Boom!")
             print(f"{opponent_pokemon.name} ==> Attackerade ==> {self.name}\n")
-            print(f"{self.name} tog {opponent_pokemon.attack} i skada!")
+            print(f"{self.name} tog {opponent_pokemon.attack} i skada!\n")
 
     def update_max_health_by_city_mood(self, city, user_name):
         mood_score = calc_mood_score(self.mood, city)
