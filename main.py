@@ -6,6 +6,7 @@ import time
 from termcolor import colored, cprint
 import colorama
 colorama.init()
+from prints_module import delay_print, atk_txt
 #TODO:
 # 1- Rad printen på rad 24 bör ligga och fånga stadsinput som en else på rad 112 t.ex
 
