@@ -22,3 +22,21 @@ O=========|>>>>>>>>>>>>>>>>>>>>>>>>>>
           |
     ''')
     time.sleep(0.5)
+
+def successful_block(blocker):
+    print(f"{blocker} försöker blockera")
+    text = "Lyckad block!"
+    for i in text:
+        sys.stdout.write(i)
+        sys.stdout.flush()
+        time.sleep(0.3)
+    print("Hel sköld!")
+
+def unsuccessful_block(blocker):
+    print(f"{blocker} försöker blockera")
+    text = "Misslyckad block!"
+    for i in text:
+        sys.stdout.write(i)
+        sys.stdout.flush()
+        time.sleep(0.3)
+    print("Halv sköld!")
