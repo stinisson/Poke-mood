@@ -16,7 +16,9 @@ def atk_txt(attacker, reciver, text):
         sys.stdout.write(i)
         sys.stdout.flush()
         time.sleep(0.3)
-    print('''|
+    print('''
+          |
 O=========|>>>>>>>>>>>>>>>>>>>>>>>>>>
-          |''')
+          |
+    ''')
     time.sleep(0.5)
