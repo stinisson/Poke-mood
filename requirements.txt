@@ -1,2 +1,7 @@
 termcolor
 colorama
+nltk
+vaderSentiment
+matplotlib
+twitter_search
+textwrap
