@@ -145,9 +145,9 @@ def main():
     print_frame([x, y], 'blue', 15)
 
     cpu_city = random.choice(city_list)
-    mood_score = cpu_pokemon.update_max_health_by_city_mood(cpu_city)
+    cpu_mood_score = cpu_pokemon.update_max_health_by_city_mood(cpu_city)
     x = f"{cpu.name} valde {cpu_city.capitalize()}"
-    y = f"{cpu_pokemon.name} fick {mood_score} p i ökad hälsa! #FTW"
+    y = f"{cpu_pokemon.name} fick {cpu_mood_score} p i ökad hälsa! #FTW"
 
     print_frame([x, y], 'red', 15)
 

@@ -40,6 +40,7 @@ def calc_mood_score(mood, city, live=False):
                 #print(idx, keyword, '-->', tweet)
 
     #print("number of tweets with mood content:", tweets_with_mood_content)
+    #print(len(tweets))
 
     # TODO change how mood score is used in update_max_health_by_city_mood!
     x = tweets_with_mood_content / len(tweets)
