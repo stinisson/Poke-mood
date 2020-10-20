@@ -1,5 +1,8 @@
+import textwrap
 import sys
 import time
+from termcolor import colored
+
 
 def delay_print(intro_text, s, a):
     print(intro_text)
@@ -9,6 +12,7 @@ def delay_print(intro_text, s, a):
         time.sleep(0.3)
     print(a)
     time.sleep(0.5)
+
 
 def atk_txt(attacker, reciver, text):
     print(f"{attacker} attackerar {reciver} ")
@@ -22,6 +26,7 @@ O=========|>>>>>>>>>>>>>>>>>>>>>>>>>>
           |
     ''')
     time.sleep(0.5)
+
 
 def successful_block(blocker):
     print(f"{blocker} försöker blockera")
@@ -41,6 +46,7 @@ def successful_block(blocker):
          '.||.'
     ''')
 
+
 def unsuccessful_block(blocker):
     print(f"{blocker} försöker blockera")
     text = "Misslyckad block!"
@@ -58,3 +64,21 @@ def unsuccessful_block(blocker):
         \  |>    <|  /
           '.|>   <|.'
     ''')
+
+
+def print_frame(rows, table_color, indentation):
+    print(colored("""
+        ----------------------------------------------------------------------------------------------------
+        *                                                                                                  *"""
+        , table_color))
+
+    line_width = 85
+    for row in rows:
+        dedented_row = textwrap.dedent(row).strip()
+        chopped_lines = textwrap.fill(dedented_row, line_width)
+        print(textwrap.indent(chopped_lines, ' ' * indentation))
+
+    print(colored(
+        """        *                                                                                                  *
+        ----------------------------------------------------------------------------------------------------"""
+    , table_color))

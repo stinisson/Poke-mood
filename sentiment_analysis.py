@@ -10,9 +10,9 @@ import textwrap
 
 import nltk
 from nltk.corpus import stopwords
-nltk.download("stopwords")
-nltk.download('punkt')
-nltk.download('vader_lexicon')
+#nltk.download("stopwords")
+#nltk.download('punkt')
+#nltk.download('vader_lexicon')
 
 from nltk.sentiment.vader import SentimentIntensityAnalyzer as SentimentIntensityAnalyzerEnglish
 from vaderSentiment.vaderSentiment import SentimentIntensityAnalyzer as SentimentIntensityAnalyzerSwedish
