@@ -347,7 +347,7 @@ def main():
                 break
 
         else:
-            print(f"*** Det är {colored('din', 'blue')} tur ***")
+            print(f"*** Det är {colored('Din', 'blue')} tur ***")
             user_choose = int(input("Vill du [1] attackera eller [2] blockera? "))
             if user_choose == 1:
                 user_pokemon.attack_fnc(cpu_pokemon)
