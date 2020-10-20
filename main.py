@@ -353,16 +353,18 @@ def main():
                 user_pokemon.attack_fnc(cpu_pokemon)
                 if user_pokemon.healthcheck(cpu_pokemon, cpu.name) is False:
                     break
+
+            elif user_choose == 2:
+                user_pokemon.block(cpu, cpu_pokemon)
+                if user_pokemon.healthcheck(cpu_pokemon, cpu.name) is False:
+                    break
+
             if cpu_pokemon.health > 0:
                 print(f'*** Det är {cpu.name} tur ***')
                 cpu_pokemon.attack_fnc(user_pokemon)
                 if user_pokemon.healthcheck(cpu_pokemon, cpu.name) is False:
                     break
 
-            elif user_choose == 2:
-                user_pokemon.block(cpu, cpu_pokemon)
-                if user_pokemon.healthcheck(cpu_pokemon, cpu.name) is False:
-                    break
 
 
 if __name__ == '__main__':
