@@ -4,7 +4,6 @@ from mood_score import calc_mood_score
 from mood_analysis import mood_analysis, text_emotions
 from sentiment_analysis import sentiment_analysis
 
-from mood_score import calc_mood_score
 import sys
 from random import randint
 import random
@@ -121,6 +120,7 @@ def main():
     username = input("Vänligen ange ditt namn: ")
     user = User(colored(username, 'blue'))
     cpu = User(colored("Olof", 'red'))
+    cpu_extra_s = (colored("s", 'red'))
     user.add_team(user_pokemon)
     cpu.add_team(cpu_pokemon)
     print(f"Hej {user.name}. Din poketer är {user_pokemon.name}.")
@@ -248,8 +248,8 @@ def main():
         ----------------------------------------------------------------------------------------------------
         """)
 
-    x = f"{cpu.name} valde Kiruna och gissade 'kärleksfull', vilket var rätt!"
-    y = f"{cpu_pokemon.name} får {attack_bonus} p i ökad attack-styrka! #FTW"
+    x = f"{cpu.name} valde Kiruna och gissade arg, vilket var rätt!"
+    y = f"{cpu_pokemon.name} belönas med {attack_bonus} p i ökad attack-styrka! #FTW"
 
     print(f"""\n
         ****************************************************************************************************
@@ -267,8 +267,8 @@ def main():
     x = """    Twitter-vadslagning! Har du koll på vad som trendar på sociala medier? 
                 Skriv in ett ord och på vilket språk du vill använda i sökningen. Gissa om 
                 de senaste tweetsen som innehåller detta ord är mest positiva, mest negativa
-                eller neutrala. Om du gissar rätt belönas du med 20 p i ökad hälsa.
-                Om du gissar fel bestraffas du med 20 p minskad hälsa. Lycka till! """
+                eller neutrala. Om du gissar rätt belönas du med 10 p i ökad hälsa.
+                Om du gissar fel bestraffas du med 10 p minskad hälsa. Lycka till! """
 
     print(f"""\n
         ----------------------------------------------------------------------------------------------------
@@ -347,7 +347,7 @@ def main():
                 break
 
         else:
-            print(f"*** Det är {colored('din', 'blue')} tur ***")
+            print(f"*** Det är {colored('Din', 'blue')} tur ***")
             user_choose = int(input("Vill du [1] attackera eller [2] blockera? "))
             if user_choose == 1:
                 user_pokemon.attack_fnc(cpu_pokemon)
@@ -360,7 +360,7 @@ def main():
                     break
 
             if cpu_pokemon.health > 0:
-                print(f'*** Det är {cpu.name} tur ***')
+                print(f'*** Det är {cpu.name}{cpu_extra_s} tur ***')
                 cpu_pokemon.attack_fnc(user_pokemon)
                 if user_pokemon.healthcheck(cpu_pokemon, cpu.name) is False:
                     break
