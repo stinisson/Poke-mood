@@ -1,48 +1,57 @@
-import pickle
+""" The player has a pokemon with a particular mood. The player tries to guess in which city the inhabitants
+ have high levels of the same mood based on their Twitter content. The Pokemon gets awarded an amount of increased
+ health based on the mood level. """
+
 from pathlib import Path
+import os
+from twitter_search import get_tweets
 
 
-# TODO - For sprint 1
-def load_tweets(city):
-    """ Load pickled tweets from file and return tweets as a list """
-    city = city.lower()
-    city = city.replace("å", "a").replace("ä", "a").replace("ö", "o")
-    try:
-        with open(f"fallback-tweets/tweets_{city}_1000.p", "rb") as f:
-            tweets = pickle.load(f)
-            return tweets
-    except FileNotFoundError:
-        print("Sorry, couldn't find any such file.")
-        return []
+def calc_mood_score(mood, city, live=False):
+    """ Calculate mood score for a city chosen by the user. The mood score represent what mood
+    the inhabitants of a particular city are in and is calculated by counting how many of the
+    recent tweets that have any keyword associated with a particular mood in them.
+    The keyword files must be placed in a folder called 'keywords' and be named mood_keywords.csv.
+    The content of the keyword files must a single comma separated line without any spaces.
+    The mood score is returned as an integer. If something goes wrong and no tweets are retrieved or the
+    keyword files are unable to be located None is returned. """
 
-
-def calc_mood_score(mood, city):
-
-    # TODO handle keywords
     keywords = {}
-    import os
-    #print(os.getcwd()) #detta för att se var den plockar keyword? från rätt ställe på burken //CL
-    keywords['happy'] = set(Path('keywords/happy_keywords.csv').read_text(encoding='utf8').split(','))
-    keywords['angry'] = set(Path('keywords/angry_keywords.csv').read_text(encoding='utf8').split(','))
+    try:
+        for file in os.listdir('keywords'):
+            if '_keywords.csv' in file:
+                keywords[file.replace(file[-13:], "")] = set(Path(f'keywords/{file}').read_text(encoding='utf8').split(','))
+    except FileNotFoundError:
+        return None
 
-    tweets = load_tweets(city)
+    city_lower = city.lower()
+    file_name_city = city_lower.replace("å", "a").replace("ä", "a").replace("ö", "o")
 
-    number_of_tweets = len(tweets)
-    if number_of_tweets == 0:
-        return -1
+    tweets = get_tweets(city=city, live=live, file_path='fallback-tweets', file_name=f'tweets_{file_name_city}.p')
 
-    if mood not in keywords:
-        print("Mood not available.")
+    if not tweets:
+        return None
 
     tweets_with_mood_content = 0
-    for tweet in tweets:
+    for idx, tweet in enumerate(tweets):
         for keyword in keywords.get(mood):
             if keyword in tweet:
                 tweets_with_mood_content += 1
-                #print(tweet)
+                #print(idx, keyword, '-->', tweet)
 
-    #print(tweets_with_mood_content)
+    #print("number of tweets with mood content:", tweets_with_mood_content)
 
-    # TODO implement a better mood score algorithm
-    mood_score = (tweets_with_mood_content/number_of_tweets) + 1
-    return mood_score
+    # TODO change how mood score is used in update_max_health_by_city_mood!
+    x = tweets_with_mood_content / len(tweets)
+    if x < 0.15:
+        k = 150 / 0.15
+        mood_score = k * x
+    else:
+        k = (200 - 150) / (1 - 0.15)
+        m = 150
+        mood_score = k * (x - 0.15) + m
+    return int(mood_score)
+
+
+if __name__ == '__main__':
+    calc_mood_score(mood="happy", city="göteborg", live=False)
