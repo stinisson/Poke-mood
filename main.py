@@ -247,7 +247,7 @@ def main():
         ----------------------------------------------------------------------------------------------------
         """)
 
-    x = f"{cpu.name} valde Kiruna och gissade 'arg', vilket var rätt!"
+    x = f"{cpu.name} valde Kiruna och gissade arg, vilket var rätt!"
     y = f"{cpu_pokemon.name} belönas med {attack_bonus} p i ökad attack-styrka! #FTW"
 
     print(f"""\n
