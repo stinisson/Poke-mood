@@ -1,2 +1,5 @@
 termcolor
 colorama
+nltk
+vaderSentiment
+matplotlib
