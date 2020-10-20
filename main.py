@@ -38,7 +38,7 @@ class Poketer:
     def healthcheck(self,opponent_pokemon, opponent_name):
         if self.health <= 0 or opponent_pokemon.health <= 0:
             if opponent_pokemon.health <= 0:
-                print(f'*** {opponent_name} Poketer {opponent_pokemon} svimmade. Du vann! ***')
+                print(f'*** {opponent_name} Poketer {opponent_pokemon.name} svimmade. Du vann! ***')
             if self.health <= 0:
                 print(f'*** Din poketer {self.name} svimmade. {opponent_name} vann! ***')
             alive = False
@@ -64,18 +64,15 @@ class Poketer:
         mood_score = calc_mood_score(self.mood, city, live=False)
 
         if mood_score == None:
-            #print("Tyvärr något gick fel, men du får 20 extra i hälsa. ")
             self.max_health += 20
             self.health += 20
-            return 20
+            return None
         else:
             self.health += mood_score
             self.max_health += mood_score
-            #print(f"{user_name} valde {city} med mycket {self.mood}-content!")
-            #print(
-            #    f"Hälsan för {self.name} ökade med {mood_score}. Total hälsa: {colored(self.max_health, 'green')}\n")
 
         return mood_score
+
     def __repr__(self):
         return f'Poketer: {self.name} Mood: {self.mood}'
 
