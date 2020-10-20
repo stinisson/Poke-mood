@@ -2,3 +2,4 @@
 .idea
 keys.txt
 venv
+*.pyc
