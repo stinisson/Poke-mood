@@ -120,6 +120,7 @@ def main():
     username = input("Vänligen ange ditt namn: ")
     user = User(colored(username, 'blue'))
     cpu = User(colored("Olof", 'red'))
+    cpu_extra_s = (colored("s", 'red'))
     user.add_team(user_pokemon)
     cpu.add_team(cpu_pokemon)
     print(f"Hej {user.name}. Din poketer är {user_pokemon.name}.")
@@ -359,7 +360,7 @@ def main():
                     break
 
             if cpu_pokemon.health > 0:
-                print(f'*** Det är {cpu.name} tur ***')
+                print(f'*** Det är {cpu.name}{cpu_extra_s} tur ***')
                 cpu_pokemon.attack_fnc(user_pokemon)
                 if user_pokemon.healthcheck(cpu_pokemon, cpu.name) is False:
                     break
