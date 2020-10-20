@@ -266,8 +266,8 @@ def main():
     x = """    Twitter-vadslagning! Har du koll på vad som trendar på sociala medier? 
                 Skriv in ett ord och på vilket språk du vill använda i sökningen. Gissa om 
                 de senaste tweetsen som innehåller detta ord är mest positiva, mest negativa
-                eller neutrala. Om du gissar rätt belönas du med 20 p i ökad hälsa.
-                Om du gissar fel bestraffas du med 20 p minskad hälsa. Lycka till! """
+                eller neutrala. Om du gissar rätt belönas du med 10 p i ökad hälsa.
+                Om du gissar fel bestraffas du med 10 p minskad hälsa. Lycka till! """
 
     print(f"""\n
         ----------------------------------------------------------------------------------------------------
