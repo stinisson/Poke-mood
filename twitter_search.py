@@ -70,7 +70,7 @@ def get_tweets(city='', keyword='', language='swedish', live='', file_name='', f
         if not tweets:
             tweets = twitter_search(city=city, keyword=keyword, language=language)
             if tweets:
-                pickle.dump(tweets, open(f'{file_path}/{file_name}.p', 'wb'))
+                pickle.dump(tweets, open(f'{file_path}/{file_name}', 'wb'))
                 print("Saved pickle")
             else:
                 return None

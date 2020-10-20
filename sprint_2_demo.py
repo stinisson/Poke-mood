@@ -114,7 +114,7 @@ def main():
     cpu_extra_s = (colored("s", 'red'))
     user.add_team(user_pokemon)
     cpu.add_team(cpu_pokemon)
-    print(f"Hej {user.name}. Din poketer är {user_pokemon.name}.")
+    print(f"Hej {user.name}! Din poketer är {user_pokemon.name}.")
     print(f"Din motståndare är {cpu.name} och har valt poketer {cpu_pokemon.name}.\n")
     print(f"{user.name}, det är din tur! ")
 
@@ -131,7 +131,8 @@ def main():
         if city:
             print(idx + 1, city.capitalize())
     city_choice = int(input(f"Vilken stad väljer du? (1-{len(geocodes) - 1}): "))
-    city_list = list(geocodes)
+    temp_city_list = list(geocodes)
+    city_list = [x for x in temp_city_list if x != '']
     city = city_list[city_choice - 1]
 
     mood_score = user_pokemon.update_max_health_by_city_mood(city)
@@ -141,14 +142,14 @@ def main():
     if not mood_score:
         y = f"Något gick fel men {user_pokemon.name} får 20 p i ökad hälsa! #YOLO"
 
-    print_frame([x, y], 'blue', 30)
+    print_frame([x, y], 'blue', 15)
 
-    cpu_city_choice = random.choice(city_list)
-    mood_score = cpu_pokemon.update_max_health_by_city_mood(cpu_city_choice)
-    x = f"{cpu.name} valde {cpu_city_choice.capitalize()}"
+    cpu_city = random.choice(city_list)
+    mood_score = cpu_pokemon.update_max_health_by_city_mood(cpu_city)
+    x = f"{cpu.name} valde {cpu_city.capitalize()}"
     y = f"{cpu_pokemon.name} fick {mood_score} p i ökad hälsa! #FTW"
 
-    print_frame([x, y], 'red', 30)
+    print_frame([x, y], 'red', 15)
 
     input("\nTryck enter för att fortsätta")
 
@@ -162,7 +163,8 @@ def main():
         if city:
             print(idx + 1, city.capitalize())
     city_choice = int(input(f"Vilken stad väljer du? (1-{len(geocodes) - 1}): "))
-    city_list = list(geocodes)
+    temp_city_list = list(geocodes)
+    city_list = [x for x in temp_city_list if x != '']
     city = city_list[city_choice - 1]
 
     for idx, emotion in enumerate(text_emotions):
@@ -177,17 +179,30 @@ def main():
     if emotion in most_frequent_emotions:
         user_pokemon.attack += attack_bonus
         x = f"""Rätt! Vanligast är att man är {emotion} i {city.capitalize()}."""
-        y = f"""Din poketer belönas med {attack_bonus} p i ökad attack-styrka!"""
+        y = f"""{user_pokemon.name} får {attack_bonus} p i ökad attack-styrka!"""
     else:
         x = f"Tyvärr! I {city.capitalize()} är man {most_frequent_emotions[0]}, inte {emotion}!"
-        y = f"Du får ingen attack-bonus."
+        y = f"{user_pokemon.name} får ingen attack-bonus."
 
-    print_frame([x, y], 'blue', 30)
+    print_frame([x, y], 'blue', 15)
 
-    x = f"{cpu.name} valde Kiruna och gissade arg, vilket var rätt!"
-    y = f"{cpu_pokemon.name} belönas med {attack_bonus} p i ökad attack-styrka! #FTW"
+    cpu_city = random.choice(city_list)
+    cpu_emotion = random.choice(emotion_list)
 
-    print_frame([x, y], 'red', 30)
+    x = f"""{cpu.name} valde {cpu_city.capitalize()} och gissade på {cpu_emotion}."""
+    print_frame([x], 'red', 15)
+
+    most_frequent_emotions = mood_analysis(city=cpu_city, live=False)
+    if cpu_emotion in most_frequent_emotions:
+        cpu_pokemon.attack += attack_bonus
+        x = f"""Det var rätt! Vanligast är att man är {cpu_emotion} i {cpu_city.capitalize()}."""
+        y = f"""{cpu_pokemon.name} får {attack_bonus} p i ökad attack-styrka!"""
+
+    else:
+        x = f"Det var fel! I {cpu_city.capitalize()} är man {most_frequent_emotions[0]}, inte {cpu_emotion}!"
+        y = f"{cpu_pokemon.name} får ingen attack-bonus."
+
+    print_frame([x, y], 'red', 15)
 
     input("\nTryck enter för att fortsätta")
 
@@ -220,7 +235,6 @@ def main():
 
     print("Det här kan ta en liten stund... Vänligen vänta. :)")
 
-    # Ni får testköra genom att söka efter covid på engelska
     result = sentiment_analysis(keyword=keyword_choice, language=language_choice,
                                 file_name='demo_tweets_english_covid.p', live=False)
 
@@ -229,15 +243,15 @@ def main():
         user_pokemon.health += health_bonus
         user_pokemon.max_health += health_bonus
         x = f"Rätt! {keyword_choice} har mest {result} innehåll på Twitter."
-        y = f"Din pokemon belönas med {health_bonus} poäng i ökad hälsa!"
+        y = f"{user_pokemon.name} belönas med {health_bonus} p i ökad hälsa!"
 
     else:
         user_pokemon.health -= health_bonus
         user_pokemon.max_health -= health_bonus
         x = f"""Tyvärr, {keyword_choice} har mest {result} innehåll på Twitter!"""
-        y = f"""Din pokemon bestraffas med {health_bonus} p i minskad hälsa."""
+        y = f"""{user_pokemon.name} bestraffas med {health_bonus} p i minskad hälsa."""
 
-    print_frame([x, y], 'blue', 30)
+    print_frame([x, y], 'blue', 15)
 
     input("\nTryck enter för att fortsätta")
 
