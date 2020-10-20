@@ -4,7 +4,6 @@ from mood_score import calc_mood_score
 from mood_analysis import mood_analysis, text_emotions
 from sentiment_analysis import sentiment_analysis
 
-from mood_score import calc_mood_score
 import sys
 from random import randint
 import random
