@@ -135,6 +135,8 @@ def main():
     city_list = [x for x in temp_city_list if x != '']
     city = city_list[city_choice - 1]
 
+    print("Det här kan ta en liten stund. Häng kvar! :)")
+
     mood_score = user_pokemon.update_max_health_by_city_mood(city)
 
     x = f"... Beräknar humör för invånarna i {city.capitalize()} ..."
@@ -172,6 +174,8 @@ def main():
     emotion_choice = int(input(f"Vilken känsla är mest förekommande i {city.capitalize()}? (1-{len(text_emotions)}): "))
     emotion_list = list(text_emotions)
     emotion = emotion_list[emotion_choice - 1]
+
+    print("Det här kan ta en liten stund. Häng kvar! :)")
 
     most_frequent_emotions = mood_analysis(city=city, live=False)
 
@@ -233,7 +237,7 @@ def main():
     elif attitude_choice.lower() == "u":
         attitude_choice = "neutralt"
 
-    print("Det här kan ta en liten stund... Vänligen vänta. :)")
+    print("Det här kan ta en liten stund. Häng kvar! :)")
 
     result = sentiment_analysis(keyword=keyword_choice, language=language_choice,
                                 file_name='demo_tweets_english_covid.p', live=False)
