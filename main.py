@@ -25,15 +25,25 @@ class Poketer:
     def attack_fnc(self, opponent_pokemon):
         opponent_pokemon.health -= self.attack
         atk_txt(self.name, opponent_pokemon.name, "3 2 1...")
-        self.healtcheck(opponent_pokemon)
+        self.healtcheck_color(opponent_pokemon)
 
-    def healtcheck(self, opponent_pokemon):
+    def healtcheck_color(self, opponent_pokemon):
+
         if opponent_pokemon.health >= opponent_pokemon.max_health / 2:
             print(f"{opponent_pokemon.name} hälsa: {colored(opponent_pokemon.health, 'green')}\n")
         elif opponent_pokemon.max_health / 4 <= opponent_pokemon.health <= opponent_pokemon.max_health / 2:
             print(f"{opponent_pokemon.name} hälsa: {colored(opponent_pokemon.health, 'yellow')}\n")
         elif opponent_pokemon.health <= opponent_pokemon.max_health / 4:
             print(f"{opponent_pokemon.name} hälsa: {colored(opponent_pokemon.health, 'red')}\n")
+
+    def healthcheck(self,opponent_pokemon, opponent_name):
+        if self.health <= 0 or opponent_pokemon.health <= 0:
+            if opponent_pokemon.health <= 0:
+                print(f'*** {opponent_name} Poketer {opponent_pokemon} svimmade. Du vann! ***')
+            if self.health <= 0:
+                print(f'*** Din poketer {self.name} svimmade. {opponent_name} vann! ***')
+            alive = False
+            return alive
 
     def block(self, opponent, opponent_pokemon):
         block_chance = randint(1, 11)
@@ -144,14 +154,18 @@ def main():
             user_choose = int(input("Vill du [1] attackera eller [2] blockera? "))
             if user_choose == 1:
                 user_pokemon.attack_fnc(cpu_pokemon)
-                if cpu_pokemon.health > 0:
-                    print(f'*** Det är {cpu.name} tur ***')
-                    cpu_pokemon.attack_fnc(user_pokemon)
-                elif user_pokemon.health <= 0:
-                    print(f'*** {cpu.name} poketer {cpu_pokemon.name} svimmade. Du vann!! ***')
+                if user_pokemon.healthcheck(cpu_pokemon, cpu.name) is False:
                     break
+            if cpu_pokemon.health > 0:
+                print(f'*** Det är {cpu.name} tur ***')
+                cpu_pokemon.attack_fnc(user_pokemon)
+                if user_pokemon.healthcheck(cpu_pokemon, cpu.name) is False:
+                    break
+
             elif user_choose == 2:
                 user_pokemon.block(cpu, cpu_pokemon)
+                if user_pokemon.healthcheck(cpu_pokemon, cpu.name) is False:
+                    break
 
 
 if __name__ == '__main__':
