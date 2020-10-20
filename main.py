@@ -3,8 +3,6 @@ from twitter_search import geocodes
 from mood_score import calc_mood_score
 from mood_analysis import mood_analysis, text_emotions
 from sentiment_analysis import sentiment_analysis
-
-import sys
 from random import randint
 import random
 import time
@@ -13,10 +11,6 @@ import colorama
 
 colorama.init()
 from prints_module import delay_print, atk_txt, successful_block, unsuccessful_block
-
-
-# TODO:
-# 1- Rad printen på rad 24 bör ligga och fånga stadsinput som en else på rad 112 t.ex
 
 
 class Poketer:
@@ -127,17 +121,11 @@ def main():
     print(f"Din motståndare är {cpu.name} och har valt poketer {cpu_pokemon.name}.\n")
     print(f"{user.name}, det är din tur! ")
 
-    # print(f"Välj en stad du tror att det är mycket {user_pokemon.mood} content i.")
-    # city = input("Välj mellan Göteborg eller Stockholm: ")
-    # delay_print("Beräknar mood'content", ".....", "")
-    #
 
-    """ A """
-
-    x = """Din Pokemon har ett visst humör. Du har nu möjligheten att öka din pokemons hälsa genom
-            att söka efter en stad i Sverige där du tror att invånarna är på samma humör som din pokemon.
+    x = """Din Poketer har ett visst humör. Du har nu möjligheten att öka din Poketers hälsa genom
+            att söka efter en stad i Sverige där du tror att invånarna är på samma humör som din Poketer.
             Invånarnas humör baseras på vad de twittrar. Ju mer känslosamma de är desto mer ökar 
-            din Pokemons hälsa. Lycka till!"""
+            din Poketers hälsa. Lycka till!"""
     print(f"""\n
         ----------------------------------------------------------------------------------------------------
         *                                                                                                  *
@@ -173,7 +161,7 @@ def main():
     cpu_city_choice = random.choice(city_list)
     mood_score = cpu_pokemon.update_max_health_by_city_mood(cpu_city_choice, cpu.name)
     x = f"{cpu.name} valde {cpu_city_choice.capitalize()}"
-    y = f"{cpu_pokemon.name} fick {mood_score} i ökad hälsa! #FTW"
+    y = f"{cpu_pokemon.name} fick {mood_score} p i ökad hälsa! #FTW"
 
     print(f"""\n
         ****************************************************************************************************
@@ -186,26 +174,7 @@ def main():
 
     input("Tryck enter för att fortsätta")
 
-
-    # if city == "Göteborg":
-    #     user_pokemon.update_max_health_by_city_mood("Göteborg", user.name)
-    #     cpu_pokemon.update_max_health_by_city_mood("Stockholm", cpu.name)
-    #
-    # elif city == "Stockholm":
-    #     user_pokemon.update_max_health_by_city_mood("Stockholm", user.name)
-    #     cpu_pokemon.update_max_health_by_city_mood("Göteborg", cpu.name)
-    #
-    # else:
-    #     print("Tyvärr denna staden är ej tillgänglig, men du får 20 extra i hälsa. ")
-    #     user_pokemon.max_health += 20
-    #     user_pokemon.health += 20
-    #     print(
-    #         f"Hälsan för {user_pokemon.name} ökade med 20. Total hälsa: {colored(user_pokemon.max_health, 'green')}\n")
-    #     cpu_pokemon.update_max_health_by_city_mood("Stockholm", cpu.name)
-
-    """ B """
-
-    x = """ Attack-bonus! Du har nu chansen att öka din pokemons attack-styrka. 
+    x = """ Attack-bonus! Du har nu chansen att öka din Poketers attack-styrka. 
              Välj en stad och gissa vilket humör som är mest förekommande 
              bland invånarna. Lycka till! """
     print(f"""\n
@@ -235,7 +204,7 @@ def main():
     if emotion in most_frequent_emotions:
         user_pokemon.attack += attack_bonus
         x = f"""Rätt! Vanligast är att man är {emotion} i {city.capitalize()}.
-                         Din pokemon belönas med {attack_bonus} p i ökad attack-styrka!"""
+                         Din poketer belönas med {attack_bonus} p i ökad attack-styrka!"""
     else:
         x = f"""Tyvärr! I {city.capitalize()} är man {most_frequent_emotions[0]}, inte {emotion}!
                          Du får ingen attack-bonus."""
@@ -262,7 +231,6 @@ def main():
 
     input("Tryck enter för att fortsätta")
 
-    """ C """
 
     x = """    Twitter-vadslagning! Har du koll på vad som trendar på sociala medier? 
                 Skriv in ett ord och på vilket språk du vill använda i sökningen. Gissa om 
@@ -335,8 +303,6 @@ def main():
         """)
 
     input("Tryck enter för att fortsätta")
-
-    #print("*** Dags för battle! ***\n")
 
     while (user_pokemon.health >= 0) and (cpu_pokemon.health >= 0):
         if user_pokemon.health <= 0 or cpu_pokemon.health <= 0:
