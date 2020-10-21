@@ -46,7 +46,7 @@ def mood_analysis(city, live=False):
     city_lower = city.lower()
     file_name_city = city_lower.replace("å", "a").replace("ä", "a").replace("ö", "o")
 
-    tweets = get_tweets(city=city, live=live, file_path='fallback-tweets', file_name=f'tweets_{file_name_city}.p')
+    tweets = get_tweets(city=city, load_from_file=True, live=live, file_name=f'tweets_{file_name_city}.p', file_path='fallback-tweets')
 
     if not tweets:
         return None

@@ -36,7 +36,7 @@ def twitter_search(city='', keyword='', language='swedish'):
             tweets.append(tweet.full_text)
             #print(idx, tweet.full_text)
     except:
-        return []
+        return None
     return tweets
 
 
@@ -52,7 +52,7 @@ def load_tweets_from_file(file_name='', file_path=''):
         return []
 
 
-def get_tweets(city='', keyword='', language='swedish', live='', file_name='', file_path=''):
+def get_tweets(city='', keyword='', language='swedish', load_from_file=True, live=False, file_name='', file_path=''):
     """ If it is a live run - try to retrieve tweets live. If it is not possible,
     load fallback tweets. If it is a test run - load tweets from file and avoid Twitter rate limit exceeded. """
 
@@ -60,10 +60,14 @@ def get_tweets(city='', keyword='', language='swedish', live='', file_name='', f
         tweets = twitter_search(city=city, keyword=keyword, language=language)
         warnings.filterwarnings("ignore")
         if not tweets:
+            # For sentiment analysis - if not possible to retrieve live - do not try to load from file during live run
+            if not load_from_file:
+                return tweets  # Can be None or []. None - if not possible to get tweets live, [] - if no tweets found
             try:
                 tweets = load_tweets_from_file(file_name=file_name, file_path=file_path)
             except:
                 return None
+
     else:
         tweets = load_tweets_from_file(file_name=file_name, file_path=file_path)
         # For test run and debugging

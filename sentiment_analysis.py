@@ -33,14 +33,22 @@ def sentiment_analysis(keyword, language, file_name='', live=False):
         If the sentiment is equally positive and negative return 'neutral'.
         If something went wrong and it wasn't possible to retrieve tweets return None. """
 
-    tweets = get_tweets(keyword=keyword, language=language, live=live, file_name=file_name, file_path='demo-tweets')
+    tweets = get_tweets(keyword=keyword, language=language, load_from_file=False, live=live, file_name=file_name, file_path='demo-tweets')
 
-    if not tweets:
-        return None
+    # TODO FEEDBACK SPRINT 2 - HANDLE TWEET SEARCH THAT RESULT IN NO TWEETS
+    if tweets is None:
+        return 'connection_error'
+    if len(tweets) < 2:
+        return 'too_few_results'
 
     tweet_blob = "\n\n".join(tweets)
 
     most_positive_tweet, most_negative_tweet = get_tweets_with_highest_sentiment_score(tweets, language)
+    if len(most_positive_tweet) < 1 or len(most_negative_tweet) < 1:
+        # Ugly fix - handle if all tweets have a compound score of 0. So not really too few results,
+        # but due to time limitations - this will have to do. Future improvement - if all tweets have a compound
+        # score of 0 - display the bar graph with one selected tweet and print - "all tweets are neutral".
+        return 'too_few_results'
 
     sentiment_score = 0
     if language == "english":
@@ -110,12 +118,8 @@ def get_tweets_with_highest_sentiment_score(tweets, language):
 
     for idx, tweet in enumerate(tweets):
         sentiment_score = sia.polarity_scores(tweet)
-        # print("\n", idx, tweet, str(sentiment_score))
+        #print("\n", idx, tweet, str(sentiment_score))
 
-        if sentiment_score['compound'] == 0 and not most_pos['tweet']:
-            most_pos['tweet'] = ""
-        if sentiment_score['compound'] == 0 and not most_neg['tweet']:
-            most_neg['tweet'] = ""
         if sentiment_score['compound'] > most_pos['compound_score']:
             most_pos['compound_score'] = sentiment_score['compound']
             most_pos['tweet'] = tweet
@@ -124,6 +128,7 @@ def get_tweets_with_highest_sentiment_score(tweets, language):
             most_neg['tweet'] = tweet
 
     return most_pos['tweet'], most_neg['tweet']
+
 
 if __name__ == '__main__':
     sentiment_analysis(keyword="covid", language="english", file_name='demo_tweets_english_covid.p', live=False)
