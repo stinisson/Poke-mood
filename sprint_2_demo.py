@@ -60,8 +60,8 @@ class Poketer:
             unsuccessful_block(self.name)
             print(f"{self.name} tog {opponent_pokemon.attack} i skada!\n")
 
-    def update_max_health_by_city_mood(self, city):
-        mood_score = calc_mood_score(self.mood, city, live=False)
+    def update_max_health_by_city_mood(self, city, live):
+        mood_score = calc_mood_score(self.mood, city, live=live)
 
         if mood_score is None:
             self.max_health += 20
@@ -89,7 +89,7 @@ class User:
         return f'Namn: {self.name}, Team: {self.team}'
 
 
-def main():
+def main(live):
     user_pokemon = Poketer(colored("Happy Hasse", 'blue'), "happy", 10, 10, 5)
     cpu_pokemon = Poketer(colored("Aggressive Ada", 'red'), "angry", 10, 10, 5)
 
@@ -137,7 +137,7 @@ def main():
 
     print("Det här kan ta en liten stund. Häng kvar! :)")
 
-    mood_score = user_pokemon.update_max_health_by_city_mood(city)
+    mood_score = user_pokemon.update_max_health_by_city_mood(city, live)
 
     x = f"... Beräknar humör för invånarna i {city.capitalize()} ..."
     y = f"{user_pokemon.name} fick {mood_score} p i ökad hälsa! #YOLO"
@@ -147,7 +147,7 @@ def main():
     print_frame([x, y], 'blue', 15)
 
     cpu_city = random.choice(city_list)
-    cpu_mood_score = cpu_pokemon.update_max_health_by_city_mood(cpu_city)
+    cpu_mood_score = cpu_pokemon.update_max_health_by_city_mood(cpu_city, live)
     x = f"{cpu.name} valde {cpu_city.capitalize()}"
     y = f"{cpu_pokemon.name} fick {cpu_mood_score} p i ökad hälsa! #FTW"
 
@@ -177,7 +177,7 @@ def main():
 
     print("Det här kan ta en liten stund. Häng kvar! :)")
 
-    most_frequent_emotions = mood_analysis(city=city, live=False)
+    most_frequent_emotions = mood_analysis(city=city, live=live)
 
     attack_bonus = 10
     if emotion in most_frequent_emotions:
@@ -196,7 +196,7 @@ def main():
     x = f"""{cpu.name} valde {cpu_city.capitalize()} och gissade på {cpu_emotion}."""
     print_frame([x], 'red', 15)
 
-    most_frequent_emotions = mood_analysis(city=cpu_city, live=False)
+    most_frequent_emotions = mood_analysis(city=cpu_city, live=live)
     if cpu_emotion in most_frequent_emotions:
         cpu_pokemon.attack += attack_bonus
         x = f"""Det var rätt! Vanligast är att man är {cpu_emotion} i {cpu_city.capitalize()}."""
@@ -240,7 +240,7 @@ def main():
     print("Det här kan ta en liten stund. Häng kvar! :)")
 
     result = sentiment_analysis(keyword=keyword_choice, language=language_choice,
-                                file_name='demo_tweets_english_covid.p', live=False)
+                                file_name='demo_tweets_english_covid.p', live=live)
 
     health_bonus = 10
     if attitude_choice == result:
@@ -293,4 +293,4 @@ def main():
 
 
 if __name__ == '__main__':
-    main()
+    main(live=False)
