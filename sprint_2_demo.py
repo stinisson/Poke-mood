@@ -272,11 +272,16 @@ def main(live):
         if not is_alphanumeric_or_space or is_only_spaces or len(keyword_choice) < 1:
             continue
 
-        language_choice = input("Vilket språk vill du söka efter? [S]venska eller [E]ngelska? ")
-        if language_choice.lower() == "s":
-            language_choice = "swedish"
-        elif language_choice.lower() == "e":
-            language_choice = "english"
+        while True:
+            language_choice = input("Vilket språk vill du söka efter? [S]venska eller [E]ngelska? ")
+            if language_choice.lower() == "s":
+                language_choice = "swedish"
+                break
+            elif language_choice.lower() == "e":
+                language_choice = "english"
+                break
+
+
 
         print(
             f"Tror du folket på Twitter är mest positivt, mest negativt eller neutralt inställda till {keyword_choice}? ")
@@ -358,4 +363,4 @@ Ett tips är att söka efter något som är mer aktuellt i samhällsdebatten."""
 
 
 if __name__ == '__main__':
-    main(live=True)
+    main(live=False)
