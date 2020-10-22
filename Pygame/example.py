@@ -70,6 +70,8 @@ def background():
 def demoscreen():
     Aggressive_Ada(display_width * 0.65, display_height * 0.5)
     Happy_Hasse(display_width * 0.01, display_width * 0.05)
+    chat_bubble_left()
+    chat_bubble_right()
     text_speech("RobotoSlab-Black.ttf", 30, "Battle time!", BLACK, display_width / 2.02, display_height / 2.15, True)
     text_speech("RobotoSlab-Medium.ttf", 15, "Aggressive Ada", RED, 640, 300, True)
     text_speech("RobotoSlab-Medium.ttf", 15, "Happy Hasse", BLUE, 122, 45, True)
