@@ -1,7 +1,7 @@
 termcolor
 colorama
-nltk
+tweepy
+nltk==3.5
 vaderSentiment
 matplotlib
-twitter_search
-textwrap
+pygame
