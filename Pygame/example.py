@@ -13,7 +13,7 @@ pg.display.set_caption('Demo - PokeMood')
 clock = pg.time.Clock()
 crashed = False
 
-font_path = Path("Fonts/RobotoSlab-Medium.ttf")
+font_path = Path("RobotoSlab-Medium.ttf")
 
 surface_bg = pg.Surface((800, 600))
 
@@ -70,13 +70,13 @@ def background():
 def demoscreen():
     Aggressive_Ada(display_width * 0.65, display_height * 0.5)
     Happy_Hasse(display_width * 0.01, display_width * 0.05)
-    text_speech("fonts/RobotoSlab-Black.ttf", 30, "Battle time!", BLACK, display_width / 2.02, display_height / 2.15, True)
-    text_speech("fonts/RobotoSlab-Medium.ttf", 15, "Aggressive Ada", RED, 640, 300, True)
-    text_speech("fonts/RobotoSlab-Medium.ttf", 15, "Happy Hasse", BLUE, 122, 45, True)
-    text_speech("fonts/RobotoSlab-Medium.ttf", 15, "Moodscore: 123", BLACK, 370, 435, True)
-    text_speech("fonts/RobotoSlab-Medium.ttf", 15, "Moodscore: 113", BLACK, 390, 135, True)
-    text_speech("fonts/RobotoSlab-Medium.ttf", 15, "Stats: HP: 123, Attack: 20, Mood: Angry", WHITE, 630, 575, True)
-    text_speech("fonts/RobotoSlab-Medium.ttf", 15, "Stats: HP: 113, Attack: 20, Mood: Happy", WHITE, 170, 20, True)
+    text_speech("RobotoSlab-Black.ttf", 30, "Battle time!", BLACK, display_width / 2.02, display_height / 2.15, True)
+    text_speech("RobotoSlab-Medium.ttf", 15, "Aggressive Ada", RED, 640, 300, True)
+    text_speech("RobotoSlab-Medium.ttf", 15, "Happy Hasse", BLUE, 122, 45, True)
+    text_speech("RobotoSlab-Medium.ttf", 15, "Moodscore: 123", BLACK, 370, 435, True)
+    text_speech("RobotoSlab-Medium.ttf", 15, "Moodscore: 113", BLACK, 390, 135, True)
+    text_speech("RobotoSlab-Medium.ttf", 15, "Stats: HP: 123, Attack: 20, Mood: Angry", WHITE, 630, 575, True)
+    text_speech("RobotoSlab-Medium.ttf", 15, "Stats: HP: 113, Attack: 20, Mood: Happy", WHITE, 170, 20, True)
     addRect()
 
 
