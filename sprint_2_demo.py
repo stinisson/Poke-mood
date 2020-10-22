@@ -91,8 +91,8 @@ class User:
 
 
 def main(live):
-    user_pokemon = Poketer(colored("Happy Hasse", 'blue'), "happy", 10, 10, 5)
-    cpu_pokemon = Poketer(colored("Aggressive Ada", 'red'), "angry", 10, 10, 5)
+    user_pokemon = Poketer(colored("Happy Hasse", 'blue'), "happy", 10, 10, 20)
+    cpu_pokemon = Poketer(colored("Aggressive Ada", 'red'), "angry", 10, 10, 20)
 
     cprint(f'    Varmt välkomna till PokéMood!', 'cyan')
     cprint(f'    Ett textbaserat spel med humörstyrda Poketerer!', 'cyan')
@@ -340,4 +340,4 @@ Ett tips är att söka efter något som är mer aktuellt i samhällsdebatten."""
 
 
 if __name__ == '__main__':
-    main(live=False)
+    main(live=True)
