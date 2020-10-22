@@ -21,10 +21,28 @@ class Poketer:
         self.max_health = max_health
         self.attack = attack
 
-    def attack_fnc(self, opponent_pokemon):
-        opponent_pokemon.health -= self.attack
-        atk_txt(self.name, opponent_pokemon.name, "3 2 1...")
-        self.healtcheck_color(opponent_pokemon)
+    def attack_fnc(self, opponent_pokemon, opponent):
+        miss_chance = randint(1, 6)
+        crit_chance = randint(1, 6)
+        dmg_modifier = randint(-3, 3)
+        if miss_chance <= 5:
+            if crit_chance >= 5:
+                opponent_pokemon.health -= (self.attack + dmg_modifier) * 2
+                atk_txt(self.name, opponent_pokemon.name, "3 2 1...")
+                print("Dubbel skada!")
+                self.healtcheck_color(opponent_pokemon)
+                #self.healthcheck(opponent_pokemon, opponent.name)
+            else:
+                opponent_pokemon.health -= (self.attack + dmg_modifier)
+                atk_txt(self.name, opponent_pokemon.name, "3 2 1...")
+                self.healtcheck_color(opponent_pokemon)
+                #self.healthcheck(opponent_pokemon, opponent.name)
+        else:
+            print("Attacken missade...")
+
+        #opponent_pokemon.health -= self.attack
+        #atk_txt(self.name, opponent_pokemon.name, "3 2 1...")
+        #self.healtcheck_color(opponent_pokemon)
 
     def healtcheck_color(self, opponent_pokemon):
 
@@ -91,8 +109,8 @@ class User:
 
 
 def main(live):
-    user_pokemon = Poketer(colored("Happy Hasse", 'blue'), "happy", 10, 10, 20)
-    cpu_pokemon = Poketer(colored("Aggressive Ada", 'red'), "angry", 10, 10, 20)
+    user_pokemon = Poketer(colored("Happy Hasse", 'blue'), "happy", 30, 30, 5)
+    cpu_pokemon = Poketer(colored("Aggressive Ada", 'red'), "angry", 10, 10, 5)
 
     cprint(f'    Varmt välkomna till PokéMood!', 'cyan')
     cprint(f'    Ett textbaserat spel med humörstyrda Poketerer!', 'cyan')
@@ -122,189 +140,189 @@ def main(live):
     print(f"Din motståndare är {cpu.name} och har valt poketer {cpu_pokemon.name}.\n")
     print(f"{user.name}, det är din tur! ")
 
-    x = """
-    Din Poketer har ett visst humör. Du har nu möjligheten att öka din Poketers hälsa
-    genom att söka efter en stad i Sverige där du tror att invånarna är på samma humör som din Poketer.
-    Invånarnas humör baseras på vad de twittrar. Ju mer känslosamma de är desto mer ökar
-    din Poketers hälsa. Lycka till!"""
-
-    print_frame([x], 'white', 15)
-
-    for idx, city in enumerate(geocodes):
-        if city:
-            print(idx + 1, city.capitalize())
-    while True:
-        try:
-            city_choice = int(input(f"Vilken stad väljer du? (1-{len(geocodes) - 1}): "))
-            if city_choice in range(1, len(geocodes)):
-                break
-        except ValueError:
-            pass
-        print(f"Ogiltligt val! Ange en siffra 1-{len(geocodes) - 1}.")
-
-    temp_city_list = list(geocodes)
-    city_list = [x for x in temp_city_list if x != '']
-    city = city_list[city_choice - 1]
-
-    print("Det här kan ta en liten stund. Häng kvar! :)")
-
-    mood_score = user_pokemon.update_max_health_by_city_mood(city, live)
-
-    x = f"... Beräknar humör för invånarna i {city.capitalize()} ..."
-    y = f"{user_pokemon.name} fick {mood_score} p i ökad hälsa! #YOLO"
-    if not mood_score:
-        y = f"Något gick fel men {user_pokemon.name} får 20 p i ökad hälsa! #YOLO"
-
-    print_frame([x, y], 'blue', 15)
-
-    cpu_city = random.choice(city_list)
-    cpu_mood_score = cpu_pokemon.update_max_health_by_city_mood(cpu_city, live)
-    x = f"{cpu.name} valde {cpu_city.capitalize()}"
-    y = f"{cpu_pokemon.name} fick {cpu_mood_score} p i ökad hälsa! #FTW"
-
-    print_frame([x, y], 'red', 15)
-
-    input("\nTryck enter för att fortsätta")
-
-    x = """
-    Attack-bonus! Du har nu chansen att öka din Poketers attack-styrka. Välj en stad och gissa
-    vilket humör som är mest förekommande bland invånarna. Lycka till!"""
-
-    print_frame([x], 'white', 15)
-
-    for idx, city in enumerate(geocodes):
-        if city:
-            print(idx + 1, city.capitalize())
-    while True:
-        try:
-            city_choice = int(input(f"Vilken stad väljer du? (1-{len(geocodes) - 1}): "))
-            if city_choice in range(1, len(geocodes)):
-                break
-        except ValueError:
-            pass
-        print(f"Ogiltligt val! Ange en siffra 1-{len(geocodes) - 1}.")
-
-    temp_city_list = list(geocodes)
-    city_list = [x for x in temp_city_list if x != '']
-    city = city_list[city_choice - 1]
-
-    for idx, emotion in enumerate(text_emotions):
-        print(idx + 1, emotion.capitalize())
-    while True:
-        try:
-            emotion_choice = int(input(f"Vilken känsla är mest förekommande i {city.capitalize()}? (1-{len(text_emotions)}): "))
-            if emotion_choice in range(1, len(text_emotions)+1):
-                break
-        except ValueError:
-            pass
-        print(f"Ogiltligt val! Ange en siffra 1-{len(text_emotions)}.")
-
-    emotion_list = list(text_emotions)
-    emotion = emotion_list[emotion_choice - 1]
-
-    print("Det här kan ta en liten stund. Häng kvar! :)")
-
-    most_frequent_emotions = mood_analysis(city=city, live=live)
-
-    attack_bonus = 10
-    if emotion in most_frequent_emotions:
-        user_pokemon.attack += attack_bonus
-        x = f"""Rätt! I {city.capitalize()} är man {emotion}."""
-        y = f"""{user_pokemon.name} får {attack_bonus} p i ökad attack-styrka!"""
-    else:
-        x = f"Tyvärr! I {city.capitalize()} är man {most_frequent_emotions[0]}, inte {emotion}!"
-        y = f"{user_pokemon.name} får ingen attack-bonus."
-
-    print_frame([x, y], 'blue', 15)
-
-    cpu_city = random.choice(city_list)
-    cpu_emotion = random.choice(emotion_list)
-
-    x = f"""{cpu.name} valde {cpu_city.capitalize()} och gissade på {cpu_emotion}."""
-    print_frame([x], 'red', 15)
-
-    most_frequent_emotions = mood_analysis(city=cpu_city, live=live)
-    if cpu_emotion in most_frequent_emotions:
-        cpu_pokemon.attack += attack_bonus
-        x = f"""Det var rätt! I {cpu_city.capitalize()} är man {cpu_emotion}."""
-        y = f"""{cpu_pokemon.name} får {attack_bonus} p i ökad attack-styrka!"""
-
-    else:
-        x = f"Det var fel! I {cpu_city.capitalize()} är man {most_frequent_emotions[0]}, inte {cpu_emotion}!"
-        y = f"{cpu_pokemon.name} får ingen attack-bonus."
-
-    print_frame([x, y], 'red', 15)
-
-    input("\nTryck enter för att fortsätta")
-
-    x = """
-    Twitter-vadslagning! Har du koll på vad som trendar på sociala medier?
-    Skriv in ett ord och på vilket språk du vill använda i sökningen. Gissa om
-    de senaste tweetsen som innehåller detta ord är mest positiva, mest negativa
-    eller neutrala. Om du gissar rätt belönas du med 10 p i ökad hälsa.
-    Om du gissar fel bestraffas du med 10 p minskad hälsa. Lycka till!"""
-
-    print_frame([x], 'white', 15)
-
-    while True:
-        print("Skriv in ett nyckelord att söka efter på Twitter. Endast bokstäver accepteras. Exempel: Donald Trump, Estonia.")
-        keyword_choice = input(">> ")
-        is_alphanumeric_or_space = (len([char for char in keyword_choice if not (char.isalpha() or char == " ")]) == 0)
-        is_only_spaces = (len([char for char in keyword_choice if not char == " "]) == 0)
-        if not is_alphanumeric_or_space or is_only_spaces or len(keyword_choice) < 1:
-            continue
-
-        language_choice = input("Vilket språk vill du söka efter? [S]venska eller [E]ngelska? ")
-        if language_choice.lower() == "s":
-            language_choice = "swedish"
-        elif language_choice.lower() == "e":
-            language_choice = "english"
-
-        print(
-            f"Tror du folket på Twitter är mest positivt, mest negativt eller neutralt inställda till {keyword_choice}? ")
-        attitude_choice = input("[P]ostiva - [N]egativa - ne[U]trala? ")
-        if attitude_choice.lower() == "p":
-            attitude_choice = "positivt"
-        elif attitude_choice.lower() == "n":
-            attitude_choice = "negativt"
-        elif attitude_choice.lower() == "u":
-            attitude_choice = "neutralt"
-
-        print("Det här kan ta en liten stund. Häng kvar! :)")
-
-        result = sentiment_analysis(keyword=keyword_choice, language=language_choice,
-                                    file_name='demo_tweets_english_covid.p', live=True)
-
-        # TODO FEEDBACK SPRINT 2 - HANDLE TWEET SEARCH THAT RESULT IN NO TWEETS OR TOO FEW TWEETS
-        if result == 'connection_error':
-            x = (f"""Det går tyvärr inte att söka på Twitter just nu. Försök igen senare!""")
-            print_frame([x], 'white', 15)
-            break
-
-        if result == 'too_few_results':
-            x = (f"""Hittade för få tweets innehållandes {keyword_choice}.
-Ett tips är att söka efter något som är mer aktuellt i samhällsdebatten.""")
-            print_frame([x], 'white', 15)
-        else:
-            break
-
-    health_bonus = 10
-    if result != 'connection_error':
-        if attitude_choice == result:
-            user_pokemon.health += health_bonus
-            user_pokemon.max_health += health_bonus
-            x = f"Rätt! {keyword_choice} har mest {result} innehåll på Twitter."
-            y = f"{user_pokemon.name} belönas med {health_bonus} p i ökad hälsa!"
-
-        else:
-            user_pokemon.health -= health_bonus
-            user_pokemon.max_health -= health_bonus
-            x = f"""Tyvärr, {keyword_choice} har mest {result} innehåll på Twitter!"""
-            y = f"""{user_pokemon.name} bestraffas med {health_bonus} p i minskad hälsa."""
-
-        print_frame([x, y], 'blue', 15)
-
-    input("\nTryck enter för att fortsätta")
+#     x = """
+#     Din Poketer har ett visst humör. Du har nu möjligheten att öka din Poketers hälsa
+#     genom att söka efter en stad i Sverige där du tror att invånarna är på samma humör som din Poketer.
+#     Invånarnas humör baseras på vad de twittrar. Ju mer känslosamma de är desto mer ökar
+#     din Poketers hälsa. Lycka till!"""
+#
+#     print_frame([x], 'white', 15)
+#
+#     for idx, city in enumerate(geocodes):
+#         if city:
+#             print(idx + 1, city.capitalize())
+#     while True:
+#         try:
+#             city_choice = int(input(f"Vilken stad väljer du? (1-{len(geocodes) - 1}): "))
+#             if city_choice in range(1, len(geocodes)):
+#                 break
+#         except ValueError:
+#             pass
+#         print(f"Ogiltligt val! Ange en siffra 1-{len(geocodes) - 1}.")
+#
+#     temp_city_list = list(geocodes)
+#     city_list = [x for x in temp_city_list if x != '']
+#     city = city_list[city_choice - 1]
+#
+#     print("Det här kan ta en liten stund. Häng kvar! :)")
+#
+#     mood_score = user_pokemon.update_max_health_by_city_mood(city, live)
+#
+#     x = f"... Beräknar humör för invånarna i {city.capitalize()} ..."
+#     y = f"{user_pokemon.name} fick {mood_score} p i ökad hälsa! #YOLO"
+#     if not mood_score:
+#         y = f"Något gick fel men {user_pokemon.name} får 20 p i ökad hälsa! #YOLO"
+#
+#     print_frame([x, y], 'blue', 15)
+#
+#     cpu_city = random.choice(city_list)
+#     cpu_mood_score = cpu_pokemon.update_max_health_by_city_mood(cpu_city, live)
+#     x = f"{cpu.name} valde {cpu_city.capitalize()}"
+#     y = f"{cpu_pokemon.name} fick {cpu_mood_score} p i ökad hälsa! #FTW"
+#
+#     print_frame([x, y], 'red', 15)
+#
+#     input("\nTryck enter för att fortsätta")
+#
+#     x = """
+#     Attack-bonus! Du har nu chansen att öka din Poketers attack-styrka. Välj en stad och gissa
+#     vilket humör som är mest förekommande bland invånarna. Lycka till!"""
+#
+#     print_frame([x], 'white', 15)
+#
+#     for idx, city in enumerate(geocodes):
+#         if city:
+#             print(idx + 1, city.capitalize())
+#     while True:
+#         try:
+#             city_choice = int(input(f"Vilken stad väljer du? (1-{len(geocodes) - 1}): "))
+#             if city_choice in range(1, len(geocodes)):
+#                 break
+#         except ValueError:
+#             pass
+#         print(f"Ogiltligt val! Ange en siffra 1-{len(geocodes) - 1}.")
+#
+#     temp_city_list = list(geocodes)
+#     city_list = [x for x in temp_city_list if x != '']
+#     city = city_list[city_choice - 1]
+#
+#     for idx, emotion in enumerate(text_emotions):
+#         print(idx + 1, emotion.capitalize())
+#     while True:
+#         try:
+#             emotion_choice = int(input(f"Vilken känsla är mest förekommande i {city.capitalize()}? (1-{len(text_emotions)}): "))
+#             if emotion_choice in range(1, len(text_emotions)+1):
+#                 break
+#         except ValueError:
+#             pass
+#         print(f"Ogiltligt val! Ange en siffra 1-{len(text_emotions)}.")
+#
+#     emotion_list = list(text_emotions)
+#     emotion = emotion_list[emotion_choice - 1]
+#
+#     print("Det här kan ta en liten stund. Häng kvar! :)")
+#
+#     most_frequent_emotions = mood_analysis(city=city, live=live)
+#
+#     attack_bonus = 10
+#     if emotion in most_frequent_emotions:
+#         user_pokemon.attack += attack_bonus
+#         x = f"""Rätt! I {city.capitalize()} är man {emotion}."""
+#         y = f"""{user_pokemon.name} får {attack_bonus} p i ökad attack-styrka!"""
+#     else:
+#         x = f"Tyvärr! I {city.capitalize()} är man {most_frequent_emotions[0]}, inte {emotion}!"
+#         y = f"{user_pokemon.name} får ingen attack-bonus."
+#
+#     print_frame([x, y], 'blue', 15)
+#
+#     cpu_city = random.choice(city_list)
+#     cpu_emotion = random.choice(emotion_list)
+#
+#     x = f"""{cpu.name} valde {cpu_city.capitalize()} och gissade på {cpu_emotion}."""
+#     print_frame([x], 'red', 15)
+#
+#     most_frequent_emotions = mood_analysis(city=cpu_city, live=live)
+#     if cpu_emotion in most_frequent_emotions:
+#         cpu_pokemon.attack += attack_bonus
+#         x = f"""Det var rätt! I {cpu_city.capitalize()} är man {cpu_emotion}."""
+#         y = f"""{cpu_pokemon.name} får {attack_bonus} p i ökad attack-styrka!"""
+#
+#     else:
+#         x = f"Det var fel! I {cpu_city.capitalize()} är man {most_frequent_emotions[0]}, inte {cpu_emotion}!"
+#         y = f"{cpu_pokemon.name} får ingen attack-bonus."
+#
+#     print_frame([x, y], 'red', 15)
+#
+#     input("\nTryck enter för att fortsätta")
+#
+#     x = """
+#     Twitter-vadslagning! Har du koll på vad som trendar på sociala medier?
+#     Skriv in ett ord och på vilket språk du vill använda i sökningen. Gissa om
+#     de senaste tweetsen som innehåller detta ord är mest positiva, mest negativa
+#     eller neutrala. Om du gissar rätt belönas du med 10 p i ökad hälsa.
+#     Om du gissar fel bestraffas du med 10 p minskad hälsa. Lycka till!"""
+#
+#     print_frame([x], 'white', 15)
+#
+#     while True:
+#         print("Skriv in ett nyckelord att söka efter på Twitter. Endast bokstäver accepteras. Exempel: Donald Trump, Estonia.")
+#         keyword_choice = input(">> ")
+#         is_alphanumeric_or_space = (len([char for char in keyword_choice if not (char.isalpha() or char == " ")]) == 0)
+#         is_only_spaces = (len([char for char in keyword_choice if not char == " "]) == 0)
+#         if not is_alphanumeric_or_space or is_only_spaces or len(keyword_choice) < 1:
+#             continue
+#
+#         language_choice = input("Vilket språk vill du söka efter? [S]venska eller [E]ngelska? ")
+#         if language_choice.lower() == "s":
+#             language_choice = "swedish"
+#         elif language_choice.lower() == "e":
+#             language_choice = "english"
+#
+#         print(
+#             f"Tror du folket på Twitter är mest positivt, mest negativt eller neutralt inställda till {keyword_choice}? ")
+#         attitude_choice = input("[P]ostiva - [N]egativa - ne[U]trala? ")
+#         if attitude_choice.lower() == "p":
+#             attitude_choice = "positivt"
+#         elif attitude_choice.lower() == "n":
+#             attitude_choice = "negativt"
+#         elif attitude_choice.lower() == "u":
+#             attitude_choice = "neutralt"
+#
+#         print("Det här kan ta en liten stund. Häng kvar! :)")
+#
+#         result = sentiment_analysis(keyword=keyword_choice, language=language_choice,
+#                                     file_name='demo_tweets_english_covid.p', live=True)
+#
+#         # TODO FEEDBACK SPRINT 2 - HANDLE TWEET SEARCH THAT RESULT IN NO TWEETS OR TOO FEW TWEETS
+#         if result == 'connection_error':
+#             x = (f"""Det går tyvärr inte att söka på Twitter just nu. Försök igen senare!""")
+#             print_frame([x], 'white', 15)
+#             break
+#
+#         if result == 'too_few_results':
+#             x = (f"""Hittade för få tweets innehållandes {keyword_choice}.
+# Ett tips är att söka efter något som är mer aktuellt i samhällsdebatten.""")
+#             print_frame([x], 'white', 15)
+#         else:
+#             break
+#
+#     health_bonus = 10
+#     if result != 'connection_error':
+#         if attitude_choice == result:
+#             user_pokemon.health += health_bonus
+#             user_pokemon.max_health += health_bonus
+#             x = f"Rätt! {keyword_choice} har mest {result} innehåll på Twitter."
+#             y = f"{user_pokemon.name} belönas med {health_bonus} p i ökad hälsa!"
+#
+#         else:
+#             user_pokemon.health -= health_bonus
+#             user_pokemon.max_health -= health_bonus
+#             x = f"""Tyvärr, {keyword_choice} har mest {result} innehåll på Twitter!"""
+#             y = f"""{user_pokemon.name} bestraffas med {health_bonus} p i minskad hälsa."""
+#
+#         print_frame([x, y], 'blue', 15)
+#
+#     input("\nTryck enter för att fortsätta")
 
     x = "Nu är det dags för battle!"
     print_frame([x], 'white', 15)
@@ -323,7 +341,7 @@ Ett tips är att söka efter något som är mer aktuellt i samhällsdebatten."""
             print(f"*** Det är {colored('Din', 'blue')} tur ***")
             user_choose = int(input("Vill du [1] attackera eller [2] blockera? "))
             if user_choose == 1:
-                user_pokemon.attack_fnc(cpu_pokemon)
+                user_pokemon.attack_fnc(cpu_pokemon, cpu)
                 if user_pokemon.healthcheck(cpu_pokemon, cpu.name) is False:
                     break
 
@@ -334,7 +352,7 @@ Ett tips är att söka efter något som är mer aktuellt i samhällsdebatten."""
 
             if cpu_pokemon.health > 0:
                 print(f'*** Det är {cpu.name}{cpu_extra_s} tur ***')
-                cpu_pokemon.attack_fnc(user_pokemon)
+                cpu_pokemon.attack_fnc(user_pokemon, user)
                 if user_pokemon.healthcheck(cpu_pokemon, cpu.name) is False:
                     break
 
