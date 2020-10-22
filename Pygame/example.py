@@ -1,6 +1,6 @@
 import pygame as pg
 from pathlib import Path
-from My_Own.constants import WHITE, BLACK, BLUE, RED, YELLOW, GREEN
+from Pygame.constants import WHITE, BLACK, BLUE, RED, YELLOW, GREEN
 
 pg.init()
 
@@ -79,7 +79,6 @@ def demoscreen():
     text_speech("fonts/RobotoSlab-Medium.ttf", 15, "Stats: HP: 113, Attack: 20, Mood: Happy", WHITE, 170, 20, True)
     addRect()
 
-image= pg.image.load("Green_monster.png")
 
 while not crashed:
     for event in pg.event.get():
@@ -89,7 +88,6 @@ while not crashed:
     screen.fill(WHITE)
     screen.blit(surface_bg, (0,0))
     background()
-    surface_bg.blit(chat_bubble_right(), (0, 0))
     demoscreen()
     pg.display.update()
     clock.tick(100)
