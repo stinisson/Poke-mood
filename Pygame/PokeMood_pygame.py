@@ -17,6 +17,7 @@ font_path = Path("RobotoSlab-Medium.ttf")
 
 surface_bg = pg.Surface((800, 600))
 
+
 def addRect():
     pg.draw.rect(screen, BLACK, (285, 245, 225, 70), 3)
     pg.display.update()
