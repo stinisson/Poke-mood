@@ -282,16 +282,20 @@ def main(live):
                 break
 
 
+        while True:
 
-        print(
-            f"Tror du folket på Twitter är mest positivt, mest negativt eller neutralt inställda till {keyword_choice}? ")
-        attitude_choice = input("[P]ostiva - [N]egativa - ne[U]trala? ")
-        if attitude_choice.lower() == "p":
-            attitude_choice = "positivt"
-        elif attitude_choice.lower() == "n":
-            attitude_choice = "negativt"
-        elif attitude_choice.lower() == "u":
-            attitude_choice = "neutralt"
+            print(
+                f"Tror du folket på Twitter är mest positivt, mest negativt eller neutralt inställda till {keyword_choice}? ")
+            attitude_choice = input("[P]ostiva - [N]egativa - ne[U]trala? ")
+            if attitude_choice.lower() == "p":
+                attitude_choice = "positivt"
+                break
+            elif attitude_choice.lower() == "n":
+                attitude_choice = "negativt"
+                break
+            elif attitude_choice.lower() == "u":
+                attitude_choice = "neutralt"
+                break
 
         print("Det här kan ta en liten stund. Häng kvar! :)")
 
@@ -343,8 +347,16 @@ Ett tips är att söka efter något som är mer aktuellt i samhällsdebatten."""
                 break
 
         else:
-            print(f"*** Det är {colored('Din', 'blue')} tur ***")
-            user_choose = int(input("Vill du [1] attackera eller [2] blockera? "))
+            while True:
+
+                try:
+                    print(f"*** Det är {colored('Din', 'blue')} tur ***")
+                    user_choose = int(input("Vill du [1] attackera eller [2] blockera? "))
+                    if user_choose in range(1, 3):
+                        break
+                except ValueError:
+                    pass
+                print("\n Ange 1 eller 2, tack. \n")
             if user_choose == 1:
                 user_pokemon.attack_fnc(cpu_pokemon, cpu)
                 if user_pokemon.healthcheck(cpu_pokemon, cpu.name) is False:
