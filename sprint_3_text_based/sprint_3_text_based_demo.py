@@ -4,209 +4,15 @@ from mood_score import calc_mood_score
 from mood_analysis import mood_analysis, text_emotions
 from sentiment_analysis import sentiment_analysis
 from user import User
-from random import randint
+from poketer import Poketer
 import random
-import time
-from termcolor import colored, cprint
+from termcolor import colored
 import colorama
 import sys
 
 colorama.init()
 from print_module import delay_print, atk_txt, successful_block, unsuccessful_block, print_frame, draw_welcome_screen, \
     print_frame_with_newline, poketer_mood_explanation_text, draw_end_screen
-
-
-class Poketer:
-    def __init__(self, name, mood, color, health, max_health, attack, catchword):
-        self.name = name
-        self.mood = mood
-        self.health = health
-        self.max_health = max_health
-        self.attack = attack
-        self.color = color
-        self.catchword = catchword
-
-    def attack_fnc(self, opponent_pokemon, opponent):
-        miss_chance = randint(1, 6)
-        crit_chance = randint(1, 6)
-        dmg_modifier = randint(-3, 3)
-        if miss_chance <= 5:
-            if crit_chance >= 5:
-                opponent_pokemon.health -= (self.attack + dmg_modifier) * 2
-                atk_txt(self.name, opponent_pokemon.name, "3 2 1...")
-                print("Dubbel skada!")
-                self.healtcheck_color(opponent_pokemon)
-                # self.healthcheck(opponent_pokemon, opponent.name)
-            else:
-                opponent_pokemon.health -= (self.attack + dmg_modifier)
-                atk_txt(self.name, opponent_pokemon.name, "3 2 1...")
-                self.healtcheck_color(opponent_pokemon)
-                # self.healthcheck(opponent_pokemon, opponent.name)
-        else:
-            print("Attacken missade...")
-
-        # opponent_pokemon.health -= self.attack
-        # atk_txt(self.name, opponent_pokemon.name, "3 2 1...")
-        # self.healtcheck_color(opponent_pokemon)
-
-    def healtcheck_color(self, opponent_pokemon):
-
-        if opponent_pokemon.health >= opponent_pokemon.max_health / 2:
-            print(f"{opponent_pokemon.name} hälsa: {colored(opponent_pokemon.health, 'green')}\n")
-        elif opponent_pokemon.max_health / 4 <= opponent_pokemon.health <= opponent_pokemon.max_health / 2:
-            print(f"{opponent_pokemon.name} hälsa: {colored(opponent_pokemon.health, 'yellow')}\n")
-        elif opponent_pokemon.health <= opponent_pokemon.max_health / 4:
-            print(f"{opponent_pokemon.name} hälsa: {colored(opponent_pokemon.health, 'red')}\n")
-
-    def healthcheck(self, opponent_pokemon, opponent_name):
-        if self.health <= 0 or opponent_pokemon.health <= 0:
-            if opponent_pokemon.health <= 0:
-                print(f'*** {opponent_name} Poketer {opponent_pokemon.name} svimmade. Du vann! ***')
-            if self.health <= 0:
-                print(f'*** Din poketer {self.name} svimmade. {opponent_name} vann! ***')
-            alive = False
-            return alive
-
-    def block(self, opponent, opponent_pokemon):
-        block_chance = randint(1, 11)
-        if block_chance <= 7:
-            time.sleep(1)
-            self.health -= opponent_pokemon.attack // 2
-            delay_print(f"{opponent.name} attackerar {self.name}", "3 2 1...",
-                        "Boom!")  # Ändrade så att det stod "attackerar" som de andra printsatserna
-            successful_block(self.name)  # Flyttade ner denna så att den hamnar efter attacken, ser bättre ut
-            print(f"{self.name} tog {opponent_pokemon.attack // 2} i skada!\n")
-
-        elif block_chance >= 8:
-            time.sleep(1)
-            self.health -= opponent_pokemon.attack
-            delay_print(f"{opponent.name} attackerar med {opponent_pokemon.name}", "3 2 1...", "Boom!")
-            unsuccessful_block(self.name)
-            print(f"{self.name} tog {opponent_pokemon.attack} i skada!\n")
-
-    def get_stats(self):
-        return f"{self.name} har {self.health} i hälsa och {self.attack} i attack."
-
-    def add_attack(self, attack_score):
-        self.attack += attack_score
-
-    def add_health(self, health_score):
-        self.health += health_score
-
-    def add_max_health(self, max_health_score):
-        self.max_health += max_health_score
-
-    def update_health_by_city_mood(self, city, is_cpu, live):
-
-        mood_score = calc_mood_score(self.mood, city, live=live)
-
-        if mood_score is None:
-            self.health += 20
-            self.max_health += 20
-        else:
-            self.health += mood_score
-            self.max_health += mood_score
-
-        if is_cpu:
-            w = f"{self.name} valde {city.capitalize()}. Tweet, tweet!"
-        else:
-            w = f"... Tweet, tweet! Beräknar humör för invånarna i {city.capitalize()} ..."
-
-        x = f"{self.name} fick {mood_score} p i ökad hälsa! {self.catchword}"
-        if mood_score is None:
-            x = f"Något gick fel men {self.name} får 20 p i ökad hälsa! {self.catchword}"
-        y = ""
-        z = self.get_stats()
-        print_frame([w, x, y, z], self.color, 15)
-
-    def __repr__(self):
-        return f'Poketer: {self.name} Mood: {self.mood}'
-
-
-def choose_city():
-    for idx, city in enumerate(geocodes):
-        if city:
-            print(idx + 1, city.capitalize())
-    while True:
-        try:
-            city_choice = int(input(f"Vilken stad väljer du? (1-{len(geocodes) - 1}): "))
-            if city_choice in range(1, len(geocodes)):
-                break
-        except ValueError:
-            pass
-        print(f"Ogiltligt val! Ange en siffra 1-{len(geocodes) - 1}.")
-
-    # One of the elements in geocodes is an empty placeholder
-    temp_city_list = list(geocodes)
-    city_list = [x for x in temp_city_list if x != '']
-    city = city_list[city_choice - 1]
-    return city
-
-
-def get_cities():
-    temp_city_list = list(geocodes)
-    city_list = [x for x in temp_city_list if x != '']
-    return city_list
-
-
-def choose_emotion(city):
-    for idx, emotion in enumerate(text_emotions):
-        print(idx + 1, emotion.capitalize())
-
-    while True:
-        try:
-            emotion_choice = int(
-                input(f"Vilken känsla är mest förekommande i {city.capitalize()}? (1-{len(text_emotions)}): "))
-            if emotion_choice in range(1, len(text_emotions) + 1):
-                break
-        except ValueError:
-            pass
-        print(f"Ogiltligt val! Ange en siffra 1-{len(text_emotions)}.")
-
-    emotion_list = list(text_emotions)
-    emotion = emotion_list[emotion_choice - 1]
-
-    return emotion
-
-
-def get_emotions():
-    emotion_list = list(text_emotions)
-    return emotion_list
-
-
-def input_to_sentiment_analysis():
-    while True:
-        print(
-            "Skriv in ett nyckelord att söka efter på Twitter. Endast bokstäver accepteras. Exempel: Donald Trump, Estonia.")
-        keyword_choice = input(">> ")
-        is_alphanumeric_or_space = (len([char for char in keyword_choice if not (char.isalpha() or char == " ")]) == 0)
-        is_only_spaces = (len([char for char in keyword_choice if not char == " "]) == 0)
-        if not is_alphanumeric_or_space or is_only_spaces or len(keyword_choice) < 1:
-            continue
-
-        while True:
-            language_choice = input("Vilket språk vill du söka efter? [S]venska eller [E]ngelska? ")
-            if language_choice.lower() == "s":
-                language_choice = "swedish"
-                break
-            elif language_choice.lower() == "e":
-                language_choice = "english"
-                break
-
-        while True:
-            print(
-                f"Tror du folket på Twitter är mest positivt, mest negativt eller neutralt inställda till {keyword_choice}?")
-            attitude_choice = input("[P]ostiva - [N]egativa - ne[U]trala? ")
-            if attitude_choice.lower() == "p":
-                attitude_choice = "positivt"
-                break
-            elif attitude_choice.lower() == "n":
-                attitude_choice = "negativt"
-                break
-            elif attitude_choice.lower() == "u":
-                attitude_choice = "neutralt"
-                break
-        return keyword_choice, language_choice, attitude_choice
 
 
 def card_attack(user, user_pokemon, cpu, cpu_pokemon, is_cpu):
@@ -295,6 +101,71 @@ def card_block(user, user_pokemon, cpu, cpu_pokemon, is_cpu):
                     break
 
 
+def take_integer_input(choices, input_text, end_range, error_text):
+    while True:
+        try:
+            user_choice = int(input(input_text))
+            if user_choice in range(1, end_range):
+                break
+        except ValueError:
+            pass
+        print(error_text)
+    return user_choice
+
+
+def choose_city():
+    for idx, city in enumerate(geocodes):
+        if city:
+            print(idx + 1, city.capitalize())
+
+    city_choice = take_integer_input(geocodes, f"Vilken stad väljer du? (1-{len(geocodes) - 1}): ", len(geocodes), f"Ogiltligt val! Ange en siffra 1-{len(geocodes) - 1}.")
+
+    # while True:
+    #     try:
+    #         city_choice = int(input(f"Vilken stad väljer du? (1-{len(geocodes) - 1}): "))
+    #         if city_choice in range(1, len(geocodes)):
+    #             break
+    #     except ValueError:
+    #         pass
+    #     print(f"Ogiltligt val! Ange en siffra 1-{len(geocodes) - 1}.")
+
+    # One of the elements in geocodes is an empty placeholder
+    temp_city_list = list(geocodes)
+    city_list = [x for x in temp_city_list if x != '']
+    city = city_list[city_choice - 1]
+    return city
+
+
+def get_cities():
+    temp_city_list = list(geocodes)
+    cities = [x for x in temp_city_list if x != '']
+    return cities
+
+
+def choose_emotion(city):
+    for idx, emotion in enumerate(text_emotions):
+        print(idx + 1, emotion.capitalize())
+
+    while True:
+        try:
+            emotion_choice = int(
+                input(f"Vilken känsla är mest förekommande i {city.capitalize()}? (1-{len(text_emotions)}): "))
+            if emotion_choice in range(1, len(text_emotions) + 1):
+                break
+        except ValueError:
+            pass
+        print(f"Ogiltligt val! Ange en siffra 1-{len(text_emotions)}.")
+
+    emotion_list = list(text_emotions)
+    emotion = emotion_list[emotion_choice - 1]
+    return emotion
+
+
+def get_emotions():
+    emotions = list(text_emotions)
+    return emotions
+
+
 def intro_card(poketer, is_cpu, live):
     if is_cpu:
         cities = get_cities()
@@ -335,7 +206,6 @@ def intro_card(poketer, is_cpu, live):
 
 
 def chance_card_attack(player, poketer, is_cpu, live):
-    print("Chanskort - attack")
     attack_bonus = 20
     if is_cpu:
         cities = get_cities()
@@ -375,8 +245,41 @@ def chance_card_attack(player, poketer, is_cpu, live):
     input("\nTryck enter för att fortsätta")
 
 
+def input_to_chance_card_health():
+    while True:
+        print(
+            "Skriv in ett nyckelord att söka efter på Twitter. Endast bokstäver accepteras. Exempel: Donald Trump, Estonia.")
+        keyword_choice = input(">> ")
+        is_alphanumeric_or_space = (len([char for char in keyword_choice if not (char.isalpha() or char == " ")]) == 0)
+        is_only_spaces = (len([char for char in keyword_choice if not char == " "]) == 0)
+        if not is_alphanumeric_or_space or is_only_spaces or len(keyword_choice) < 1:
+            continue
+
+        while True:
+            language_choice = input("Vilket språk vill du söka efter? [S]venska eller [E]ngelska? ")
+            if language_choice.lower() == "s":
+                language_choice = "swedish"
+                break
+            elif language_choice.lower() == "e":
+                language_choice = "english"
+                break
+
+        while True:
+            print(
+                f"Tror du folket på Twitter är mest positivt, mest negativt eller neutralt inställda till {keyword_choice}?")
+            attitude_choice = input("[P]ostiva - [N]egativa - ne[U]trala? ")
+            if attitude_choice.lower() == "p":
+                attitude_choice = "positivt"
+                break
+            elif attitude_choice.lower() == "n":
+                attitude_choice = "negativt"
+                break
+            elif attitude_choice.lower() == "u":
+                attitude_choice = "neutralt"
+                break
+        return keyword_choice, language_choice, attitude_choice
+
 def chance_card_health(player, poketer, is_cpu):
-    print("Chanskort - hälsa!")
     health_bonus = 10
     if is_cpu:
         x = f"{player.name} valde chanskort - hälsa!"
@@ -390,7 +293,7 @@ def chance_card_health(player, poketer, is_cpu):
         Om du gissar fel bestraffas du med {health_bonus} p minskad hälsa. Lycka till!"""
         print_frame([x], 'white', 15)
 
-    keyword, language, attitude = input_to_sentiment_analysis()
+    keyword, language, attitude = input_to_chance_card_health()
     print("Det här kan ta en liten stund. Häng kvar! :)")
 
     result = sentiment_analysis(keyword=keyword, language=language,
@@ -441,26 +344,12 @@ def show_stats_card(user, cpu):
     input("\nTryck enter för att fortsätta")
 
 
-def take_integer_input(choices):
-    while True:
-        try:
-            user_choice = int(input(">> "))
-            if user_choice in range(1, len(choices) + 1):
-                break
-        except ValueError:
-            pass
-        print(f"Ange en siffra 1-{len(choices)}.")
-
-    return user_choice
-
-
 def cpu_make_move(cpu, cpu_pokemon, live):
     cpu_extra_s = (colored("s", cpu_pokemon.color))
     print(f"\nNu är det {cpu.name}{cpu_extra_s} tur!")
 
     moves = ["attack", "block", "chance_card_attack", "chance_card_health"]
     move = random.choice(moves)
-    print("cpu valde: ", move)
 
     if move == "attack":
         pass
@@ -482,7 +371,7 @@ def game_loop(user, user_pokemon, cpu, cpu_pokemon, live):
         for choice in choices:
             print(choice, choices[choice])
 
-        user_choice = take_integer_input(choices)
+        user_choice = take_integer_input(choices, f">> ", len(choices) + 1, f"Ange en siffra 1-{len(choices)}.")
 
         if user_choice == 1:
             card_attack(user=user, user_pokemon=user_pokemon, cpu=cpu, cpu_pokemon=cpu_pokemon, is_cpu=False)
