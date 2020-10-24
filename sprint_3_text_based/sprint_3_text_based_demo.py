@@ -101,7 +101,7 @@ def card_block(user, user_pokemon, cpu, cpu_pokemon, is_cpu):
                     break
 
 
-def take_integer_input(choices, input_text, end_range, error_text):
+def take_integer_input(input_text, end_range, error_text):
     while True:
         try:
             user_choice = int(input(input_text))
@@ -118,16 +118,8 @@ def choose_city():
         if city:
             print(idx + 1, city.capitalize())
 
-    city_choice = take_integer_input(geocodes, f"Vilken stad väljer du? (1-{len(geocodes) - 1}): ", len(geocodes), f"Ogiltligt val! Ange en siffra 1-{len(geocodes) - 1}.")
-
-    # while True:
-    #     try:
-    #         city_choice = int(input(f"Vilken stad väljer du? (1-{len(geocodes) - 1}): "))
-    #         if city_choice in range(1, len(geocodes)):
-    #             break
-    #     except ValueError:
-    #         pass
-    #     print(f"Ogiltligt val! Ange en siffra 1-{len(geocodes) - 1}.")
+    city_choice = take_integer_input(f"Vilken stad väljer du? (1-{len(geocodes) - 1}): ",
+                                     len(geocodes), f"Ogiltligt val! Ange en siffra 1-{len(geocodes) - 1}.")
 
     # One of the elements in geocodes is an empty placeholder
     temp_city_list = list(geocodes)
@@ -146,15 +138,9 @@ def choose_emotion(city):
     for idx, emotion in enumerate(text_emotions):
         print(idx + 1, emotion.capitalize())
 
-    while True:
-        try:
-            emotion_choice = int(
-                input(f"Vilken känsla är mest förekommande i {city.capitalize()}? (1-{len(text_emotions)}): "))
-            if emotion_choice in range(1, len(text_emotions) + 1):
-                break
-        except ValueError:
-            pass
-        print(f"Ogiltligt val! Ange en siffra 1-{len(text_emotions)}.")
+    emotion_choice = take_integer_input(f"Vilken känsla är mest förekommande i {city.capitalize()}? (1-{len(text_emotions)}): ",
+                                        len(text_emotions) + 1,
+                                        f"Ogiltligt val! Ange en siffra 1-{len(text_emotions)}.")
 
     emotion_list = list(text_emotions)
     emotion = emotion_list[emotion_choice - 1]
@@ -279,6 +265,7 @@ def input_to_chance_card_health():
                 break
         return keyword_choice, language_choice, attitude_choice
 
+
 def chance_card_health(player, poketer, is_cpu):
     health_bonus = 10
     if is_cpu:
@@ -371,7 +358,7 @@ def game_loop(user, user_pokemon, cpu, cpu_pokemon, live):
         for choice in choices:
             print(choice, choices[choice])
 
-        user_choice = take_integer_input(choices, f">> ", len(choices) + 1, f"Ange en siffra 1-{len(choices)}.")
+        user_choice = take_integer_input(f">> ", len(choices) + 1, f"Ange en siffra 1-{len(choices)}.")
 
         if user_choice == 1:
             card_attack(user=user, user_pokemon=user_pokemon, cpu=cpu, cpu_pokemon=cpu_pokemon, is_cpu=False)
