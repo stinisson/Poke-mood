@@ -68,48 +68,6 @@ def get_emotions():
     return emotions
 
 
-def card_attack(user_pokemon, cpu, cpu_pokemon, is_cpu):
-    if is_cpu:
-        x = f"{cpu.name} valde att attackera!"
-        print_frame([x], cpu_pokemon.color, 15)
-    else:
-        x = "Du valde att attackera! Nu är det dags för battle!"
-        print_frame([x], user_pokemon.color, 15)
-
-    input("\nTryck enter för att fortsätta\n")
-
-    if is_cpu:
-        cpu_pokemon.attack_fnc(user_pokemon)
-        if user_pokemon.get_health() <= 0:
-            print(f'*** Din poketer {user_pokemon.name} svimmade. {cpu_pokemon.name} vann! ***')
-    else:
-        user_pokemon.attack_fnc(cpu_pokemon)
-        if cpu_pokemon.get_health() <= 0:
-            print(f'*** Din motståndares Poketer {cpu_pokemon.name} svimmade. {user_pokemon.name} vann! ***')
-
-    input("\nTryck enter för att fortsätta\n")
-
-def card_block(user, user_pokemon, cpu, cpu_pokemon, is_cpu):
-    if is_cpu:
-        x = f"{cpu.name} valde att blocka!"
-        print_frame([x], cpu_pokemon.color, 15)
-    else:
-        x = "Du valde block! Nu är det dags för battle!"
-        print_frame([x], user_pokemon.color, 15)
-
-    input("\nTryck enter för att fortsätta\n")
-
-    if is_cpu:
-        cpu_pokemon.block(user, user_pokemon)
-        if cpu_pokemon.get_health() <= 0:
-            print(f'*** Din motståndares Poketer {cpu_pokemon.name} svimmade. {user_pokemon.name} vann! ***')
-    else:
-        user_pokemon.block(cpu, cpu_pokemon)
-        if user_pokemon.get_health() <= 0:
-            print(f'*** Din poketer {user_pokemon.name} svimmade. {cpu_pokemon.name} vann!')
-
-    input("\nTryck enter för att fortsätta\n")
-
 def intro_card(poketer, is_cpu, live):
     if is_cpu:
         cities = get_cities()
@@ -147,6 +105,50 @@ def intro_card(poketer, is_cpu, live):
     print_frame([w, x, y, z], poketer.color, 15)
 
     input("\nTryck enter för att fortsätta")
+
+
+def card_attack(user_pokemon, cpu, cpu_pokemon, is_cpu):
+    if is_cpu:
+        x = f"{cpu.name} valde att attackera!"
+        print_frame([x], cpu_pokemon.color, 15)
+    else:
+        x = "Du valde att attackera! Nu är det dags för battle!"
+        print_frame([x], user_pokemon.color, 15)
+
+    input("\nTryck enter för att fortsätta\n")
+
+    if is_cpu:
+        cpu_pokemon.attack_fnc(user_pokemon)
+        if user_pokemon.get_health() <= 0:
+            print(f'*** Din poketer {user_pokemon.name} svimmade. {cpu_pokemon.name} vann! ***')
+    else:
+        user_pokemon.attack_fnc(cpu_pokemon)
+        if cpu_pokemon.get_health() <= 0:
+            print(f'*** Din motståndares Poketer {cpu_pokemon.name} svimmade. {user_pokemon.name} vann! ***')
+
+    input("\nTryck enter för att fortsätta\n")
+
+
+def card_block(user, user_pokemon, cpu, cpu_pokemon, is_cpu):
+    if is_cpu:
+        x = f"{cpu.name} valde att blocka!"
+        print_frame([x], cpu_pokemon.color, 15)
+    else:
+        x = "Du valde block! Nu är det dags för battle!"
+        print_frame([x], user_pokemon.color, 15)
+
+    input("\nTryck enter för att fortsätta\n")
+
+    if is_cpu:
+        cpu_pokemon.block(user, user_pokemon)
+        if cpu_pokemon.get_health() <= 0:
+            print(f'*** Din motståndares Poketer {cpu_pokemon.name} svimmade. {user_pokemon.name} vann! ***')
+    else:
+        user_pokemon.block(cpu, cpu_pokemon)
+        if user_pokemon.get_health() <= 0:
+            print(f'*** Din poketer {user_pokemon.name} svimmade. {cpu_pokemon.name} vann!')
+
+    input("\nTryck enter för att fortsätta\n")
 
 
 def chance_card_attack(player, poketer, is_cpu, live):
@@ -372,8 +374,7 @@ def cpu_make_move(user, user_pokemon, cpu, cpu_pokemon, live):
         chance_card_health(player=cpu, poketer=cpu_pokemon, is_cpu=True)
 
     elif move == "quiz":
-        pass
-        #quiz(player=cpu, poketer=cpu_pokemon, is_cpu=True)
+        quiz(player=cpu, poketer=cpu_pokemon, is_cpu=True)
 
 
 def check_is_winner(user, cpu):
@@ -394,11 +395,16 @@ def check_is_winner(user, cpu):
 
 
 def quiz(player, poketer, is_cpu):
-    ENDPOINT = 'https://opentdb.com/api.php?amount=10&category=18&difficulty=easy&type=multiple'
 
-    x = f"""
-    Quiz-dags! Om du svarar rätt på alla fem quiz-frågor får du välja en till Poketer. Lycka till!"""
-    print_frame([x], 'white', 15)
+    if is_cpu:
+        x = f"""{player.name} valde quiz och har nu chansen att vinna en till Poketer! """
+        print_frame([x], poketer.color, 15)
+    else:
+        x = f"""
+        Quiz-dags! Om du svarar rätt på alla fyra kluriga quiz-frågor får du välja en till Poketer. Lycka till!"""
+        print_frame([x], 'white', 15)
+
+    input("\nTryck enter för att fortsätta\n")
 
 
 def game_loop(user, user_pokemon, cpu, cpu_pokemon, live):

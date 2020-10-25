@@ -1,8 +1,6 @@
 import time
 from random import randint
-
 from termcolor import colored
-
 from prints_module import atk_txt, delay_print, successful_block, unsuccessful_block
 
 class Poketer:
