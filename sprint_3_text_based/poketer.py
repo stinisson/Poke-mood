@@ -82,8 +82,11 @@ class Poketer:
     def add_max_health(self, max_health_score):
         self.max_health += max_health_score
 
+    def get_health(self):
+        return self.health
+
     def get_stats(self):
         return f"{self.name} har {self.health} i hälsa och {self.attack} i attack."
 
     def __repr__(self):
-        return f'Poketer: {self.name} Mood: {self.mood}'
+        return f'Poketer: {self.name}. Mood: {self.mood}. Health: {self.health}. Max health: {self.max_health}. Attack: {self.attack}.'

@@ -15,6 +15,58 @@ from print_module import delay_print, atk_txt, successful_block, unsuccessful_bl
     print_frame_with_newline, poketer_mood_explanation_text, draw_end_screen
 
 
+def take_integer_input(input_text, end_range, error_text):
+    while True:
+        try:
+            user_choice = int(input(input_text))
+            if user_choice in range(1, end_range):
+                break
+        except ValueError:
+            pass
+        print(error_text)
+    return user_choice
+
+
+def choose_city():
+    for idx, city in enumerate(geocodes):
+        if city:
+            print(idx + 1, city.capitalize())
+
+    city_choice = take_integer_input(f"Vilken stad väljer du? (1-{len(geocodes) - 1}): ",
+                                     len(geocodes), f"Ogiltligt val! Ange en siffra 1-{len(geocodes) - 1}.")
+
+    # One of the elements in geocodes is an empty placeholder
+    temp_city_list = list(geocodes)
+    city_list = [x for x in temp_city_list if x != '']
+    city = city_list[city_choice - 1]
+    return city
+
+
+def get_cities():
+    temp_city_list = list(geocodes)
+    cities = [x for x in temp_city_list if x != '']
+    return cities
+
+
+def choose_emotion(city):
+    for idx, emotion in enumerate(text_emotions):
+        print(idx + 1, emotion.capitalize())
+
+    emotion_choice = take_integer_input(
+        f"Vilken känsla är mest förekommande i {city.capitalize()}? (1-{len(text_emotions)}): ",
+        len(text_emotions) + 1,
+        f"Ogiltligt val! Ange en siffra 1-{len(text_emotions)}.")
+
+    emotion_list = list(text_emotions)
+    emotion = emotion_list[emotion_choice - 1]
+    return emotion
+
+
+def get_emotions():
+    emotions = list(text_emotions)
+    return emotions
+
+
 def card_attack(user, user_pokemon, cpu, cpu_pokemon, is_cpu):
     if is_cpu:
         x = f"{cpu.name} valde att attackera!"
@@ -99,57 +151,6 @@ def card_block(user, user_pokemon, cpu, cpu_pokemon, is_cpu):
                 cpu_pokemon.attack_fnc(user_pokemon, user)
                 if user_pokemon.healthcheck(cpu_pokemon, cpu.name) is False:
                     break
-
-
-def take_integer_input(input_text, end_range, error_text):
-    while True:
-        try:
-            user_choice = int(input(input_text))
-            if user_choice in range(1, end_range):
-                break
-        except ValueError:
-            pass
-        print(error_text)
-    return user_choice
-
-
-def choose_city():
-    for idx, city in enumerate(geocodes):
-        if city:
-            print(idx + 1, city.capitalize())
-
-    city_choice = take_integer_input(f"Vilken stad väljer du? (1-{len(geocodes) - 1}): ",
-                                     len(geocodes), f"Ogiltligt val! Ange en siffra 1-{len(geocodes) - 1}.")
-
-    # One of the elements in geocodes is an empty placeholder
-    temp_city_list = list(geocodes)
-    city_list = [x for x in temp_city_list if x != '']
-    city = city_list[city_choice - 1]
-    return city
-
-
-def get_cities():
-    temp_city_list = list(geocodes)
-    cities = [x for x in temp_city_list if x != '']
-    return cities
-
-
-def choose_emotion(city):
-    for idx, emotion in enumerate(text_emotions):
-        print(idx + 1, emotion.capitalize())
-
-    emotion_choice = take_integer_input(f"Vilken känsla är mest förekommande i {city.capitalize()}? (1-{len(text_emotions)}): ",
-                                        len(text_emotions) + 1,
-                                        f"Ogiltligt val! Ange en siffra 1-{len(text_emotions)}.")
-
-    emotion_list = list(text_emotions)
-    emotion = emotion_list[emotion_choice - 1]
-    return emotion
-
-
-def get_emotions():
-    emotions = list(text_emotions)
-    return emotions
 
 
 def intro_card(poketer, is_cpu, live):
@@ -315,7 +316,7 @@ def chance_card_health(player, poketer, is_cpu):
 
         print_frame([w, x, y, z], poketer.color, 15)
 
-    input("\nTryck enter för att fortsätta")
+        input("\nTryck enter för att fortsätta")
 
 
 def show_stats_card(user, cpu):
@@ -340,17 +341,38 @@ def cpu_make_move(cpu, cpu_pokemon, live):
 
     if move == "attack":
         pass
-        #card_attack(user=user, user_pokemon=user_pokemon, cpu=cpu, cpu_pokemon=cpu_pokemon, is_cpu=True)
+        # card_attack(user=user, user_pokemon=user_pokemon, cpu=cpu, cpu_pokemon=cpu_pokemon, is_cpu=True)
+
     elif move == "block":
         pass
-        #card_block(user=user, user_pokemon=user_pokemon, cpu=cpu, cpu_pokemon=cpu_pokemon, is_cpu=True)
+        # card_block(user=user, user_pokemon=user_pokemon, cpu=cpu, cpu_pokemon=cpu_pokemon, is_cpu=True)
+
     elif move == "chance_card_attack":
         chance_card_attack(player=cpu, poketer=cpu_pokemon, is_cpu=True, live=live)
+
     elif move == "chance_card_health":
         chance_card_health(player=cpu, poketer=cpu_pokemon, is_cpu=True)
 
 
+def check_is_winner(user, cpu):
+    for poketer in user.team:
+        if poketer.get_health() <= 0:
+            user.team.remove(poketer)
+
+    for poketer in cpu.team:
+        if poketer.get_health() <= 0:
+            cpu.team.remove(poketer)
+
+    if len(user.team) == 0:
+        return "cpu"
+    elif len(cpu.team) == 0:
+        return "user"
+    else:
+        return None
+
+
 def game_loop(user, user_pokemon, cpu, cpu_pokemon, live):
+
     while True:
         print("\nVad vill du göra?")
         choices = {1: "Attackera", 2: "Blockera", 3: "Chanskort - attack", 4: "Chanskort - hälsa", 5: "Visa status",
@@ -361,30 +383,44 @@ def game_loop(user, user_pokemon, cpu, cpu_pokemon, live):
         user_choice = take_integer_input(f">> ", len(choices) + 1, f"Ange en siffra 1-{len(choices)}.")
 
         if user_choice == 1:
-            card_attack(user=user, user_pokemon=user_pokemon, cpu=cpu, cpu_pokemon=cpu_pokemon, is_cpu=False)
-            cpu_make_move(cpu=cpu, cpu_pokemon=cpu_pokemon, live=live)
+            continue
+            #card_attack(user=user, user_pokemon=user_pokemon, cpu=cpu, cpu_pokemon=cpu_pokemon, is_cpu=False)
 
         elif user_choice == 2:
-            card_block(user=user, user_pokemon=user_pokemon, cpu=cpu, cpu_pokemon=cpu_pokemon, is_cpu=False)
-            cpu_make_move(cpu=cpu, cpu_pokemon=cpu_pokemon, live=live)
+            continue
+            #card_block(user=user, user_pokemon=user_pokemon, cpu=cpu, cpu_pokemon=cpu_pokemon, is_cpu=False)
 
         elif user_choice == 3:
             chance_card_attack(player=user, poketer=user_pokemon, is_cpu=False, live=live)
-            cpu_make_move(cpu=cpu, cpu_pokemon=cpu_pokemon, live=live)
 
         elif user_choice == 4:
             chance_card_health(player=user, poketer=user_pokemon, is_cpu=False)
-            cpu_make_move(cpu=cpu, cpu_pokemon=cpu_pokemon, live=live)
 
         elif user_choice == 5:
             show_stats_card(user=user, cpu=cpu)
+            continue
 
         elif user_choice == 6:
             print("Avslutar spelet..")
             sys.exit(0)
 
+        is_winner = check_is_winner(user=user, cpu=cpu)
+        if is_winner is None:
+            pass
+        else:
+            return is_winner
+
+        cpu_make_move(cpu=cpu, cpu_pokemon=cpu_pokemon, live=live)
+
+        is_winner = check_is_winner(user=user, cpu=cpu)
+        if is_winner is None:
+            pass
+        else:
+            return is_winner
+
 
 def start_game(live):
+
     draw_welcome_screen()
     username = input("Vänligen ange ditt namn: ")
     poketer_mood_explanation_text(username)
@@ -414,8 +450,7 @@ def start_game(live):
     # TODO return winner from game_loop
     is_winner = game_loop(user=user, user_pokemon=user_pokemon, cpu=cpu, cpu_pokemon=cpu_pokemon, live=live)
 
-    is_winner = False
-    if is_winner:
+    if is_winner == "user":
         x = "Grattis! Du vann! Lejon jämför sig inte med människor - Ibrahimovic."
         draw_end_screen(x, user_pokemon.color, 15)
     else:
