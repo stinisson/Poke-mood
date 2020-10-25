@@ -38,9 +38,8 @@ def Aggressive_Ada(x, y):
 
 
 def Happy_Hasse(x, y):
-    green_monster = pg.image.load('Green_monster.png').convert_alpha()
-    green_monster_small = pg.transform.scale(green_monster, (250, 250))
-    screen.blit(green_monster_small, (x, y))
+    green_monster = pg.image.load('Green_monster_resized.png').convert_alpha()
+    screen.blit(green_monster, (x, y))
 
 
 def chat_bubble_left():
@@ -53,13 +52,6 @@ def chat_bubble_right():
     image = pg.image.load('Chat_bubble_right.png')
     chat_bubble_small = pg.transform.scale(image, (300, 170))
     screen.blit(chat_bubble_small, (260, 350))
-
-
-def rectangle():
-    pg.draw.line(screen, BLACK, (270, 290), (520, 290), 3)
-    pg.draw.line(screen, BLACK, (270, 290), (270, 235), 3)
-    pg.draw.line(screen, BLACK, (270, 235), (520, 235), 3)
-    pg.draw.line(screen, BLACK, (520, 235), (520, 290), 3)
 
 
 def background():
