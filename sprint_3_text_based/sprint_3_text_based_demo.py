@@ -9,6 +9,7 @@ import random
 from termcolor import colored
 import colorama
 import sys
+import warnings
 
 colorama.init()
 from print_module import delay_print, atk_txt, successful_block, unsuccessful_block, print_frame, draw_welcome_screen, \
@@ -79,9 +80,14 @@ def card_attack(user_pokemon, cpu, cpu_pokemon, is_cpu):
 
     if is_cpu:
         cpu_pokemon.attack_fnc(user_pokemon)
+        if user_pokemon.get_health() <= 0:
+            print(f'*** Din poketer {user_pokemon.name} svimmade. {cpu_pokemon.name} vann! ***')
     else:
         user_pokemon.attack_fnc(cpu_pokemon)
+        if cpu_pokemon.get_health() <= 0:
+            print(f'*** Din motståndares Poketer {cpu_pokemon.name} svimmade. {user_pokemon.name} vann! ***')
 
+    input("\nTryck enter för att fortsätta\n")
 
 def card_block(user, user_pokemon, cpu, cpu_pokemon, is_cpu):
     if is_cpu:
@@ -95,9 +101,14 @@ def card_block(user, user_pokemon, cpu, cpu_pokemon, is_cpu):
 
     if is_cpu:
         cpu_pokemon.block(user, user_pokemon)
+        if cpu_pokemon.get_health() <= 0:
+            print(f'*** Din motståndares Poketer {cpu_pokemon.name} svimmade. {user_pokemon.name} vann! ***')
     else:
         user_pokemon.block(cpu, cpu_pokemon)
+        if user_pokemon.get_health() <= 0:
+            print(f'*** Din poketer {user_pokemon.name} svimmade. {cpu_pokemon.name} vann!')
 
+    input("\nTryck enter för att fortsätta\n")
 
 def intro_card(poketer, is_cpu, live):
     if is_cpu:
@@ -196,6 +207,7 @@ def input_to_chance_card_health(is_cpu, user_select_from_fallback):
         keyword_choice, file_name = random.choice(list(keywords.items()))
         attitude_choice = random.choice(attitudes)
         language_choice = "english"
+        warnings.filterwarnings("ignore")
         return keyword_choice, language_choice, attitude_choice, file_name
 
     # If not possible to get tweets live, let user select from list with saved keyword files
