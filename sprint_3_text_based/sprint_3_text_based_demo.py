@@ -232,28 +232,38 @@ def chance_card_attack(player, poketer, is_cpu, live):
     input("\nTryck enter för att fortsätta")
 
 
-def input_to_chance_card_health():
-    while True:
-        print(
-            "Skriv in ett nyckelord att söka efter på Twitter. Endast bokstäver accepteras. Exempel: Donald Trump, Estonia.")
-        keyword_choice = input(">> ")
-        is_alphanumeric_or_space = (len([char for char in keyword_choice if not (char.isalpha() or char == " ")]) == 0)
-        is_only_spaces = (len([char for char in keyword_choice if not char == " "]) == 0)
-        if not is_alphanumeric_or_space or is_only_spaces or len(keyword_choice) < 1:
-            continue
+def input_to_chance_card_health(is_cpu, user_select_from_fallback):
+    keywords = {"Belarus": "tweets_belarus.p",
+                "Biden": "tweets_biden.p",
+                "COVID": "tweets_covid.p",
+                "Donald Trump": "tweets_donald_trump.p",
+                "Erdos number": "tweets_erdos_number.p",
+                "Nobel Prize": "tweets_nobel_prize.p",
+                "Poland": "tweets_poland.p",
+                "Puppies": "tweets_puppies.p"}
+    attitudes = ["positivt", "negativt", "neutralt"]
+    file_name = ""
 
-        while True:
-            language_choice = input("Vilket språk vill du söka efter? [S]venska eller [E]ngelska? ")
-            if language_choice.lower() == "s":
-                language_choice = "swedish"
-                break
-            elif language_choice.lower() == "e":
-                language_choice = "english"
-                break
+    if is_cpu:
+        keyword_choice, file_name = random.choice(list(keywords.items()))
+        attitude_choice = random.choice(attitudes)
+        language_choice = "english"
+        return keyword_choice, language_choice, attitude_choice, file_name
 
+    # If not possible to get tweets live, let user select from list with saved keyword files
+    elif user_select_from_fallback:
+        for idx, keyword in enumerate(keywords):
+            print(idx + 1, keyword)
+
+        keyword_choice = take_integer_input(f"Vilket sökord väljer du? (1-{len(keywords)}): ",
+                                            len(keywords) + 1, f"Ogiltligt val! Ange en siffra 1-{len(keywords)}.")
+        keyword_list = list(keywords)
+        keyword_choice = keyword_list[keyword_choice - 1]
+
+        language_choice = "english"
         while True:
             print(
-                f"Tror du folket på Twitter är mest positivt, mest negativt eller neutralt inställda till {keyword_choice}?")
+                f"Tror du folket på engelskspråkiga Twitter är mest positivt, mest negativt eller neutralt inställda till {keyword_choice}?")
             attitude_choice = input("[P]ostiva - [N]egativa - ne[U]trala? ")
             if attitude_choice.lower() == "p":
                 attitude_choice = "positivt"
@@ -264,7 +274,42 @@ def input_to_chance_card_health():
             elif attitude_choice.lower() == "u":
                 attitude_choice = "neutralt"
                 break
-        return keyword_choice, language_choice, attitude_choice
+        return keyword_choice, language_choice, attitude_choice, file_name
+
+    else:
+        while True:
+            print(
+                "Skriv in ett nyckelord att söka efter på Twitter. Endast bokstäver accepteras. Exempel: Donald Trump, Estonia.")
+            keyword_choice = input(">> ")
+            is_alphanumeric_or_space = (
+                        len([char for char in keyword_choice if not (char.isalpha() or char == " ")]) == 0)
+            is_only_spaces = (len([char for char in keyword_choice if not char == " "]) == 0)
+            if not is_alphanumeric_or_space or is_only_spaces or len(keyword_choice) < 1:
+                continue
+
+            while True:
+                language_choice = input("Vilket språk vill du söka efter? [S]venska eller [E]ngelska? ")
+                if language_choice.lower() == "s":
+                    language_choice = "swedish"
+                    break
+                elif language_choice.lower() == "e":
+                    language_choice = "english"
+                    break
+
+            while True:
+                print(
+                    f"Tror du folket på Twitter är mest positivt, mest negativt eller neutralt inställda till {keyword_choice}?")
+                attitude_choice = input("[P]ostiva - [N]egativa - ne[U]trala? ")
+                if attitude_choice.lower() == "p":
+                    attitude_choice = "positivt"
+                    break
+                elif attitude_choice.lower() == "n":
+                    attitude_choice = "negativt"
+                    break
+                elif attitude_choice.lower() == "u":
+                    attitude_choice = "neutralt"
+                    break
+            return keyword_choice, language_choice, attitude_choice, file_name
 
 
 def chance_card_health(player, poketer, is_cpu):
@@ -275,28 +320,43 @@ def chance_card_health(player, poketer, is_cpu):
     else:
         x = f"""
         Twitter-vadslagning! Har du koll på vad som trendar på sociala medier?
-        Skriv in ett ord och på vilket språk du vill använda i sökningen. Gissa om
+        Skriv in ett ord och vilket språk du vill använda i sökningen. Gissa om
         de senaste tweetsen som innehåller detta ord är mest positiva, mest negativa
         eller neutrala. Om du gissar rätt belönas du med {health_bonus} p i ökad hälsa.
         Om du gissar fel bestraffas du med {health_bonus} p minskad hälsa. Lycka till!"""
         print_frame([x], 'white', 15)
 
-    keyword, language, attitude = input_to_chance_card_health()
-    print("Det här kan ta en liten stund. Häng kvar! :)")
-
-    result = sentiment_analysis(keyword=keyword, language=language,
-                                file_name='demo_tweets_english_covid.p', live=True)
-
+    user_select_from_fallback = False
     while True:
+        keyword, language, attitude, file_name = input_to_chance_card_health(is_cpu, user_select_from_fallback)
+
+        if is_cpu:
+            x = f"""{player.name} gissar att {keyword} har mest {attitude} innehåll på engelskspråkiga Twitter."""
+            print_frame([x], poketer.color, 15)
+            print("Det här kan ta en liten stund. Häng kvar! :)")
+            result = sentiment_analysis(keyword=keyword, language=language,
+                                        file_name=file_name, live=False)
+        else:
+            print("Det här kan ta en liten stund. Häng kvar! :)")
+            result = sentiment_analysis(keyword=keyword, language=language,
+                                        file_name='demo_tweets_english_covid.p', live=True)
+
         if result == 'connection_error':
-            x = f"Det går tyvärr inte att söka på Twitter just nu. Försök igen senare!"
+            x = """Det går tyvärr inte att söka på Twitter just nu. Du får istället testa dina kunskaper
+             på ett förvalt sökord på engelskspråkiga Twitter."""
             print_frame([x], 'white', 15)
-            break
+            user_select_from_fallback = True
+            continue
 
         if result == 'too_few_results':
-            x = f"""Hittade för få tweets innehållandes {keyword}.
-    Ett tips är att söka efter något som är mer aktuellt i samhällsdebatten."""
-            print_frame([x], 'white', 15)
+            if is_cpu:
+                x = f"Tyvärr, hittade för få tweets innehållandes {keyword}."
+                print_frame([x], 'white', 15)
+                return
+            else:
+                x = f"""Hittade för få tweets innehållandes {keyword}. Ett tips är att söka efter något som är
+    mer aktuellt i samhällsdebatten."""
+                print_frame([x], 'white', 15)
         else:
             break
 
@@ -316,7 +376,7 @@ def chance_card_health(player, poketer, is_cpu):
 
         print_frame([w, x, y, z], poketer.color, 15)
 
-        input("\nTryck enter för att fortsätta")
+    input("\nTryck enter för att fortsätta")
 
 
 def show_stats_card(user, cpu):
@@ -372,7 +432,6 @@ def check_is_winner(user, cpu):
 
 
 def game_loop(user, user_pokemon, cpu, cpu_pokemon, live):
-
     while True:
         print("\nVad vill du göra?")
         choices = {1: "Attackera", 2: "Blockera", 3: "Chanskort - attack", 4: "Chanskort - hälsa", 5: "Visa status",
@@ -384,11 +443,11 @@ def game_loop(user, user_pokemon, cpu, cpu_pokemon, live):
 
         if user_choice == 1:
             continue
-            #card_attack(user=user, user_pokemon=user_pokemon, cpu=cpu, cpu_pokemon=cpu_pokemon, is_cpu=False)
+            # card_attack(user=user, user_pokemon=user_pokemon, cpu=cpu, cpu_pokemon=cpu_pokemon, is_cpu=False)
 
         elif user_choice == 2:
             continue
-            #card_block(user=user, user_pokemon=user_pokemon, cpu=cpu, cpu_pokemon=cpu_pokemon, is_cpu=False)
+            # card_block(user=user, user_pokemon=user_pokemon, cpu=cpu, cpu_pokemon=cpu_pokemon, is_cpu=False)
 
         elif user_choice == 3:
             chance_card_attack(player=user, poketer=user_pokemon, is_cpu=False, live=live)
@@ -420,7 +479,6 @@ def game_loop(user, user_pokemon, cpu, cpu_pokemon, live):
 
 
 def start_game(live):
-
     draw_welcome_screen()
     username = input("Vänligen ange ditt namn: ")
     poketer_mood_explanation_text(username)
@@ -447,7 +505,6 @@ def start_game(live):
     intro_card(poketer=user_pokemon, is_cpu=False, live=live)
     intro_card(poketer=cpu_pokemon, is_cpu=True, live=live)
 
-    # TODO return winner from game_loop
     is_winner = game_loop(user=user, user_pokemon=user_pokemon, cpu=cpu, cpu_pokemon=cpu_pokemon, live=live)
 
     if is_winner == "user":
