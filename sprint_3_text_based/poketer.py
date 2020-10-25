@@ -15,7 +15,7 @@ class Poketer:
         self.color = color
         self.catchword = catchword
 
-    def attack_fnc(self, opponent_pokemon, opponent):
+    def attack_fnc(self, opponent_pokemon):
         miss_chance = randint(1, 6)
         crit_chance = randint(1, 6)
         dmg_modifier = randint(-3, 3)
@@ -82,11 +82,17 @@ class Poketer:
     def add_max_health(self, max_health_score):
         self.max_health += max_health_score
 
+    def get_attack(self):
+        return self.attack
+
     def get_health(self):
         return self.health
 
     def get_stats(self):
         return f"{self.name} har {self.health} i hälsa och {self.attack} i attack."
+
+    def set_attack(self, attack_score):
+        self.attack = attack_score
 
     def __repr__(self):
         return f'Poketer: {self.name}. Mood: {self.mood}. Health: {self.health}. Max health: {self.max_health}. Attack: {self.attack}.'
