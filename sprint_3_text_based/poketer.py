@@ -1,4 +1,4 @@
-from datetime import time
+import time
 from random import randint
 
 from termcolor import colored
