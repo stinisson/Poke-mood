@@ -15,7 +15,7 @@ from nltk.corpus import stopwords
 #nltk.download('vader_lexicon')
 
 from nltk.sentiment.vader import SentimentIntensityAnalyzer as SentimentIntensityAnalyzerEnglish
-from vaderSentiment.vaderSentiment import SentimentIntensityAnalyzer as SentimentIntensityAnalyzerSwedish
+from vaderSentimentSwedish.vaderSentimentSwedish import SentimentIntensityAnalyzerSwedish
 import matplotlib.pyplot as plt
 from matplotlib.font_manager import FontProperties
 
@@ -35,7 +35,6 @@ def sentiment_analysis(keyword, language, file_name='', live=False):
 
     tweets = get_tweets(keyword=keyword, language=language, load_from_file=False, live=live, file_name=file_name, file_path='demo-tweets')
 
-    # TODO FEEDBACK SPRINT 2 - HANDLE TWEET SEARCH THAT RESULT IN NO TWEETS
     if tweets is None:
         return 'connection_error'
     if len(tweets) < 2:

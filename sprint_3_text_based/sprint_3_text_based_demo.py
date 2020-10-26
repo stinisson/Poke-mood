@@ -3,6 +3,7 @@ from twitter_search import geocodes
 from mood_score import calc_mood_score
 from mood_analysis import mood_analysis, text_emotions
 from sentiment_analysis import sentiment_analysis
+from quiz import quiz
 from user import User
 from poketer import Poketer
 import random
@@ -10,6 +11,7 @@ from termcolor import colored
 import colorama
 import sys
 import warnings
+
 
 colorama.init()
 from print_module import delay_print, atk_txt, successful_block, unsuccessful_block, print_frame, draw_welcome_screen, \
@@ -358,7 +360,10 @@ def cpu_make_move(user, user_pokemon, cpu, cpu_pokemon, live):
     cpu_extra_s = (colored("s", cpu_pokemon.color))
     print(f"\nNu är det {cpu.name}{cpu_extra_s} tur!")
 
-    moves = ["attack", "block", "chance_card_attack", "chance_card_health", 'quiz']
+    # TODO implement cpu make quiz move
+    #moves = ["attack", "block", "chance_card_attack", "chance_card_health", 'quiz']
+    moves = ["attack", "block", "chance_card_attack", "chance_card_health"]
+
     move = random.choice(moves)
 
     if move == "attack":
@@ -373,8 +378,8 @@ def cpu_make_move(user, user_pokemon, cpu, cpu_pokemon, live):
     elif move == "chance_card_health":
         chance_card_health(player=cpu, poketer=cpu_pokemon, is_cpu=True)
 
-    elif move == "quiz":
-        quiz(player=cpu, poketer=cpu_pokemon, is_cpu=True)
+    # elif move == "quiz":
+    #     quiz_card(player=cpu, poketer=cpu_pokemon, is_cpu=True)
 
 
 def check_is_winner(user, cpu):
@@ -394,20 +399,37 @@ def check_is_winner(user, cpu):
         return None
 
 
-def quiz(player, poketer, is_cpu):
+def quiz_card(player, poketer, is_cpu, available_poketers):
 
     if is_cpu:
         x = f"""{player.name} valde quiz och har nu chansen att vinna en till Poketer! """
         print_frame([x], poketer.color, 15)
     else:
         x = f"""
-        Quiz-dags! Om du svarar rätt på alla fyra kluriga quiz-frågor får du välja en till Poketer. Lycka till!"""
+        Quiz-dags! Om du svarar rätt på alla quiz-frågor får du välja en till Poketer. Frågekategorierna som finns
+är datorer, matematik och vetenskap/natur. Kategorierna väljs slumpmässigt. Lycka till!"""
         print_frame([x], 'white', 15)
 
     input("\nTryck enter för att fortsätta\n")
 
+    won_a_poketer = quiz()
 
-def game_loop(user, user_pokemon, cpu, cpu_pokemon, live):
+    input("\nTryck enter för att fortsätta\n")
+
+    if won_a_poketer:
+        x = f"""Bra jobbat! Du har vunnit en ny Poketer!"""
+        print_frame([x], poketer.color, 15)
+        quiz_poke = choose_poketer(available_poketers, is_cpu=False)
+        if quiz_poke is not None:
+            player.add_team(quiz_poke)
+    else:
+        x = f"""Tyvärr! Du hade inte alla rätt på quizet så du vann inte en till Poketer. Bättre lycka nästa gång!"""
+        print_frame([x], poketer.color, 15)
+
+    input("\nTryck enter för att fortsätta\n")
+
+
+def game_loop(user, user_pokemon, cpu, cpu_pokemon, live, available_poketers):
     while True:
         print("\nVad vill du göra?")
         choices = {1: "Attackera", 2: "Blockera", 3: "Chanskort - attack", 4: "Chanskort - hälsa",
@@ -431,7 +453,7 @@ def game_loop(user, user_pokemon, cpu, cpu_pokemon, live):
             chance_card_health(player=user, poketer=user_pokemon, is_cpu=False)
 
         elif user_choice == 5:
-            quiz(player=user, poketer=user_pokemon, is_cpu=False)
+            quiz_card(player=user, poketer=user_pokemon, is_cpu=False, available_poketers=available_poketers)
 
         elif user_choice == 6:
             show_stats_card(user=user, cpu=cpu)
@@ -463,16 +485,21 @@ def choose_poketer(available_poketers, is_cpu):
         return cpu_pokemon
     else:
         print("Du ska nu få välja en Poketer. Dessa Pokteter är tillgängliga:")
-        for idx, poketer in enumerate(available_poketers):
-            print(idx + 1, poketer.name)
+        if len(available_poketers) > 0:
+            for idx, poketer in enumerate(available_poketers):
+                print(idx + 1, poketer.name)
 
-        poketer_choice = take_integer_input(f"Vilken Poketer väljer du? (1-{len(available_poketers)}): ",
-                                            len(available_poketers) + 1,
-                                            f"Ogiltligt val! Ange en siffra 1-{len(available_poketers)}.")
+            poketer_choice = take_integer_input(f"Vilken Poketer väljer du? (1-{len(available_poketers)}): ",
+                                                len(available_poketers) + 1,
+                                                f"Ogiltligt val! Ange en siffra 1-{len(available_poketers)}.")
 
-        user_pokemon = available_poketers[poketer_choice - 1]
-        available_poketers.remove(user_pokemon)
-        return user_pokemon
+            user_pokemon = available_poketers[poketer_choice - 1]
+            available_poketers.remove(user_pokemon)
+            return user_pokemon
+        else:
+            print("Tyvärr, det finns inga Poketerer kvar att välja bland.")
+            return None
+
 
 
 def start_game(live):
@@ -508,7 +535,7 @@ def start_game(live):
     intro_card(poketer=user_pokemon, is_cpu=False, live=live)
     intro_card(poketer=cpu_pokemon, is_cpu=True, live=live)
 
-    is_winner = game_loop(user=user, user_pokemon=user_pokemon, cpu=cpu, cpu_pokemon=cpu_pokemon, live=live)
+    is_winner = game_loop(user=user, user_pokemon=user_pokemon, cpu=cpu, cpu_pokemon=cpu_pokemon, live=live, available_poketers=available_poketers)
 
     if is_winner == "user":
         x = "Grattis! Du vann! Lejon jämför sig inte med människor - Ibrahimovic."
