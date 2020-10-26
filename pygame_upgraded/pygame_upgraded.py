@@ -13,7 +13,6 @@ pg.display.set_caption('Demo - PokeMood')
 clock = pg.time.Clock()
 crashed = False
 
-second_surface = pg.Surface((800, 600))
 base_font = pg.font.SysFont("roboto mono", 30, True)
 
 bg = pg.image.load("Background_forest.jpg").convert()
@@ -124,17 +123,17 @@ def block_button(mouse):
 
 
 def chat_bubble_left():
-    left = pg.image.load('Chat_bubble_left.png').convert()
+    left = pg.image.load('Chat_bubble_left.png').convert_alpha()
     left_small = pg.transform.scale(left, (300, 170))
-    second_surface.blit(left_small, (250, 50))
-    text_speech(second_surface, "RobotoSlab-Medium.ttf", 15, "Moodscore: 113", BLACK, 390, 135, True)
+    screen.blit(left_small, (250, 50))
+    text_speech(screen, "RobotoSlab-Medium.ttf", 15, "Moodscore: 113", BLACK, 390, 135, True)
 
 
 def chat_bubble_right():
-    right = pg.image.load('Chat_bubble_right.png').convert()
+    right = pg.image.load('Chat_bubble_right.png').convert_alpha()
     right_small = pg.transform.scale(right, (300, 170))
-    second_surface.blit(right_small, (260, 350))
-    text_speech(second_surface, "RobotoSlab-Medium.ttf", 15, "Moodscore: 123", BLACK, 370, 435, True)
+    screen.blit(right_small, (260, 350))
+    text_speech(screen, "RobotoSlab-Medium.ttf", 15, "Moodscore: 123", BLACK, 370, 435, True)
 
 
 button = 0
@@ -149,7 +148,7 @@ def battle_menu():
         screen.blit(background, (0, 0))
         Aggressive_Ada(520, 300, 640, 300)
         Happy_Hasse(8, 30, 122, 45)
-        screen.blit(second_surface, (0, 0))
+
 
         mx, my = pg.mouse.get_pos()
         mouse = pg.mouse.get_pos()
@@ -178,6 +177,7 @@ def battle_menu():
             chat_bubble_left()
 
         if button == 2:
+            chat_bubble_left()
             chat_bubble_right()
 
         click = False
