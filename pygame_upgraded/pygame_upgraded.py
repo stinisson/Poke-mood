@@ -1,6 +1,7 @@
 import pygame as pg
 import sys
 from Pygame.constants import *
+from mood_score import calc_mood_score
 
 pg.init()
 
@@ -36,6 +37,16 @@ class Poketer:
         self.catchword = catchword
         self.image = pg.image.load(img_name).convert_alpha()
 
+    def add_health(self, health_score):
+        result = self.health + health_score
+        return result
+
+    def add_max_health(self, max_health_score):
+        result = self.max_health + max_health_score
+        return result
+
+    def get_health(self):
+        return self.health
 
 gunnar = Poketer("Glada Gunnar", 'happy', 'yellow', 50, 50, 45, catchword="#YOLO", img_name="Green_monster_resized.png")
 ada = Poketer("Aggressiva Ada", 'angry', 'red', 50, 50, 45, catchword="#FTW", img_name="Pink_dragon_01.png")
@@ -67,6 +78,7 @@ def text_speech(screen, font: str, size: int, text: str, color, x, y, bold: bool
 
 def Aggressive_Ada(x, y, a ,b):
 
+    calc_mood_score(gunnar.mood, "Stockholm", live=False)
     screen.blit(ada.image, (x, y))
     text_speech(screen, "RobotoSlab-Medium.ttf", 15, f"{ada.name}", ada.color, a, b, True)
     text_speech(screen, "RobotoSlab-Medium.ttf", 15, f"Stats: HP: {ada.max_health}, Attack: {ada.attack}, Mood: {ada.mood}", WHITE, 630, 575,
@@ -75,9 +87,14 @@ def Aggressive_Ada(x, y, a ,b):
 
 def Glada_Gunnar(x, y, a, b):
 
+    result = calc_mood_score(gunnar.mood, "Göteborg", live=False)
+    gunnar.add_max_health(result)
+    gunnar.add_health(result)
+    #result_2 = gunnar.get_health()
     screen.blit(gunnar.image, (x, y))
+    text_speech(screen, "RobotoSlab-Medium.ttf", 15, f"{gunnar.health}", gunnar.color, 300, 150, True)
     text_speech(screen, "RobotoSlab-Medium.ttf", 15, f"{gunnar.name}", gunnar.color, a, b, True)
-    text_speech(screen, "RobotoSlab-Medium.ttf", 15, f"Stats: HP: {gunnar.max_health}, Attack: {gunnar.attack}, Mood: {gunnar.mood}", WHITE, 170, 20,
+    text_speech(screen, "RobotoSlab-Medium.ttf", 15, f"Stats: HP: {gunnar.health}, Attack: {gunnar.attack}, Mood: {gunnar.mood}", WHITE, 170, 20,
                 True)
 
 
