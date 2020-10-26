@@ -59,7 +59,7 @@ class Poketer:
         if block_chance <= 7:
             time.sleep(1)
             self.health -= opponent_pokemon.attack // 2
-            delay_print(f"{opponent.name} attackerar {self.name}", "3 2 1...",
+            delay_print(f"{opponent_pokemon.name} attackerar {self.name}", "3 2 1...",
                         "Boom!")  # Ändrade så att det stod "attackerar" som de andra printsatserna
             successful_block(self.name)  # Flyttade ner denna så att den hamnar efter attacken, ser bättre ut
             print(f"{self.name} tog {opponent_pokemon.attack // 2} i skada!\n")
@@ -67,7 +67,7 @@ class Poketer:
         elif block_chance >= 8:
             time.sleep(1)
             self.health -= opponent_pokemon.attack
-            delay_print(f"{opponent.name} attackerar med {opponent_pokemon.name}", "3 2 1...", "Boom!")
+            delay_print(f"{opponent_pokemon.name} attackerar {self.name}", "3 2 1...", "Boom!")
             unsuccessful_block(self.name)
             print(f"{self.name} tog {opponent_pokemon.attack} i skada!\n")
 

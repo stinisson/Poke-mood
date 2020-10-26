@@ -4,8 +4,8 @@ from mood_score import calc_mood_score
 from mood_analysis import mood_analysis, text_emotions
 from sentiment_analysis import sentiment_analysis
 from quiz import quiz
-from user import User
-from poketer import Poketer
+from sprint_3_text_based.user import User
+from sprint_3_text_based.poketer import Poketer
 import random
 from termcolor import colored
 import colorama
@@ -14,7 +14,7 @@ import warnings
 
 
 colorama.init()
-from print_module import delay_print, atk_txt, successful_block, unsuccessful_block, print_frame, draw_welcome_screen, \
+from sprint_3_text_based.print_module import delay_print, atk_txt, successful_block, unsuccessful_block, print_frame, draw_welcome_screen, \
     print_frame_with_newline, poketer_mood_explanation_text, draw_end_screen
 
 
@@ -367,10 +367,10 @@ def cpu_make_move(user, user_pokemon, cpu, cpu_pokemon, live):
     move = random.choice(moves)
 
     if move == "attack":
-        card_attack(user_pokemon=user_pokemon, cpu=cpu, cpu_pokemon=cpu_pokemon, is_cpu=True)
+        card_attack(user_pokemon=user.team[0], cpu=cpu, cpu_pokemon=cpu_pokemon, is_cpu=True)
 
     elif move == "block":
-        card_block(user=user, user_pokemon=user_pokemon, cpu=cpu, cpu_pokemon=cpu_pokemon, is_cpu=True)
+        card_block(user=user, user_pokemon=user.team[0], cpu=cpu, cpu_pokemon=cpu_pokemon, is_cpu=True)
 
     elif move == "chance_card_attack":
         chance_card_attack(player=cpu, poketer=cpu_pokemon, is_cpu=True, live=live)
@@ -441,19 +441,19 @@ def game_loop(user, user_pokemon, cpu, cpu_pokemon, live, available_poketers):
         user_choice = take_integer_input(f">> ", len(choices) + 1, f"Ange en siffra 1-{len(choices)}.")
 
         if user_choice == 1:
-            card_attack(user_pokemon=user_pokemon, cpu=cpu, cpu_pokemon=cpu_pokemon, is_cpu=False)
+            card_attack(user_pokemon=user.team[0], cpu=cpu, cpu_pokemon=cpu_pokemon, is_cpu=False)
 
         elif user_choice == 2:
-            card_block(user=user, user_pokemon=user_pokemon, cpu=cpu, cpu_pokemon=cpu_pokemon, is_cpu=False)
+            card_block(user=user, user_pokemon=user.team[0], cpu=cpu, cpu_pokemon=cpu_pokemon, is_cpu=False)
 
         elif user_choice == 3:
-            chance_card_attack(player=user, poketer=user_pokemon, is_cpu=False, live=live)
+            chance_card_attack(player=user, poketer=user.team[0], is_cpu=False, live=live)
 
         elif user_choice == 4:
-            chance_card_health(player=user, poketer=user_pokemon, is_cpu=False)
+            chance_card_health(player=user, poketer=user.team[0], is_cpu=False)
 
         elif user_choice == 5:
-            quiz_card(player=user, poketer=user_pokemon, is_cpu=False, available_poketers=available_poketers)
+            quiz_card(player=user, poketer=user.team[0], is_cpu=False, available_poketers=available_poketers)
 
         elif user_choice == 6:
             show_stats_card(user=user, cpu=cpu)
