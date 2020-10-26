@@ -25,6 +25,23 @@ screen.blit(background, (0, 0))
 shield = pg.image.load("shield_white.png")
 sword = pg.image.load("sword_resized.png")
 
+class Poketer:
+    def __init__(self, name, mood, color, health, max_health, attack, catchword, img_name):
+        self.name = name
+        self.mood = mood
+        self.health = health
+        self.max_health = max_health
+        self.attack = attack
+        self.color = color
+        self.catchword = catchword
+        self.image = pg.image.load(img_name).convert_alpha()
+
+
+gunnar = Poketer("Glada Gunnar", 'happy', 'yellow', 50, 50, 45, catchword="#YOLO", img_name="Green_monster_resized.png")
+ada = Poketer("Aggressiva Ada", 'angry', 'red', 50, 50, 45, catchword="#FTW", img_name="Pink_dragon_01.png")
+#louise = Poketer("Ledsna Louise", 'sad', 'blue', 50, 50, 45, catchword="#TGIF")
+#kalle = Poketer("Kärleksfulla Kalle", 'loving', 'magenta', 50, 50, 45, catchword="#XOXO")
+
 
 def text_input(input_rect, user_text):
     pg.draw.rect(screen, BLACK, input_rect, 2)
@@ -49,17 +66,17 @@ def text_speech(screen, font: str, size: int, text: str, color, x, y, bold: bool
 
 
 def Aggressive_Ada(x, y, a ,b):
-    pink_dragon = pg.image.load('Pink_dragon_01.png').convert_alpha()
-    screen.blit(pink_dragon, (x, y))
-    text_speech(screen, "RobotoSlab-Medium.ttf", 15, "Aggressive Ada", RED, a, b, True)
+
+    screen.blit(ada.image, (x, y))
+    text_speech(screen, "RobotoSlab-Medium.ttf", 15, "Aggressiva Ada", RED, a, b, True)
     text_speech(screen, "RobotoSlab-Medium.ttf", 15, "Stats: HP: 123, Attack: 20, Mood: Angry", WHITE, 630, 575,
                 True)
 
 
 def Happy_Hasse(x, y, a, b):
-    green_monster = pg.image.load('Green_monster_resized.png').convert_alpha()
-    screen.blit(green_monster, (x, y))
-    text_speech(screen, "RobotoSlab-Medium.ttf", 15, "Happy Hasse", BLUE, a, b, True)
+
+    screen.blit(gunnar.image, (x, y))
+    text_speech(screen, "RobotoSlab-Medium.ttf", 15, "Glada Gunnar", BLUE, a, b, True)
     text_speech(screen, "RobotoSlab-Medium.ttf", 15, "Stats: HP: 113, Attack: 20, Mood: Happy", WHITE, 170, 20,
                 True)
 
