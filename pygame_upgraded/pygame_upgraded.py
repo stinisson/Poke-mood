@@ -68,16 +68,16 @@ def text_speech(screen, font: str, size: int, text: str, color, x, y, bold: bool
 def Aggressive_Ada(x, y, a ,b):
 
     screen.blit(ada.image, (x, y))
-    text_speech(screen, "RobotoSlab-Medium.ttf", 15, "Aggressiva Ada", RED, a, b, True)
-    text_speech(screen, "RobotoSlab-Medium.ttf", 15, "Stats: HP: 123, Attack: 20, Mood: Angry", WHITE, 630, 575,
+    text_speech(screen, "RobotoSlab-Medium.ttf", 15, f"{ada.name}", ada.color, a, b, True)
+    text_speech(screen, "RobotoSlab-Medium.ttf", 15, f"Stats: HP: {ada.max_health}, Attack: {ada.attack}, Mood: {ada.mood}", WHITE, 630, 575,
                 True)
 
 
-def Happy_Hasse(x, y, a, b):
+def Glada_Gunnar(x, y, a, b):
 
     screen.blit(gunnar.image, (x, y))
-    text_speech(screen, "RobotoSlab-Medium.ttf", 15, "Glada Gunnar", BLUE, a, b, True)
-    text_speech(screen, "RobotoSlab-Medium.ttf", 15, "Stats: HP: 113, Attack: 20, Mood: Happy", WHITE, 170, 20,
+    text_speech(screen, "RobotoSlab-Medium.ttf", 15, f"{gunnar.name}", gunnar.color, a, b, True)
+    text_speech(screen, "RobotoSlab-Medium.ttf", 15, f"Stats: HP: {gunnar.max_health}, Attack: {gunnar.attack}, Mood: {gunnar.mood}", WHITE, 170, 20,
                 True)
 
 
@@ -164,7 +164,7 @@ def battle_menu():
         screen.fill(WHITE)
         screen.blit(background, (0, 0))
         Aggressive_Ada(520, 300, 640, 300)
-        Happy_Hasse(8, 30, 122, 45)
+        Glada_Gunnar(8, 30, 122, 45)
 
 
         mx, my = pg.mouse.get_pos()
@@ -237,7 +237,7 @@ def battle_time():
         screen.fill(WHITE)
         screen.blit(background, (0, 0))
         Aggressive_Ada(display_width * 0.63, display_height * 0.26, 650, 550)
-        Happy_Hasse(display_width * 0.03, display_height * 0.24, 122, 45)
+        Glada_Gunnar(display_width * 0.03, display_height * 0.24, 122, 45)
         mouse = pg.mouse.get_pos()
         vs_logo()
         quit_button_rect = pg.Rect(650, 30, 140, 40)
@@ -280,7 +280,7 @@ def block_func():
         screen.fill(WHITE)
         screen.blit(background, (0, 0))
         Aggressive_Ada(display_width * 0.63, display_height * 0.26, 650, 550)
-        Happy_Hasse(display_width * 0.03, display_height * 0.24, 122, 45)
+        Glada_Gunnar(display_width * 0.03, display_height * 0.24, 122, 45)
         screen.blit(shield, (305, 160))
         mouse = pg.mouse.get_pos()
 
@@ -322,7 +322,7 @@ def attack_func():
         screen.fill(WHITE)
         screen.blit(background, (0, 0))
         Aggressive_Ada(display_width * 0.63, display_height * 0.26, 650, 550)
-        Happy_Hasse(display_width * 0.03, display_height * 0.24, 122, 45)
+        Glada_Gunnar(display_width * 0.03, display_height * 0.24, 122, 45)
         screen.blit(sword, (315,170))
         mouse = pg.mouse.get_pos()
 

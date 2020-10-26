@@ -4,4 +4,4 @@ tweepy
 nltk==3.5
 vaderSentiment
 matplotlib
-pygame
+pygame == 2.0.0.dev12
