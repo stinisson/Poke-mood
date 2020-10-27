@@ -311,7 +311,6 @@ def battle_time():
                 if block_button_rect.collidepoint((mx, my)):
                     block_func()
                 if attack_button_rect.collidepoint((mx, my)):
-                    gunnar.attack_fnc(ada)
                     attack_func()
 
 
@@ -382,7 +381,10 @@ def attack_func():
 
         block_button_rect = pg.Rect(445, 430, 150, 50)
         block_button(mouse)
+        atk = True
 
+
+        click = False
         mx, my = pg.mouse.get_pos()
         for event in pg.event.get():
             if event.type == pg.QUIT:
@@ -392,13 +394,19 @@ def attack_func():
                 if event.key == pg.K_ESCAPE:
                     running = False
             if event.type == pg.MOUSEBUTTONDOWN:
+                if event.button == 1:
+                    click = True
                 if back_button_rect.collidepoint((mx, my)):
                     battle_menu()
                 if quit_button_rect.collidepoint((mx, my)):
                     pg.quit()
                 if block_button_rect.collidepoint((mx, my)):
                     block_func()
-
+                if attack_button_rect.collidepoint((mx, my)):
+                    while atk:
+                        if click:
+                            gunnar.attack_fnc(ada)
+                            atk = False
         pg.display.update()
         clock.tick(60)
 
