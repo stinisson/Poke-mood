@@ -7,11 +7,13 @@ from mood_score import calc_mood_score
 
 pg.init()
 
-intro_song = "intro_song_1.mp3"
-pg.mixer.init()
-pg.mixer.music.load(intro_song)
-pg.mixer.music.play(-1)
-pg.mixer.music.set_volume(0.5)
+
+def music_intro(intro_song):
+    pg.mixer.init()
+    pg.mixer.music.load(intro_song)
+    pg.mixer.music.play(-1)
+    pg.mixer.music.set_volume(0.5)
+
 
 display_width = 800
 display_height = 600
@@ -33,6 +35,7 @@ screen.blit(background, (0, 0))
 
 shield = pg.image.load("shield_white.png")
 sword = pg.image.load("sword_resized.png")
+
 
 
 class Poketer:
@@ -63,19 +66,19 @@ class Poketer:
         dmg_modifier = randint(-3, 3)
         if miss_chance <= 5:
             if crit_chance >= 5:
-                crit_atk = opponent_pokemon.health - (self.attack + dmg_modifier) * 2
+                opponent_pokemon.health = opponent_pokemon.health - (self.attack + dmg_modifier) * 2
                 # atk_txt(self.name, opponent_pokemon.name, "3 2 1...")
                 text_speech(screen, "RobotoSlab-Medium.ttf", 15, "Kritisk träff!", BLACK, 300, 150, True)
                 # self.healtcheck_color(opponent_pokemon)
                 # self.healthcheck(opponent_pokemon, opponent.name)
-                return crit_atk
+                return opponent_pokemon.health
             else:
-                normal_atk = opponent_pokemon.health - (self.attack + dmg_modifier)
+                opponent_pokemon.health = opponent_pokemon.health - (self.attack + dmg_modifier)
                 # atk_txt(self.name, opponent_pokemon.name, "3 2 1...")
                 text_speech(screen, "RobotoSlab-Medium.ttf", 15, "Attacken träffade!", BLACK, 300, 150, True)
                 # self.healtcheck_color(opponent_pokemon)
                 # self.healthcheck(opponent_pokemon, opponent.name)
-                return normal_atk
+                return opponent_pokemon.health
         else:
             text_speech(screen, "RobotoSlab-Medium.ttf", 15, "Attacken missade!", BLACK, 300, 150, True)
 
@@ -214,6 +217,7 @@ def battle_menu():
     global button
     # active = False
     # user_text = ''
+    music_intro("intro_song_1.mp3")
     while True:
         screen.fill(WHITE)
         screen.blit(background, (0, 0))
@@ -236,6 +240,7 @@ def battle_menu():
 
         if battle_button_rect.collidepoint((mx, my)):
             if click:
+                pg.mixer.music.stop()
                 battle_time()
 
         if quit_button_rect.collidepoint((mx, my)):
@@ -411,13 +416,18 @@ def attack_func():
                 if block_button_rect.collidepoint((mx, my)):
                     block_func()
                 if attack_button_rect.collidepoint((mx, my)):
-                    while atk:
-                        if click:
-                            display_text = True
-                            if display_text:
-                                gunnar.attack_fnc(ada)
-                                if click:
-                                    atk = False
+
+                    temp = gunnar.attack_fnc(ada)
+                    print(temp)
+
+
+                    # while atk:
+                    #     if click:
+                    #         display_text = True
+                    #         if display_text:
+                    #             gunnar.attack_fnc(ada)
+                    #             if click:
+                    #                 atk = False
         pg.display.update()
         clock.tick(60)
 
