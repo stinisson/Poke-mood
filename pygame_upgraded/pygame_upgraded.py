@@ -78,23 +78,23 @@ def text_speech(screen, font: str, size: int, text: str, color, x, y, bold: bool
 
 def Aggressive_Ada(x, y, a ,b):
 
-    calc_mood_score(gunnar.mood, "Stockholm", live=False)
+    mood_score = calc_mood_score(ada.mood, "Stockholm", live=False)
+    result1 = ada.add_max_health(mood_score)
+    result2 = ada.add_health(mood_score)
     screen.blit(ada.image, (x, y))
     text_speech(screen, "RobotoSlab-Medium.ttf", 15, f"{ada.name}", ada.color, a, b, True)
-    text_speech(screen, "RobotoSlab-Medium.ttf", 15, f"Stats: HP: {ada.max_health}, Attack: {ada.attack}, Mood: {ada.mood}", WHITE, 630, 575,
+    text_speech(screen, "RobotoSlab-Medium.ttf", 15, f"Stats: HP: {result1}, Attack: {ada.attack}, Mood: {ada.mood}", WHITE, 630, 575,
                 True)
 
 
 def Glada_Gunnar(x, y, a, b):
 
-    result = calc_mood_score(gunnar.mood, "Göteborg", live=False)
-    gunnar.add_max_health(result)
-    gunnar.add_health(result)
-    #result_2 = gunnar.get_health()
+    mood_score = calc_mood_score(gunnar.mood, "Göteborg", live=False)
+    result1 = gunnar.add_max_health(mood_score)
+    result2 = gunnar.add_health(mood_score)
     screen.blit(gunnar.image, (x, y))
-    text_speech(screen, "RobotoSlab-Medium.ttf", 15, f"{gunnar.health}", gunnar.color, 300, 150, True)
     text_speech(screen, "RobotoSlab-Medium.ttf", 15, f"{gunnar.name}", gunnar.color, a, b, True)
-    text_speech(screen, "RobotoSlab-Medium.ttf", 15, f"Stats: HP: {gunnar.health}, Attack: {gunnar.attack}, Mood: {gunnar.mood}", WHITE, 170, 20,
+    text_speech(screen, "RobotoSlab-Medium.ttf", 15, f"Stats: HP: {result1}, Attack: {gunnar.attack}, Mood: {gunnar.mood}", WHITE, 170, 20,
                 True)
 
 
@@ -160,14 +160,16 @@ def chat_bubble_left():
     left = pg.image.load('Chat_bubble_left.png').convert_alpha()
     left_small = pg.transform.scale(left, (300, 170))
     screen.blit(left_small, (250, 50))
-    text_speech(screen, "RobotoSlab-Medium.ttf", 15, "Moodscore: 113", BLACK, 390, 135, True)
+    mood_score = calc_mood_score(gunnar.mood, "Göteborg", live=False)
+    text_speech(screen, "RobotoSlab-Medium.ttf", 15, f"Moodscore: {mood_score}", BLACK, 390, 135, True)
 
 
 def chat_bubble_right():
     right = pg.image.load('Chat_bubble_right.png').convert_alpha()
     right_small = pg.transform.scale(right, (300, 170))
     screen.blit(right_small, (260, 350))
-    text_speech(screen, "RobotoSlab-Medium.ttf", 15, "Moodscore: 123", BLACK, 370, 435, True)
+    mood_score = calc_mood_score(ada.mood, "Stockholm", live=False)
+    text_speech(screen, "RobotoSlab-Medium.ttf", 15, f"Moodscore: {mood_score}", BLACK, 370, 435, True)
 
 
 button = 0
