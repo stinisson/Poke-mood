@@ -56,18 +56,21 @@ class Poketer:
         dmg_modifier = randint(-3, 3)
         if miss_chance <= 5:
             if crit_chance >= 5:
-                opponent_pokemon.health -= (self.attack + dmg_modifier) * 2
+                crit_atk = opponent_pokemon.health - (self.attack + dmg_modifier) * 2
                 #atk_txt(self.name, opponent_pokemon.name, "3 2 1...")
-                print("Dubbel skada!")
-                self.healtcheck_color(opponent_pokemon)
+                text_speech(screen, "RobotoSlab-Medium.ttf", 15, "Kritisk träff!", BLACK, 300, 150, True)
+                # self.healtcheck_color(opponent_pokemon)
                 # self.healthcheck(opponent_pokemon, opponent.name)
+                return crit_atk
             else:
-                opponent_pokemon.health -= (self.attack + dmg_modifier)
+                normal_atk = opponent_pokemon.health - (self.attack + dmg_modifier)
                 #atk_txt(self.name, opponent_pokemon.name, "3 2 1...")
-                self.healtcheck_color(opponent_pokemon)
+                text_speech(screen, "RobotoSlab-Medium.ttf", 15, "Attacken träffade!", BLACK, 300, 150, True)
+                #self.healtcheck_color(opponent_pokemon)
                 # self.healthcheck(opponent_pokemon, opponent.name)
+                return normal_atk
         else:
-            print("Attacken missade...")
+            text_speech(screen, "RobotoSlab-Medium.ttf", 15, "Attacken missade!", BLACK, 300, 150, True)
 
 gunnar = Poketer("Glada Gunnar", 'happy', 'yellow', 50, 50, 45, catchword="#YOLO", img_name="Green_monster_resized.png")
 ada = Poketer("Aggressiva Ada", 'angry', 'red', 50, 50, 45, catchword="#FTW", img_name="Pink_dragon_01.png")
@@ -308,7 +311,9 @@ def battle_time():
                 if block_button_rect.collidepoint((mx, my)):
                     block_func()
                 if attack_button_rect.collidepoint((mx, my)):
+                    gunnar.attack_fnc(ada)
                     attack_func()
+
 
         pg.display.update()
         clock.tick(60)
