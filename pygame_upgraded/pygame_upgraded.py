@@ -7,6 +7,12 @@ from mood_score import calc_mood_score
 
 pg.init()
 
+intro_song = "intro_song_1.mp3"
+pg.mixer.init()
+pg.mixer.music.load(intro_song)
+pg.mixer.music.play(-1)
+pg.mixer.music.set_volume(0.5)
+
 display_width = 800
 display_height = 600
 
