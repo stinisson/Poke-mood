@@ -1,3 +1,5 @@
+from random import randint
+
 import pygame as pg
 import sys
 from Pygame.constants import *
@@ -47,6 +49,25 @@ class Poketer:
 
     def get_health(self):
         return self.health
+
+    def attack_fnc(self, opponent_pokemon):
+        miss_chance = randint(1, 6)
+        crit_chance = randint(1, 6)
+        dmg_modifier = randint(-3, 3)
+        if miss_chance <= 5:
+            if crit_chance >= 5:
+                opponent_pokemon.health -= (self.attack + dmg_modifier) * 2
+                #atk_txt(self.name, opponent_pokemon.name, "3 2 1...")
+                print("Dubbel skada!")
+                self.healtcheck_color(opponent_pokemon)
+                # self.healthcheck(opponent_pokemon, opponent.name)
+            else:
+                opponent_pokemon.health -= (self.attack + dmg_modifier)
+                #atk_txt(self.name, opponent_pokemon.name, "3 2 1...")
+                self.healtcheck_color(opponent_pokemon)
+                # self.healthcheck(opponent_pokemon, opponent.name)
+        else:
+            print("Attacken missade...")
 
 gunnar = Poketer("Glada Gunnar", 'happy', 'yellow', 50, 50, 45, catchword="#YOLO", img_name="Green_monster_resized.png")
 ada = Poketer("Aggressiva Ada", 'angry', 'red', 50, 50, 45, catchword="#FTW", img_name="Pink_dragon_01.png")
