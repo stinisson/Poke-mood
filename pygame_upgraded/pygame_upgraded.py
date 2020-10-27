@@ -28,6 +28,7 @@ screen.blit(background, (0, 0))
 shield = pg.image.load("shield_white.png")
 sword = pg.image.load("sword_resized.png")
 
+
 class Poketer:
     def __init__(self, name, mood, color, health, max_health, attack, catchword, img_name):
         self.name = name
@@ -57,25 +58,28 @@ class Poketer:
         if miss_chance <= 5:
             if crit_chance >= 5:
                 crit_atk = opponent_pokemon.health - (self.attack + dmg_modifier) * 2
-                #atk_txt(self.name, opponent_pokemon.name, "3 2 1...")
+                # atk_txt(self.name, opponent_pokemon.name, "3 2 1...")
                 text_speech(screen, "RobotoSlab-Medium.ttf", 15, "Kritisk träff!", BLACK, 300, 150, True)
                 # self.healtcheck_color(opponent_pokemon)
                 # self.healthcheck(opponent_pokemon, opponent.name)
                 return crit_atk
             else:
                 normal_atk = opponent_pokemon.health - (self.attack + dmg_modifier)
-                #atk_txt(self.name, opponent_pokemon.name, "3 2 1...")
+                # atk_txt(self.name, opponent_pokemon.name, "3 2 1...")
                 text_speech(screen, "RobotoSlab-Medium.ttf", 15, "Attacken träffade!", BLACK, 300, 150, True)
-                #self.healtcheck_color(opponent_pokemon)
+                # self.healtcheck_color(opponent_pokemon)
                 # self.healthcheck(opponent_pokemon, opponent.name)
                 return normal_atk
         else:
             text_speech(screen, "RobotoSlab-Medium.ttf", 15, "Attacken missade!", BLACK, 300, 150, True)
 
+
 gunnar = Poketer("Glada Gunnar", 'happy', 'yellow', 50, 50, 45, catchword="#YOLO", img_name="Green_monster_resized.png")
 ada = Poketer("Aggressiva Ada", 'angry', 'red', 50, 50, 45, catchword="#FTW", img_name="Pink_dragon_01.png")
-#louise = Poketer("Ledsna Louise", 'sad', 'blue', 50, 50, 45, catchword="#TGIF")
-#kalle = Poketer("Kärleksfulla Kalle", 'loving', 'magenta', 50, 50, 45, catchword="#XOXO")
+
+
+# louise = Poketer("Ledsna Louise", 'sad', 'blue', 50, 50, 45, catchword="#TGIF")
+# kalle = Poketer("Kärleksfulla Kalle", 'loving', 'magenta', 50, 50, 45, catchword="#XOXO")
 
 
 def text_input(input_rect, user_text):
@@ -87,7 +91,7 @@ def text_input(input_rect, user_text):
 
 def vs_logo():
     vs_sign = pg.image.load("VS.PNG")
-    vs_sign = pg.transform.scale(vs_sign, (200,150))
+    vs_sign = pg.transform.scale(vs_sign, (200, 150))
     screen.blit(vs_sign, (300, 225))
 
 
@@ -100,25 +104,25 @@ def text_speech(screen, font: str, size: int, text: str, color, x, y, bold: bool
     screen.blit(text, textRect)
 
 
-def Aggressive_Ada(x, y, a ,b):
-
+def Aggressive_Ada(x, y, a, b):
     mood_score = calc_mood_score(ada.mood, "Stockholm", live=False)
     result1 = ada.add_max_health(mood_score)
     result2 = ada.add_health(mood_score)
     screen.blit(ada.image, (x, y))
     text_speech(screen, "RobotoSlab-Medium.ttf", 15, f"{ada.name}", ada.color, a, b, True)
-    text_speech(screen, "RobotoSlab-Medium.ttf", 15, f"Stats: HP: {result1}, Attack: {ada.attack}, Mood: {ada.mood}", WHITE, 630, 575,
+    text_speech(screen, "RobotoSlab-Medium.ttf", 15, f"Stats: HP: {result1}, Attack: {ada.attack}, Mood: {ada.mood}",
+                WHITE, 630, 575,
                 True)
 
 
 def Glada_Gunnar(x, y, a, b):
-
     mood_score = calc_mood_score(gunnar.mood, "Göteborg", live=False)
     result1 = gunnar.add_max_health(mood_score)
     result2 = gunnar.add_health(mood_score)
     screen.blit(gunnar.image, (x, y))
     text_speech(screen, "RobotoSlab-Medium.ttf", 15, f"{gunnar.name}", gunnar.color, a, b, True)
-    text_speech(screen, "RobotoSlab-Medium.ttf", 15, f"Stats: HP: {result1}, Attack: {gunnar.attack}, Mood: {gunnar.mood}", WHITE, 170, 20,
+    text_speech(screen, "RobotoSlab-Medium.ttf", 15,
+                f"Stats: HP: {result1}, Attack: {gunnar.attack}, Mood: {gunnar.mood}", WHITE, 170, 20,
                 True)
 
 
@@ -163,7 +167,7 @@ def attack_button(mouse):
         pg.draw.rect(screen, BLACK, [200, 430, 150, 50], 3)
         text_speech(screen, "RobotoSlab-Black.ttf", 25, "Attack", BLACK, 272, 453, True)
     else:
-        pg.draw.rect(screen, LIGHT_RED_UNSELECTED , [202, 432, 147, 47])
+        pg.draw.rect(screen, LIGHT_RED_UNSELECTED, [202, 432, 147, 47])
         pg.draw.rect(screen, BLACK, [200, 430, 150, 50], 3)
         text_speech(screen, "RobotoSlab-Black.ttf", 25, "Attack", BLACK, 272, 453, True)
 
@@ -199,6 +203,7 @@ def chat_bubble_right():
 button = 0
 click = False
 
+
 def battle_menu():
     global button
     # active = False
@@ -208,7 +213,6 @@ def battle_menu():
         screen.blit(background, (0, 0))
         Aggressive_Ada(520, 300, 640, 300)
         Glada_Gunnar(8, 30, 122, 45)
-
 
         mx, my = pg.mouse.get_pos()
         mouse = pg.mouse.get_pos()
@@ -313,7 +317,6 @@ def battle_time():
                 if attack_button_rect.collidepoint((mx, my)):
                     attack_func()
 
-
         pg.display.update()
         clock.tick(60)
 
@@ -367,7 +370,7 @@ def attack_func():
         screen.blit(background, (0, 0))
         Aggressive_Ada(display_width * 0.63, display_height * 0.26, 650, 550)
         Glada_Gunnar(display_width * 0.03, display_height * 0.24, 122, 45)
-        screen.blit(sword, (315,170))
+        screen.blit(sword, (315, 170))
         mouse = pg.mouse.get_pos()
 
         quit_button_rect = pg.Rect(650, 30, 140, 40)
@@ -382,8 +385,7 @@ def attack_func():
         block_button_rect = pg.Rect(445, 430, 150, 50)
         block_button(mouse)
         atk = True
-
-
+        display_text = False
         click = False
         mx, my = pg.mouse.get_pos()
         for event in pg.event.get():
@@ -405,9 +407,13 @@ def attack_func():
                 if attack_button_rect.collidepoint((mx, my)):
                     while atk:
                         if click:
-                            gunnar.attack_fnc(ada)
-                            atk = False
+                            display_text = True
+                            if display_text:
+                                gunnar.attack_fnc(ada)
+                                if click:
+                                    atk = False
         pg.display.update()
         clock.tick(60)
+
 
 battle_menu()
