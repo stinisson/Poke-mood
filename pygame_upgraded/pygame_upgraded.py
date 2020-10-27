@@ -14,7 +14,13 @@ def music_intro(intro_song):
     pg.mixer.music.play(-1)
     pg.mixer.music.set_volume(0.5)
 
+def music_battle(battle_song):
+    pg.mixer.init()
+    pg.mixer.music.load(battle_song)
+    pg.mixer.music.play(-1)
+    pg.mixer.music.set_volume(0.5)
 
+    
 display_width = 800
 display_height = 600
 
@@ -290,6 +296,7 @@ def battle_menu():
 
 
 def battle_time():
+    music_battle("battle_time_1.mp3")
     running = True
     while running:
         screen.fill(WHITE)
