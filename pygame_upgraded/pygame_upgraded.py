@@ -4,6 +4,7 @@ import pygame as pg
 import sys
 from Pygame.constants import *
 from mood_score import calc_mood_score
+from pygame import mixer
 
 pg.init()
 
@@ -20,7 +21,26 @@ def music_battle(battle_song):
     pg.mixer.music.play(-1)
     pg.mixer.music.set_volume(0.5)
 
-    
+def sound_attack_dino(dinsosaur_growl):
+    dino_sound = mixer.Sound(dinsosaur_growl)
+    dino_sound.play()
+    dino_sound.set_volume(0.2)
+
+def sound_click_block_button(cymbal):
+    block_sound = mixer.Sound(cymbal)
+    block_sound.play()
+    block_sound.set_volume(0.2)
+
+def sound_enter_battle(enter_battle):
+    enter_battle = mixer.Sound(enter_battle)
+    enter_battle.play()
+    enter_battle.set_volume(0.1)
+
+def sound_booing_crowd(quit_button):
+    enter_battle = mixer.Sound(quit_button)
+    enter_battle.play()
+    enter_battle.set_volume(0.1)
+
 display_width = 800
 display_height = 600
 
@@ -146,6 +166,7 @@ def quit_button(mouse):
     if 650 <= mouse[0] <= 650 + 140 and 30 <= mouse[1] <= 30 + 40:
         pg.draw.rect(screen, COLOR_LIGHT_SELECTED, [652, 32, 137, 37])
         pg.draw.rect(screen, BLACK, [650, 30, 140, 40], 3)
+        sound_booing_crowd("electric_surge.mp3")
     else:
         pg.draw.rect(screen, COLOR_LIGHT_UNSELECTED, [650, 30, 140, 40])
         pg.draw.rect(screen, BLACK, [650, 30, 140, 40], 3)
@@ -158,6 +179,7 @@ def battle_time_button(mouse):
         pg.draw.rect(screen, COLOR_LIGHT_SELECTED, (287, 247, 221, 66))
         text_speech(screen, "RobotoSlab-Black.ttf", 30, "Battle time!", BLACK, display_width / 2.02,
                     display_height / 2.15, True)
+        sound_enter_battle("boomer_fx.mp3")
     else:
         pg.draw.rect(screen, BLACK, (285, 245, 225, 70), 3)
         pg.draw.rect(screen, COLOR_LIGHT_UNSELECTED, (287, 247, 221, 66))
@@ -418,12 +440,15 @@ def attack_func():
                     click = True
                 if back_button_rect.collidepoint((mx, my)):
                     battle_menu()
+
                 if quit_button_rect.collidepoint((mx, my)):
                     pg.quit()
                 if block_button_rect.collidepoint((mx, my)):
+                    sound_click_block_button("cartoon_cymbal_hit.mp3")
                     block_func()
-                if attack_button_rect.collidepoint((mx, my)):
 
+                if attack_button_rect.collidepoint((mx, my)):
+                    sound_attack_dino("dinosaur_growl.mp3")
                     temp = gunnar.attack_fnc(ada)
                     print(temp)
 
