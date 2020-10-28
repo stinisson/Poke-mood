@@ -178,6 +178,9 @@ def input_to_chance_card_health(is_cpu, user_select_from_fallback):
             elif attitude_choice.lower() == "u":
                 attitude_choice = "neutralt"
                 break
+
+        file_name = keywords[keyword_choice]
+
         return keyword_choice, language_choice, attitude_choice, file_name
 
     else:
@@ -243,7 +246,7 @@ def chance_card_health(player, poketer, is_cpu):
         else:
             print("Det här kan ta en liten stund. Häng kvar! :)")
             result = sentiment_analysis(keyword=keyword, language=language,
-                                        file_name='demo_tweets_english_covid.p', live=True)
+                                        file_name=file_name, live=True)
 
         if result == 'connection_error':
             x = """Det går tyvärr inte att söka på Twitter just nu. Du får istället testa dina kunskaper

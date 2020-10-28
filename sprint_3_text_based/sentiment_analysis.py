@@ -33,7 +33,12 @@ def sentiment_analysis(keyword, language, file_name='', live=False):
         If the sentiment is equally positive and negative return 'neutral'.
         If something went wrong and it wasn't possible to retrieve tweets return None. """
 
-    tweets = get_tweets(keyword=keyword, language=language, load_from_file=False, live=live, file_name=file_name, file_path='demo-tweets')
+    if file_name:
+        load_from_file = True
+    else:
+        load_from_file = False
+
+    tweets = get_tweets(keyword=keyword, language=language, load_from_file=load_from_file, live=live, file_name=file_name, file_path='demo-tweets')
 
     if tweets is None:
         return 'connection_error'
