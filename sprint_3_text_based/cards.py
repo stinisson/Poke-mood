@@ -259,7 +259,7 @@ def chance_card_health(player, poketer, is_cpu):
                 return
             else:
                 x = f"""Hittade för få tweets innehållandes {keyword}. Ett tips är att söka efter något som är
-    mer aktuellt i samhällsdebatten."""
+mer aktuellt i samhällsdebatten."""
                 print_frame([x], 'white', 15)
         else:
             break
