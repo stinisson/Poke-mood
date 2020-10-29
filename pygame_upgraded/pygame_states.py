@@ -3,7 +3,7 @@ from random import randint
 import sys
 import time
 
-from My_Own.constants import *
+from Pygame.constants import *
 from mood_score import calc_mood_score
 
 
