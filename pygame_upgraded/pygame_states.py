@@ -81,7 +81,7 @@ def special_attack(poketer):
     global active_health_gunnar
     misschans = randint(1, 6)
     if poketer is gunnar:
-        if misschans <= 3:
+        if misschans <= 2:
             result = active_health_ada - gunnar.attack * 2
             active_health_ada = result
             return active_health_ada
@@ -89,7 +89,7 @@ def special_attack(poketer):
             return active_health_ada
 
     if poketer is ada:
-        if misschans <= 3:
+        if misschans <= 2:
             result = active_health_ada - gunnar.attack * 2
             active_health_ada = result
             return active_health_ada
