@@ -229,7 +229,7 @@ def text_speech(screen, font: str, size: int, text: str, color, x, y, bold: bool
 
 
 def glada_gunnar(x, y, a, b):
-    if 1 <= button <= 2:
+    if 1 <= button <= 10:
         screen.blit(gunnar.image, (x, y))
         text_speech(screen, "RobotoSlab-Medium.ttf", 15, f"{gunnar.name}", gunnar.color, a, b, True)
         text_speech(screen, "RobotoSlab-Medium.ttf", 15,
@@ -245,7 +245,7 @@ def glada_gunnar(x, y, a, b):
 
 
 def aggressive_ada(x, y, a, b):
-    if button == 2:
+    if 2 <= button <= 10:
         screen.blit(ada.image, (x, y))
         text_speech(screen, "RobotoSlab-Medium.ttf", 15, f"{ada.name}", ada.color, a, b, True)
         text_speech(screen, "RobotoSlab-Medium.ttf", 15, f"Stats: HP: {update_max_health(ada, 'Västerås')} Attack: {ada.attack} Mood: {ada.mood}",
