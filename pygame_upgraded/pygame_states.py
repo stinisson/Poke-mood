@@ -90,11 +90,11 @@ def special_attack(poketer):
 
     if poketer is ada:
         if misschans <= 2:
-            result = active_health_ada - gunnar.attack * 2
-            active_health_ada = result
-            return active_health_ada
+            result = active_health_gunnar - ada.attack * 2
+            active_health_gunnar = result
+            return active_health_gunnar
         else:
-            return active_health_ada
+            return active_health_gunnar
 
 class StartScreen:
     def handle_keydown(self, key):
