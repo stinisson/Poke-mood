@@ -228,7 +228,7 @@ class SpecialAttackScreen:
         quit_button_rect = pg.Rect(650, 30, 140, 40)
         back_button_rect = pg.Rect(30, 540, 140, 40)
         attack_button_rect = pg.Rect(200, 430, 150, 50)
-        block_button_rect = pg.Rect(445, 430, 150, 50)
+        special_attack_button = pg.Rect(445, 430, 150, 50)
         if button == 1:
             if back_button_rect.collidepoint((mx, my)):
                 return BattleScreen()
@@ -236,7 +236,7 @@ class SpecialAttackScreen:
                 sys.exit()
             if attack_button_rect.collidepoint((mx, my)):
                 return AttackScreen()
-            if block_button_rect.collidepoint((mx, my)):
+            if special_attack_button.collidepoint((mx, my)):
                 special_attack(gunnar)
                 if special_attack(gunnar) <= 0:
                     return StartScreen()
