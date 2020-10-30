@@ -1,14 +1,13 @@
 import pygame as pg
 from random import randint
 import sys
-import time
-
 from Pygame.constants import *
 from mood_score import calc_mood_score
 
-
-BLACK = (0, 0, 0)
-WHITE = (255, 255, 255)
+pg.init()
+width = 800
+height = 600
+screen = pg.display.set_mode((width, height))
 
 bg = pg.image.load("Background_forest.jpg")
 background = pg.transform.scale(bg, (800, 600))
@@ -17,13 +16,6 @@ vs_sign = pg.image.load("VS.PNG")
 vs_sign = pg.transform.scale(vs_sign, (200, 150))
 
 
-pg.init()
-width = 800
-height = 600
-screen = pg.display.set_mode((width, height))
-
-base_font = pg.font.SysFont("roboto mono", 30, True)
-
 def text_speech(screen, font: str, size: int, text: str, color, x, y, bold: bool):
     font = pg.font.Font(font, size)
     font.set_bold(bold)
@@ -31,6 +23,7 @@ def text_speech(screen, font: str, size: int, text: str, color, x, y, bold: bool
     textRect = text.get_rect()
     textRect.center = (x, y)
     screen.blit(text, textRect)
+
 
 class Poketer:
     def __init__(self, name, mood, color, health, max_health, attack, catchword, img_name):
@@ -55,6 +48,7 @@ class Poketer:
 gunnar = Poketer("Glada Gunnar", 'happy', 'yellow', 50, 50, 45, catchword="#YOLO", img_name="Green_monster_resized.png")
 ada = Poketer("Aggressiva Ada", 'angry', 'red', 50, 50, 45, catchword="#FTW", img_name="Pink_dragon_01.png")
 
+
 def update_max_health(poketer, city):
     mood_score = calc_mood_score(poketer.mood, city, live=False)
     health_with_mood_score = poketer.add_health(mood_score)
@@ -63,6 +57,7 @@ def update_max_health(poketer, city):
 
 active_health_gunnar = int(update_max_health(gunnar, 'Göteborg'))
 active_health_ada = int(update_max_health(ada, 'Västerås'))
+
 
 def attack_function(poketer):
     global active_health_ada
@@ -75,6 +70,7 @@ def attack_function(poketer):
         result = int(active_health_gunnar - ada.attack)
         active_health_gunnar = result
         return active_health_gunnar
+
 
 def special_attack(poketer):
     global active_health_ada
@@ -96,6 +92,7 @@ def special_attack(poketer):
         else:
             return active_health_gunnar
 
+
 class StartScreen:
     def handle_keydown(self, key):
         if key == pg.K_SPACE:
@@ -113,19 +110,16 @@ class StartScreen:
                 sys.exit()
         return self
 
-    def render(self, screen, font):
+    def render(self, screen):
         screen.fill(WHITE)
         screen.blit(background, (0, 0))
         aggressive_ada(520, 300, 640, 300, active_health_ada)
         glada_gunnar(8, 30, 122, 45, active_health_gunnar)
-        # text_surface = font.render("START SCREEN - press Space", True, WHITE)
-        # text_rect = text_surface.get_rect()
-        # text_rect.midtop = (400, 200)
-        # screen.blit(text_surface, text_rect)
         pop_up_bubbles(button)
         battle_time_button()
         quit_button()
         text_speech(screen, "RobotoSlab-Medium.ttf", 15, "Press [enter] for moodscores", BLACK, 397, 330, True)
+
 
 class BattleScreen:
     def handle_keydown(self, key):
@@ -153,16 +147,12 @@ class BattleScreen:
                 return SpecialAttackScreen()
         return self
 
-    def render(self, screen, font):
+    def render(self, screen):
         screen.fill(WHITE)
         screen.blit(background, (0, 0))
         aggressive_ada(504, 156, 650, 550, active_health_ada)
         glada_gunnar(24, 144, 122, 45, active_health_gunnar)
         screen.blit(vs_sign, (300, 225))
-        # text_surface = font.render("BATTLE SCREEN - press Backspace", True, WHITE)
-        # text_rect = text_surface.get_rect()
-        # text_rect.midtop = (400, 200)
-        # screen.blit(text_surface, text_rect)
         quit_button()
         back_button()
         attack_button()
@@ -172,6 +162,7 @@ class BattleScreen:
 class AttackScreen:
     global active_health_ada
     global active_health_gunnar
+
     def handle_keydown(self, key):
         if key == pg.K_ESCAPE:
             return StartScreen()
@@ -181,41 +172,39 @@ class AttackScreen:
         mx, my = pg.mouse.get_pos()
         quit_button_rect = pg.Rect(650, 30, 140, 40)
         back_button_rect = pg.Rect(30, 540, 140, 40)
-        block_button_rect = pg.Rect(445, 430, 150, 50)
+        special_attack_button = pg.Rect(445, 430, 150, 50)
         attack_button_rect = pg.Rect(200, 430, 150, 50)
         if button == 1:
             if back_button_rect.collidepoint((mx, my)):
                 return BattleScreen()
             if quit_button_rect.collidepoint((mx, my)):
                 sys.exit()
-            if block_button_rect.collidepoint((mx, my)):
+            if special_attack_button.collidepoint((mx, my)):
                 special_attack(gunnar)
                 return SpecialAttackScreen()
             if attack_button_rect.collidepoint((mx, my)):
                 attack_function(gunnar)
-                if attack_function(gunnar) <= 0:
+                if active_health_ada <= 0:
                     return StartScreen()
-                if attack_function(gunnar) <= 0:
+                if active_health_gunnar <= 0:
                     return StartScreen()
             return self
 
-    def render(self, screen, font):
+    def render(self, screen):
         screen.fill(WHITE)
         screen.blit(background, (0, 0))
         aggressive_ada(504, 156, 650, 550, active_health_ada)
         glada_gunnar(24, 144, 122, 45, active_health_gunnar)
-        # text_surface = font.render("ATTACK SCREEN - press Escape", True, WHITE)
-        # text_rect = text_surface.get_rect()
-        # text_rect.midtop = (400, 200)
-        # screen.blit(text_surface, text_rect)
         quit_button()
         back_button()
         attack_button()
         special_attack_button()
         sword()
 
+
 click = False
 button = 0
+
 
 class SpecialAttackScreen:
     def handle_keydown(self, key):
@@ -238,21 +227,17 @@ class SpecialAttackScreen:
                 return AttackScreen()
             if special_attack_button.collidepoint((mx, my)):
                 special_attack(gunnar)
-                if special_attack(gunnar) <= 0:
+                if active_health_ada <= 0:
                     return StartScreen()
-                if special_attack(ada) <= 0:
+                if active_health_gunnar <= 0:
                     return StartScreen()
         return self
 
-    def render(self, screen, font):
+    def render(self, screen):
         screen.fill(WHITE)
         screen.blit(background, (0, 0))
         aggressive_ada(504, 156, 650, 550, active_health_ada)
         glada_gunnar(24, 144, 122, 45, active_health_gunnar)
-        # text_surface = font.render("ATTACK SCREEN - press Escape", True, WHITE)
-        # text_rect = text_surface.get_rect()
-        # text_rect.midtop = (400, 200)
-        # screen.blit(text_surface, text_rect)
         quit_button()
         back_button()
         attack_button()
@@ -261,7 +246,7 @@ class SpecialAttackScreen:
 
 
 
-def mainloop(screen, font):
+def mainloop(screen):
     global button
     global click
     state = StartScreen()
@@ -281,9 +266,8 @@ def mainloop(screen, font):
             break
 
         # Render
-        state.render(screen, font)
+        state.render(screen)
         pg.display.update()
-
 
 
 def glada_gunnar(x, y, a, b, active_health):
@@ -417,11 +401,11 @@ def music_intro(intro_song):
     pg.mixer.init()
     pg.mixer.music.load(intro_song)
     pg.mixer.music.play(-1)
-    pg.mixer.music.set_volume(0.0)
+    pg.mixer.music.set_volume(0.1)
 
 
 if __name__ == '__main__':
     pg.display.set_caption("PokeMood")
     font = pg.font.Font(pg.font.match_font('arial'), 30)
-    mainloop(screen, font)
+    mainloop(screen)
     pg.quit()
