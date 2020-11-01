@@ -1,8 +1,14 @@
 import pygame as pg
 from random import randint
 import sys
+import math
 from Pygame.constants import *
 from mood_score import calc_mood_score
+from quiz import QuizStartScreen
+from quiz_api import quiz_categories
+
+import common
+common.common_init()
 
 pg.init()
 width = 800
@@ -39,6 +45,8 @@ class Poketer:
     def add_health(self, health_score):
         health = self.health + health_score
         return health
+        #self.health += health_score
+        #return self.health
 
     def add_max_health(self, max_health_score):
         self.max_health += max_health_score
@@ -94,12 +102,15 @@ def special_attack(poketer):
 
 
 class StartScreen:
+    def __init__(self):
+        print(self)
+
     def handle_keydown(self, key):
         if key == pg.K_SPACE:
             pass
         return self
 
-    def handle_button(self, button):
+    def handle_mouse_button(self, button):
         mx, my = pg.mouse.get_pos()
         battle_button_rect = pg.Rect(285, 245, 225, 70)
         quit_button_rect = pg.Rect(650, 30, 140, 40)
@@ -122,18 +133,25 @@ class StartScreen:
 
 
 class BattleScreen:
+    def __init__(self):
+        print(self)
+
     def handle_keydown(self, key):
         if key == pg.K_BACKSPACE:
             return StartScreen()
         return self
 
-    def handle_button(self, button):
+    def handle_mouse_button(self, button):
         global shield_blit
         mx, my = pg.mouse.get_pos()
         quit_button_rect = pg.Rect(650, 30, 140, 40)
         back_button_rect = pg.Rect(30, 540, 140, 40)
-        attack_button_rect = pg.Rect(200, 430, 150, 50)
-        block_button_rect = pg.Rect(445, 430, 150, 50)
+        # attack_button_rect = pg.Rect(200, 430, 150, 50)
+        # block_button_rect = pg.Rect(445, 430, 150, 50)
+        # Kristin
+        attack_button_rect = pg.Rect(87, 430, 150, 50)
+        block_button_rect = pg.Rect(325, 430, 150, 50)
+        quiz_button = pg.Rect(563, 430, 150, 50)
         if button == 1:
             if quit_button_rect.collidepoint((mx, my)):
                 sys.exit()
@@ -145,21 +163,33 @@ class BattleScreen:
             if block_button_rect.collidepoint((mx, my)):
                 special_attack(gunnar)
                 return SpecialAttackScreen()
+            if quiz_button.collidepoint((mx, my)):
+                print("In BattleScreen")
+                common.next_screen = QuizStartScreen(5, quiz_categories, self, gunnar)
         return self
 
     def render(self, screen):
         screen.fill(WHITE)
         screen.blit(background, (0, 0))
-        aggressive_ada(504, 156, 650, 550, active_health_ada)
-        glada_gunnar(24, 144, 122, 45, active_health_gunnar)
+
+        time = pg.time.get_ticks()
+        x_off = 5 * math.cos(time * 3.14 / 1000)
+        y_off = 5 * math.sin(time * 3.14 / 1000)
+
+        aggressive_ada(504 + x_off, 156, 650, 550, active_health_ada)
+        glada_gunnar(24, 144 + y_off, 122, 45, active_health_gunnar)
         screen.blit(vs_sign, (300, 225))
         quit_button()
         back_button()
         attack_button()
         special_attack_button()
+        quiz_button()
 
 
 class AttackScreen:
+    def __init__(self):
+        print(self)
+
     global active_health_ada
     global active_health_gunnar
 
@@ -168,12 +198,16 @@ class AttackScreen:
             return StartScreen()
         return self
 
-    def handle_button(self, button):
+    def handle_mouse_button(self, button):
         mx, my = pg.mouse.get_pos()
         quit_button_rect = pg.Rect(650, 30, 140, 40)
         back_button_rect = pg.Rect(30, 540, 140, 40)
-        special_attack_button = pg.Rect(445, 430, 150, 50)
-        attack_button_rect = pg.Rect(200, 430, 150, 50)
+        #special_attack_button = pg.Rect(445, 430, 150, 50)
+        #attack_button_rect = pg.Rect(200, 430, 150, 50)
+        # Kristin
+        attack_button_rect = pg.Rect(87, 430, 150, 50)
+        special_attack_button = pg.Rect(325, 430, 150, 50)
+        quiz_button = pg.Rect(563, 430, 150, 50)
         if button == 1:
             if back_button_rect.collidepoint((mx, my)):
                 return BattleScreen()
@@ -192,17 +226,27 @@ class AttackScreen:
                     return StartScreen()
                 if active_health_gunnar <= 0:
                     return StartScreen()
+            # Kristin
+            if quiz_button.collidepoint((mx, my)):
+                print("In AttackScreen")
+                common.next_screen = QuizStartScreen(5, quiz_categories, self, gunnar)
             return self
 
     def render(self, screen):
         screen.fill(WHITE)
         screen.blit(background, (0, 0))
-        aggressive_ada(504, 156, 650, 550, active_health_ada)
-        glada_gunnar(24, 144, 122, 45, active_health_gunnar)
+
+        time = pg.time.get_ticks()
+        x_off = 5 * math.cos(time * 3.14 / 1000)
+        y_off = 5 * math.sin(time * 3.14 / 1000)
+
+        aggressive_ada(504, 156 + y_off, 650, 550, active_health_ada)
+        glada_gunnar(24 + x_off, 144, 122, 45, active_health_gunnar)
         quit_button()
         back_button()
         attack_button()
         special_attack_button()
+        quiz_button()
         sword()
 
 
@@ -211,17 +255,24 @@ button = 0
 
 
 class SpecialAttackScreen:
+    def __init__(self):
+        print(self)
+
     def handle_keydown(self, key):
         if key == pg.K_ESCAPE:
             return StartScreen()
         return self
 
-    def handle_button(self, button):
+    def handle_mouse_button(self, button):
         mx, my = pg.mouse.get_pos()
         quit_button_rect = pg.Rect(650, 30, 140, 40)
         back_button_rect = pg.Rect(30, 540, 140, 40)
-        attack_button_rect = pg.Rect(200, 430, 150, 50)
-        special_attack_button = pg.Rect(445, 430, 150, 50)
+        # attack_button_rect = pg.Rect(200, 430, 150, 50)
+        # special_attack_button = pg.Rect(445, 430, 150, 50)
+        # Kristin
+        attack_button_rect = pg.Rect(87, 430, 150, 50)
+        special_attack_button = pg.Rect(325, 430, 150, 50)
+        quiz_button = pg.Rect(563, 430, 150, 50)
         if button == 1:
             if back_button_rect.collidepoint((mx, my)):
                 return BattleScreen()
@@ -239,17 +290,26 @@ class SpecialAttackScreen:
                     return StartScreen()
                 if active_health_gunnar <= 0:
                     return StartScreen()
+            if quiz_button.collidepoint((mx, my)):
+                print("In specialAttackScreen")
+                common.next_screen = QuizStartScreen(5, quiz_categories, self, gunnar)
         return self
 
     def render(self, screen):
         screen.fill(WHITE)
         screen.blit(background, (0, 0))
-        aggressive_ada(504, 156, 650, 550, active_health_ada)
-        glada_gunnar(24, 144, 122, 45, active_health_gunnar)
+
+        time = pg.time.get_ticks()
+        x_off = 5 * math.cos(time * 3.14 / 1000)
+        y_off = 5 * math.sin(time * 3.14 / 1000)
+
+        aggressive_ada(504 + x_off, 156, 650, 550, active_health_ada)
+        glada_gunnar(24, 144 + y_off, 122, 45, active_health_gunnar)
         quit_button()
         back_button()
         attack_button()
         special_attack_button()
+        quiz_button()
         shield()
 
 
@@ -269,9 +329,16 @@ def mainloop(screen):
             if ev.key == pg.K_RETURN:
                 button += 1
         if ev.type == pg.MOUSEBUTTONDOWN:
-            state = state.handle_button(ev.button)
+            temp_state = state.handle_mouse_button(ev.button)
+            if temp_state is not None:
+                state = temp_state
         elif ev.type == pg.QUIT:
             break
+
+        if common.next_screen is not None:
+            print("changing frames to", type(common.next_screen))
+            state = common.next_screen
+            common.next_screen = None
 
         # Render
         state.render(screen)
@@ -371,28 +438,75 @@ def back_button():
         text_speech(screen, "RobotoSlab-Black.ttf", 25, "BACK", BLACK, 97, 558, True)
 
 
+# def attack_button():
+#     mouse = pg.mouse.get_pos()
+#     if 200 <= mouse[0] <= 200 + 150 and 430 <= mouse[1] <= 430 + 50:
+#         pg.draw.rect(screen, LIGHT_RED_SELECTED, [202, 432, 147, 47])
+#         pg.draw.rect(screen, BLACK, [200, 430, 150, 50], 3)
+#         text_speech(screen, "RobotoSlab-Black.ttf", 25, "Attack", BLACK, 272, 453, True)
+#     else:
+#         pg.draw.rect(screen, LIGHT_RED_UNSELECTED, [202, 432, 147, 47])
+#         pg.draw.rect(screen, BLACK, [200, 430, 150, 50], 3)
+#         text_speech(screen, "RobotoSlab-Black.ttf", 25, "Attack", BLACK, 272, 453, True)
+#
+#
+# def special_attack_button():
+#     mouse = pg.mouse.get_pos()
+#     if 445 <= mouse[0] <= 445 + 150 and 430 <= mouse[1] <= 430 + 50:
+#         pg.draw.rect(screen, LIGHT_BLUE_SELECTED, [447, 432, 147, 47])
+#         pg.draw.rect(screen, BLACK, [445, 430, 150, 50], 3)
+#         text_speech(screen, "RobotoSlab-Black.ttf", 25, "Special", BLACK, 517, 453, True)
+#     else:
+#         pg.draw.rect(screen, LIGHT_BLUE_UNSELECTED, [447, 432, 147, 47])
+#         pg.draw.rect(screen, BLACK, [445, 430, 150, 50], 3)
+#         text_speech(screen, "RobotoSlab-Black.ttf", 25, "Special", BLACK, 517, 453, True)
+#
+#
+# def quiz_button():
+#     mouse = pg.mouse.get_pos()
+#     if 445 <= mouse[0] <= 445 + 150 and 430 <= mouse[1] <= 430 + 50:
+#         pg.draw.rect(screen, LIGHT_GREEN_SELECTED, [447, 432, 147, 47])
+#         pg.draw.rect(screen, BLACK, [445, 430, 150, 50], 3)
+#         text_speech(screen, "RobotoSlab-Black.ttf", 25, "Quiz", BLACK, 517, 453, True)
+#     else:
+#         pg.draw.rect(screen, LIGHT_GREEN_UNSELECTED, [447, 432, 147, 47])
+#         pg.draw.rect(screen, BLACK, [445, 430, 150, 50], 3)
+#         text_speech(screen, "RobotoSlab-Black.ttf", 25, "Quiz", BLACK, 517, 453, True)
+
 def attack_button():
     mouse = pg.mouse.get_pos()
-    if 200 <= mouse[0] <= 200 + 150 and 430 <= mouse[1] <= 430 + 50:
-        pg.draw.rect(screen, LIGHT_RED_SELECTED, [202, 432, 147, 47])
-        pg.draw.rect(screen, BLACK, [200, 430, 150, 50], 3)
-        text_speech(screen, "RobotoSlab-Black.ttf", 25, "Attack", BLACK, 272, 453, True)
+    if 87 <= mouse[0] <= 87 + 150 and 430 <= mouse[1] <= 430 + 50:
+        pg.draw.rect(screen, LIGHT_RED_SELECTED, [89, 432, 147, 47])
+        pg.draw.rect(screen, BLACK, [87, 430, 150, 50], 3)
+        text_speech(screen, "RobotoSlab-Black.ttf", 25, "Attack", BLACK, 162, 453, True)
     else:
-        pg.draw.rect(screen, LIGHT_RED_UNSELECTED, [202, 432, 147, 47])
-        pg.draw.rect(screen, BLACK, [200, 430, 150, 50], 3)
-        text_speech(screen, "RobotoSlab-Black.ttf", 25, "Attack", BLACK, 272, 453, True)
+        pg.draw.rect(screen, LIGHT_RED_UNSELECTED, [89, 432, 147, 47])
+        pg.draw.rect(screen, BLACK, [87, 430, 150, 50], 3)
+        text_speech(screen, "RobotoSlab-Black.ttf", 25, "Attack", BLACK, 162, 453, True)
 
 
 def special_attack_button():
     mouse = pg.mouse.get_pos()
-    if 445 <= mouse[0] <= 445 + 150 and 430 <= mouse[1] <= 430 + 50:
-        pg.draw.rect(screen, LIGHT_BLUE_SELECTED, [447, 432, 147, 47])
-        pg.draw.rect(screen, BLACK, [445, 430, 150, 50], 3)
-        text_speech(screen, "RobotoSlab-Black.ttf", 25, "Special", BLACK, 517, 453, True)
+    if 325 <= mouse[0] <= 325 + 150 and 430 <= mouse[1] <= 430 + 50:
+        pg.draw.rect(screen, LIGHT_BLUE_SELECTED, [327, 432, 147, 47])
+        pg.draw.rect(screen, BLACK, [325, 430, 150, 50], 3)
+        text_speech(screen, "RobotoSlab-Black.ttf", 25, "Special", BLACK, 400, 453, True)
     else:
-        pg.draw.rect(screen, LIGHT_BLUE_UNSELECTED, [447, 432, 147, 47])
-        pg.draw.rect(screen, BLACK, [445, 430, 150, 50], 3)
-        text_speech(screen, "RobotoSlab-Black.ttf", 25, "Special", BLACK, 517, 453, True)
+        pg.draw.rect(screen, LIGHT_BLUE_UNSELECTED, [327, 432, 147, 47])
+        pg.draw.rect(screen, BLACK, [325, 430, 150, 50], 3)
+        text_speech(screen, "RobotoSlab-Black.ttf", 25, "Special", BLACK, 400, 453, True)
+
+
+def quiz_button():
+    mouse = pg.mouse.get_pos()
+    if 563 <= mouse[0] <= 563 + 150 and 430 <= mouse[1] <= 430 + 50:
+        pg.draw.rect(screen, LIGHT_GREEN_SELECTED, [565, 432, 147, 47])
+        pg.draw.rect(screen, BLACK, [563, 430, 150, 50], 3)
+        text_speech(screen, "RobotoSlab-Black.ttf", 25, "Quiz", BLACK, 638, 453, True)
+    else:
+        pg.draw.rect(screen, LIGHT_GREEN_UNSELECTED, [565, 432, 147, 47])
+        pg.draw.rect(screen, BLACK, [563, 430, 150, 50], 3)
+        text_speech(screen, "RobotoSlab-Black.ttf", 25, "Quiz", BLACK, 638, 453, True)
 
 
 def shield():
@@ -403,7 +517,6 @@ def shield():
 def sword():
     sword = pg.image.load("sword_resized.png")
     screen.blit(sword, (315, 170))
-
 
 def music_intro(intro_song):
     pg.mixer.init()
