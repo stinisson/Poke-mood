@@ -181,6 +181,10 @@ class AttackScreen:
                 sys.exit()
             if special_attack_button.collidepoint((mx, my)):
                 special_attack(gunnar)
+                if active_health_ada <= 0:
+                    return StartScreen()
+                if active_health_gunnar <= 0:
+                    return StartScreen()
                 return SpecialAttackScreen()
             if attack_button_rect.collidepoint((mx, my)):
                 attack_function(gunnar)
@@ -224,6 +228,10 @@ class SpecialAttackScreen:
             if quit_button_rect.collidepoint((mx, my)):
                 sys.exit()
             if attack_button_rect.collidepoint((mx, my)):
+                if active_health_ada <= 0:
+                    return StartScreen()
+                if active_health_gunnar <= 0:
+                    return StartScreen()
                 return AttackScreen()
             if special_attack_button.collidepoint((mx, my)):
                 special_attack(gunnar)
