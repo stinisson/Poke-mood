@@ -4,7 +4,7 @@
 
 from pathlib import Path
 import os
-from twitter_search import get_tweets
+from pokemood_text_based.twitter_search import get_tweets
 
 
 def calc_mood_score(mood, city, live=False):
