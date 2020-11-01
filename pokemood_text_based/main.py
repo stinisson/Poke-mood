@@ -1,18 +1,18 @@
 """Pokemon Battle GO!"""
 
-from sprint_3_text_based.cards import card_attack, card_block, chance_card_attack, chance_card_health, quiz_card, \
+from pokemood_text_based.cards import card_attack, card_block, chance_card_attack, chance_card_health, quiz_card, \
     show_stats_card, intro_card
-from sprint_3_text_based.cards_helper import take_integer_input
-from sprint_3_text_based.common import choose_poketer
-from sprint_3_text_based.user import User
-from sprint_3_text_based.poketer import Poketer
+from pokemood_text_based.cards_helper import take_integer_input
+from pokemood_text_based.common import choose_poketer
+from pokemood_text_based.user import User
+from pokemood_text_based.poketer import Poketer
 import random
 from termcolor import colored
 import colorama
 import sys
 
 colorama.init()
-from sprint_3_text_based.print_module import print_frame, draw_welcome_screen, poketer_mood_explanation_text, draw_end_screen
+from pokemood_text_based.print_module import print_frame, draw_welcome_screen, poketer_mood_explanation_text, draw_end_screen
 
 
 def cpu_make_move(user, user_pokemon, cpu, cpu_pokemon, live):

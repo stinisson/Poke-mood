@@ -1,4 +1,4 @@
-from sprint_3_text_based.mood_analysis import text_emotions
+from pokemood_text_based.mood_analysis import text_emotions
 from twitter_search import geocodes
 
 

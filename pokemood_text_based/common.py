@@ -1,6 +1,6 @@
 import random
 
-from sprint_3_text_based.cards_helper import take_integer_input
+from pokemood_text_based.cards_helper import take_integer_input
 
 
 def choose_poketer(available_poketers, is_cpu):

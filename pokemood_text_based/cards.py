@@ -1,13 +1,13 @@
 import random
 import warnings
 
-from sprint_3_text_based.cards_helper import get_cities, choose_city, get_emotions, choose_emotion, take_integer_input
-from sprint_3_text_based.common import choose_poketer
-from sprint_3_text_based.mood_analysis import mood_analysis
-from sprint_3_text_based.mood_score import calc_mood_score
-from sprint_3_text_based.print_module import print_frame
-from sprint_3_text_based.quiz import quiz
-from sprint_3_text_based.sentiment_analysis import sentiment_analysis
+from pokemood_text_based.cards_helper import get_cities, choose_city, get_emotions, choose_emotion, take_integer_input
+from pokemood_text_based.common import choose_poketer
+from pokemood_text_based.mood_analysis import mood_analysis
+from pokemood_text_based.mood_score import calc_mood_score
+from pokemood_text_based.print_module import print_frame
+from pokemood_text_based.quiz import quiz
+from pokemood_text_based.sentiment_analysis import sentiment_analysis
 
 
 def intro_card(poketer, is_cpu, live):

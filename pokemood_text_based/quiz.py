@@ -2,6 +2,10 @@ import random
 import requests
 import base64
 
+"""
+Quiz questions from Open Trivia DB - a free to use, user-contibuted trivia question database. https://opentdb.com/
+"""
+
 quiz_categories = {
     "datateknik": 'https://opentdb.com/api.php?amount=4&category=18&difficulty=easy&type=multiple&encode=base64',
     "matematik": 'https://opentdb.com/api.php?amount=4&category=19&difficulty=medium&type=multiple&encode=base64',
