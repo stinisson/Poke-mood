@@ -103,6 +103,7 @@ def special_attack(poketer):
 
 class StartScreen:
     def __init__(self):
+        self.music = music_intro()
         print(self)
 
     def handle_keydown(self, key):
@@ -134,6 +135,7 @@ class StartScreen:
 
 class BattleScreen:
     def __init__(self):
+        self.music = music_battle()
         print(self)
 
     def handle_keydown(self, key):
@@ -318,7 +320,7 @@ def mainloop(screen):
     global button
     global click
     state = StartScreen()
-    music_intro("intro_song_1.mp3")
+    #music_intro() #CL
     while True:
         # Event handling
         ev = pg.event.poll()
@@ -518,9 +520,16 @@ def sword():
     sword = pg.image.load("sword_resized.png")
     screen.blit(sword, (315, 170))
 
-def music_intro(intro_song):
+
+def music_intro():
     pg.mixer.init()
-    pg.mixer.music.load(intro_song)
+    pg.mixer.music.load("intro_song_1.mp3")
+    pg.mixer.music.play(-1)
+    pg.mixer.music.set_volume(0.1)
+
+def music_battle():
+    pg.mixer.init()
+    pg.mixer.music.load("battle_time_1.mp3")
     pg.mixer.music.play(-1)
     pg.mixer.music.set_volume(0.1)
 
