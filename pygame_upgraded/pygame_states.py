@@ -27,6 +27,9 @@ background_win = pg.transform.scale(background_win, (800, 600))
 logo = pg.image.load("LOGO.PNG")
 logo = pg.transform.scale(logo, (360, 222))
 
+start_background = pg.image.load("background_start.png")
+start_background = pg.transform.scale(start_background, (800, 600))
+
 
 def text_speech(screen, font: str, size: int, text: str, color, x, y, bold: bool):
     font = pg.font.Font(font, size)
@@ -112,6 +115,35 @@ def cpu_random_attack():
         return True
     if random_number >= 8:
         return False
+
+
+class MenuStartScreen:
+    def handle_keydown(self, key):
+        if key == pg.K_SPACE:
+            pass
+        return self
+
+    def handle_mouse_button(self, button):
+        mx, my = pg.mouse.get_pos()
+        start_game_button_rect = pg.Rect(275, 280, 240, 65)
+        instructions_button_rect = pg.Rect(275, 360, 240, 65)
+        quit_game_button_rect = pg.Rect(275, 440, 240, 65)
+        if button == 1:
+            if start_game_button_rect.collidepoint((mx, my)):
+                return StartScreen()
+            if instructions_button_rect.collidepoint((mx, my)):
+                pass
+            if quit_game_button_rect.collidepoint((mx, my)):
+                sys.exit()
+
+    def render(self, screen):
+        screen.fill(WHITE)
+        screen.blit(start_background, (0, 0))
+        screen.blit(logo, (215, -55))
+        start_game_button()
+        instructions_button()
+        quit_button_start()
+
 
 class StartScreen:
     def __init__(self):
@@ -451,7 +483,7 @@ class WinnerScreenAda:
 def mainloop(screen):
     global button
     global click
-    state = StartScreen()
+    state = MenuStartScreen()
     #music_intro() #CL
     while True:
         # Event handling
@@ -641,6 +673,49 @@ def quiz_button():
         pg.draw.rect(screen, LIGHT_GREEN_UNSELECTED, [565, 432, 147, 47])
         pg.draw.rect(screen, BLACK, [563, 430, 150, 50], 3)
         text_speech(screen, "RobotoSlab-Black.ttf", 25, "Quiz", BLACK, 638, 453, True)
+
+
+def start_game_button():
+    mouse = pg.mouse.get_pos()
+    if 275 <= mouse[0] <= 275 + 225 and 280 <= mouse[1] <= 280 + 65:
+        pg.draw.rect(screen, BLACK, (275, 280, 240, 65), 3)
+        pg.draw.rect(screen, COLOR_LIGHT_SELECTED, (277, 282, 236, 61))
+        text_speech(screen, "RobotoSlab-Black.ttf", 30, "Start Game", BLACK, width / 2.025,
+                    height / 1.93, True)
+    else:
+        pg.draw.rect(screen, BLACK, (275, 280, 240, 65), 3)
+        pg.draw.rect(screen, COLOR_LIGHT_UNSELECTED, (277, 282, 236, 61))
+        text_speech(screen, "RobotoSlab-Black.ttf", 30, "Start Game", BLACK, width / 2.025,
+                    height / 1.93, True)
+
+
+def instructions_button():
+    mouse = pg.mouse.get_pos()
+    if 275 <= mouse[0] <= 275 + 240 and 360 <= mouse[1] <= 360 + 65:
+        pg.draw.rect(screen, BLACK, (275, 360, 240, 65), 3)
+        pg.draw.rect(screen, COLOR_LIGHT_SELECTED, (277, 362, 236, 61))
+        text_speech(screen, "RobotoSlab-Black.ttf", 30, "How To Play", BLACK, width / 2.025,
+                    height / 1.54, True)
+    else:
+        pg.draw.rect(screen, BLACK, (275, 360, 240, 65), 3)
+        pg.draw.rect(screen, COLOR_LIGHT_UNSELECTED, (277, 362, 236, 61))
+        text_speech(screen, "RobotoSlab-Black.ttf", 30, "How To Play", BLACK, width / 2.025,
+                    height / 1.54, True)
+
+
+def quit_button_start():
+    mouse = pg.mouse.get_pos()
+    if 275 <= mouse[0] <= 275 + 225 and 440 <= mouse[1] <= 440 + 65:
+        pg.draw.rect(screen, BLACK, (275, 440, 240, 65), 3)
+        pg.draw.rect(screen, COLOR_LIGHT_SELECTED, (277, 442, 236, 61))
+        text_speech(screen, "RobotoSlab-Black.ttf", 30, "Quit Game", BLACK, width / 2.025,
+                    height / 1.27, True)
+    else:
+        pg.draw.rect(screen, BLACK, (275, 440, 240, 65), 3)
+        pg.draw.rect(screen, COLOR_LIGHT_UNSELECTED, (277, 442, 236, 61))
+        text_speech(screen, "RobotoSlab-Black.ttf", 30, "Quit Game", BLACK, width / 2.025,
+                    height / 1.27, True)
+
 
 def sword():
     sword = pg.image.load("sword_resized.png")
