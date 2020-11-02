@@ -132,7 +132,7 @@ class MenuStartScreen:
             if start_game_button_rect.collidepoint((mx, my)):
                 return StartScreen()
             if instructions_button_rect.collidepoint((mx, my)):
-                pass
+                return InstructionsScreen()
             if quit_game_button_rect.collidepoint((mx, my)):
                 sys.exit()
 
@@ -143,6 +143,30 @@ class MenuStartScreen:
         start_game_button()
         instructions_button()
         quit_button_start()
+
+
+class InstructionsScreen:
+    def handle_keydown(self, key):
+        if key == pg.K_SPACE:
+            pass
+        return self
+
+    def handle_mouse_button(self, button):
+        mx, my = pg.mouse.get_pos()
+        back_button_rect = pg.Rect(30, 540, 140, 40)
+        quit_button_rect = pg.Rect(650, 30, 140, 40)
+        if button == 1:
+            if back_button_rect.collidepoint((mx, my)):
+                return MenuStartScreen()
+            if quit_button_rect.collidepoint((mx, my)):
+                sys.exit()
+
+    def render(self, screen):
+        screen.fill(WHITE)
+        screen.blit(start_background, (0, 0))
+        screen.blit(logo, (215, -55))
+        back_button()
+        quit_button()
 
 
 class StartScreen:
