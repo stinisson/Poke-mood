@@ -8,7 +8,7 @@ from quiz import QuizStartScreen
 from quiz_api import quiz_categories
 
 import common
-common.common_init()
+#common.common_init()
 
 pg.init()
 width = 800
@@ -668,6 +668,7 @@ def music_battle():
 
 
 if __name__ == '__main__':
+    common.common_init()
     pg.display.set_caption("PokeMood")
     font = pg.font.Font(pg.font.match_font('arial'), 30)
     mainloop(screen)
