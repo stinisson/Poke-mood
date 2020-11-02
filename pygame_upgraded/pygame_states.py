@@ -383,7 +383,7 @@ class SpecialAttackScreen:
         attack_button()
         special_attack_button()
         quiz_button()
-        shield()
+        crossed_sword()
 
 class WinnerScreenGunnar:
     def handle_keydown(self, key):
@@ -647,7 +647,7 @@ def sword():
     screen.blit(sword, (315, 170))
 
 
-def double_sword():
+def crossed_sword():
     double_sword = pg.image.load("sword_crossed.png")
     double_sword = pg.transform.scale(double_sword, (230, 230))
     screen.blit(double_sword, (305, 160))
