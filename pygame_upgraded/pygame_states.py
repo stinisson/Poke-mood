@@ -21,6 +21,12 @@ background = pg.transform.scale(bg, (800, 600))
 vs_sign = pg.image.load("VS.PNG")
 vs_sign = pg.transform.scale(vs_sign, (200, 150))
 
+background_win = pg.image.load("winning_pic.jpg")
+background_win = pg.transform.scale(background_win, (800, 600))
+
+logo = pg.image.load("LOGO.PNG")
+logo = pg.transform.scale(logo, (360, 222))
+
 
 def text_speech(screen, font: str, size: int, text: str, color, x, y, bold: bool):
     font = pg.font.Font(font, size)
@@ -218,16 +224,16 @@ class AttackScreen:
             if special_attack_button.collidepoint((mx, my)):
                 special_attack(gunnar)
                 if active_health_ada <= 0:
-                    return StartScreen()
+                    return WinnerScreenGunnar()
                 if active_health_gunnar <= 0:
-                    return StartScreen()
+                    return WinnerScreenAda()
                 return SpecialAttackScreen()
             if attack_button_rect.collidepoint((mx, my)):
                 attack_function(gunnar)
                 if active_health_ada <= 0:
-                    return StartScreen()
+                    return WinnerScreenGunnar()
                 if active_health_gunnar <= 0:
-                    return StartScreen()
+                    return WinnerScreenAda()
             # Kristin
             if quiz_button.collidepoint((mx, my)):
                 print("In AttackScreen")
@@ -282,16 +288,16 @@ class SpecialAttackScreen:
                 sys.exit()
             if attack_button_rect.collidepoint((mx, my)):
                 if active_health_ada <= 0:
-                    return StartScreen()
+                    return WinnerScreenGunnar()
                 if active_health_gunnar <= 0:
-                    return StartScreen()
+                    return WinnerScreenAda()
                 return AttackScreen()
             if special_attack_button.collidepoint((mx, my)):
                 special_attack(gunnar)
                 if active_health_ada <= 0:
-                    return StartScreen()
+                    return WinnerScreenGunnar()
                 if active_health_gunnar <= 0:
-                    return StartScreen()
+                    return WinnerScreenAda()
             if quiz_button.collidepoint((mx, my)):
                 print("In specialAttackScreen")
                 common.next_screen = QuizStartScreen(5, quiz_categories, self, gunnar)
@@ -313,6 +319,67 @@ class SpecialAttackScreen:
         special_attack_button()
         quiz_button()
         shield()
+
+class WinnerScreenGunnar:
+    def handle_keydown(self, key):
+        if key == pg.K_ESCAPE:
+            return StartScreen()
+        return self
+
+    def handle_button(self, button):
+        mx, my = pg.mouse.get_pos()
+        quit_button_rect = pg.Rect(650, 30, 140, 40)
+        if button == 1:
+            if quit_button_rect.collidepoint((mx, my)):
+                sys.exit()
+        return self
+
+    def render(self, screen):
+        screen.fill(WHITE)
+        screen.blit(background_win, (0, 0))
+        gunnar_bigger = pg.transform.scale(gunnar.image, (350, 350))
+        screen.blit(gunnar_bigger, (220, 235))
+        pink_dragon_sad = pg.image.load("Pink_dragon_05.png")
+        pink_dragon_sad = pg.transform.scale(pink_dragon_sad, (204, 235))
+        screen.blit(pink_dragon_sad, (25, 340))
+        screen.blit(logo, (213, -55))
+        tear_drop = pg.image.load("tear-png-20.png")
+        tear_drop = pg.transform.scale(tear_drop, (25, 25))
+        screen.blit(tear_drop, (120, 410))
+        text_speech(screen, "RobotoSlab-Medium.ttf", 30, "Congratulations,", YELLOW_LIGHT, 389, 150, True)
+        text_speech(screen, "RobotoSlab-Medium.ttf", 30, f"{gunnar.name} won!", YELLOW_LIGHT, 388, 200, True)
+        quit_button()
+
+
+class WinnerScreenAda:
+    def handle_keydown(self, key):
+        if key == pg.K_ESCAPE:
+            return StartScreen()
+        return self
+
+    def handle_button(self, button):
+        mx, my = pg.mouse.get_pos()
+        quit_button_rect = pg.Rect(650, 30, 140, 40)
+        if button == 1:
+            if quit_button_rect.collidepoint((mx, my)):
+                sys.exit()
+        return self
+
+    def render(self, screen):
+        screen.fill(WHITE)
+        screen.blit(background_win, (0, 0))
+        ada_win_pic = pg.image.load("Pink_dragon_08.png")
+        ada_win_pic = pg.transform.scale(ada_win_pic, (350, 350))
+        screen.blit(ada_win_pic, (205, 285))
+        gunnar_lose = pg.transform.scale(gunnar.image, (200, 200))
+        screen.blit(gunnar_lose, (25, 355))
+        tear_drop = pg.image.load("tear-png-20.png")
+        tear_drop = pg.transform.scale(tear_drop, (25, 25))
+        screen.blit(tear_drop, (90, 430))
+        screen.blit(logo, (215, -55))
+        text_speech(screen, "RobotoSlab-Medium.ttf", 30, "Congratulations,", YELLOW_LIGHT, 386, 150, True)
+        text_speech(screen, "RobotoSlab-Medium.ttf", 30, f"{ada.name} won!", YELLOW_LIGHT, 385, 200, True)
+        quit_button()
 
 
 
