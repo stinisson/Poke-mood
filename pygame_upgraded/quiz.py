@@ -139,11 +139,12 @@ class Button:
 class QuizStartScreen:
     def __init__(self, number_of_quiz_questions, quiz_categories, return_screen_, poketer_):
         global poketer
+        #self.music = music_battle() #cl
         poketer = poketer_
 
         global return_screen
         return_screen = return_screen_
-        music("music/intro_song_1.mp3")
+        music("quizz_music.mp3")
         background_image_raw = pygame.image.load("Background_forest.jpg").convert()
         self.background_image = pygame.transform.scale(background_image_raw, screen_size)
         self.title = TextBox(rel_pos=(0.5, 0.1), font_name=FONT_ROBOTO,
@@ -386,7 +387,6 @@ def mainloop(screen, font):
 
         pygame.display.update()
         clock.tick(30)
-
 
 if __name__ == '__main__':
     pygame.init()
