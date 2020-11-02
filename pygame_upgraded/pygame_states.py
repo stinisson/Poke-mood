@@ -318,6 +318,8 @@ class SpecialAttackScreen:
         return self
 
     def handle_mouse_button(self, button):
+        global text_ada
+        global text_gunnar
         mx, my = pg.mouse.get_pos()
         quit_button_rect = pg.Rect(650, 30, 140, 40)
         back_button_rect = pg.Rect(30, 540, 140, 40)
@@ -333,6 +335,14 @@ class SpecialAttackScreen:
             if quit_button_rect.collidepoint((mx, my)):
                 sys.exit()
             if attack_button_rect.collidepoint((mx, my)):
+                attack_function(gunnar)
+                text_gunnar = "Gunnar attacked Ada!"
+                if cpu_random_attack():
+                    attack_function(ada)
+                    text_ada = "Ada attacked Gunnar!"
+                if not cpu_random_attack():
+                    special_attack(ada)
+                    text_ada = "Ada special attacked Gunnar!"
                 if active_health_ada <= 0:
                     return WinnerScreenGunnar()
                 if active_health_gunnar <= 0:
@@ -340,6 +350,13 @@ class SpecialAttackScreen:
                 return AttackScreen()
             if special_attack_button.collidepoint((mx, my)):
                 special_attack(gunnar)
+                text_gunnar = 'Gunnar special attacked Ada!'
+                if cpu_random_attack():
+                    attack_function(ada)
+                    text_ada = "Ada attacked Gunnar!"
+                if not cpu_random_attack():
+                    special_attack(ada)
+                    text_ada = "Ada special attacked Gunnar!"
                 if active_health_ada <= 0:
                     return WinnerScreenGunnar()
                 if active_health_gunnar <= 0:
@@ -350,6 +367,8 @@ class SpecialAttackScreen:
         return self
 
     def render(self, screen):
+        global text_ada
+        global text_gunnar
         screen.fill(WHITE)
         screen.blit(background, (0, 0))
 
