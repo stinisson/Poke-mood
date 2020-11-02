@@ -460,6 +460,7 @@ class WinnerScreenGunnar:
         screen.blit(background_win, (0, 0))
         gunnar_bigger = pg.transform.scale(gunnar.image, (350, 350))
         screen.blit(gunnar_bigger, (220, 235))
+        winning_crown_hasse()
         pink_dragon_sad = pg.image.load("Pink_dragon_05.png")
         pink_dragon_sad = pg.transform.scale(pink_dragon_sad, (204, 235))
         screen.blit(pink_dragon_sad, (25, 340))
@@ -492,6 +493,7 @@ class WinnerScreenAda:
         ada_win_pic = pg.image.load("Pink_dragon_08.png")
         ada_win_pic = pg.transform.scale(ada_win_pic, (350, 350))
         screen.blit(ada_win_pic, (205, 285))
+        winning_crown_ada()
         gunnar_lose = pg.transform.scale(gunnar.image, (200, 200))
         screen.blit(gunnar_lose, (25, 355))
         tear_drop = pg.image.load("tear-png-20.png")
@@ -750,6 +752,16 @@ def crossed_sword():
     double_sword = pg.image.load("Sword_crossed_01.PNG")
     double_sword = pg.transform.scale(double_sword, (230, 230))
     screen.blit(double_sword, (305, 160))
+
+def winning_crown_hasse():
+    winning_crown = pg.image.load("rsz_w_crown_75.png")
+    winning_crown = pg.transform.scale(winning_crown, (170, 140))
+    screen.blit(winning_crown, (270, 180))
+
+def winning_crown_ada():
+    winning_crown = pg.image.load("rsz_w_crown_75.png")
+    winning_crown = pg.transform.scale(winning_crown, (151, 124))
+    screen.blit(winning_crown, (340, 245))
 
 
 def music_intro():
