@@ -339,7 +339,7 @@ class QuizFinishedScreen:
         if self.quiz_finished_button.handle_mouse_button(mouse_button):
             #common.next_screen = QuizStartScreen(5, quiz_categories)
             common.next_screen = return_screen
-            music("music/intro_song_1.mp3")
+            music("music/battle_time_1.mp3")
 
     def render(self, screen):
         screen.fill(BLACK)
