@@ -274,7 +274,7 @@ class QuizScreen:
                 print("Rätt svar!")
                 quiz_button.color = QUIZ_TRANSP_GREEN_LIGHT
                 self.num_of_correct_ans += 1
-                sound("music/cartoon_cymbal_hit.mp3")
+                sound("music/kids_cheering.mp3")
             else:
                 quiz_button.color = QUIZ_TRANSP_RED
                 self.quiz_answer_buttons[self.correct_answer_idx].color = QUIZ_TRANSP_GREEN_LIGHT
