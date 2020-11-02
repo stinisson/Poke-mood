@@ -360,7 +360,7 @@ class QuizFinishedScreen:
 
 def mainloop(screen, font):
     # Initial state
-    current_screen = QuizStartScreen(5, quiz_categories)
+    current_screen = QuizStartScreen(5, quiz_categories, None, None)
 
     clock = pygame.time.Clock()
     while True:
@@ -389,6 +389,8 @@ def mainloop(screen, font):
         clock.tick(30)
 
 if __name__ == '__main__':
+    common.common_init()
+
     pygame.init()
     screen = pygame.display.set_mode(screen_size)
     pygame.display.set_caption("PokeMood")
