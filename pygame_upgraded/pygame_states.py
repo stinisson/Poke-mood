@@ -642,15 +642,15 @@ def quiz_button():
         pg.draw.rect(screen, BLACK, [563, 430, 150, 50], 3)
         text_speech(screen, "RobotoSlab-Black.ttf", 25, "Quiz", BLACK, 638, 453, True)
 
-
-def shield():
-    shield = pg.image.load("shield_white.png")
-    screen.blit(shield, (305, 160))
-
-
 def sword():
     sword = pg.image.load("sword_resized.png")
     screen.blit(sword, (315, 170))
+
+
+def double_sword():
+    double_sword = pg.image.load("sword_crossed.png")
+    double_sword = pg.transform.scale(double_sword, (230, 230))
+    screen.blit(double_sword, (305, 160))
 
 
 def music_intro():
