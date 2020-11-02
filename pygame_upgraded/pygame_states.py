@@ -648,7 +648,7 @@ def sword():
 
 
 def crossed_sword():
-    double_sword = pg.image.load("sword_crossed.png")
+    double_sword = pg.image.load("Sword_crossed_01.PNG")
     double_sword = pg.transform.scale(double_sword, (230, 230))
     screen.blit(double_sword, (305, 160))
 
