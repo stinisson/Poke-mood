@@ -6,6 +6,7 @@ from Pygame.constants import *
 from mood_score import calc_mood_score
 from quiz import QuizStartScreen
 from quiz_api import quiz_categories
+from pygame import mixer
 
 import common
 #common.common_init()
@@ -232,7 +233,7 @@ class BattleScreen:
                 sys.exit()
             if back_button_rect.collidepoint((mx, my)):
                 return StartScreen()
-            if attack_button_rect.collidepoint((mx,my)):
+            if attack_button_rect.collidepoint((mx, my)):
                 attack_function(gunnar)
                 text_gunnar = f"Gunnar attacked Ada! Ada took {gunnar.attack} in damage!"
                 if cpu_random_attack():
@@ -298,6 +299,7 @@ class AttackScreen:
         quit_button_rect = pg.Rect(650, 30, 140, 40)
         back_button_rect = pg.Rect(30, 540, 140, 40)
         attack_button_rect = pg.Rect(87, 430, 150, 50)
+
         special_attack_button = pg.Rect(325, 430, 150, 50)
         quiz_button = pg.Rect(563, 430, 150, 50)
         if button == 1:
@@ -470,6 +472,9 @@ class WinnerScreenGunnar:
 
 
 class WinnerScreenAda:
+    def __init__(self):
+        self.music = music_lose_game_melody()
+
     def handle_keydown(self, key):
         if key == pg.K_ESCAPE:
             return StartScreen()
@@ -506,7 +511,6 @@ def mainloop(screen):
     global button
     global click
     state = MenuStartScreen()
-    #music_intro() #CL
     while True:
         # Event handling
         ev = pg.event.poll()
@@ -632,6 +636,7 @@ def attack_button():
         pg.draw.rect(screen, LIGHT_RED_SELECTED, [89, 432, 147, 47])
         pg.draw.rect(screen, BLACK, [87, 430, 150, 50], 3)
         text_speech(screen, "RobotoSlab-Black.ttf", 25, "Attack", BLACK, 162, 453, True)
+        sound_ambient_hover_over_attack_btn()
     else:
         pg.draw.rect(screen, LIGHT_RED_UNSELECTED, [89, 432, 147, 47])
         pg.draw.rect(screen, BLACK, [87, 430, 150, 50], 3)
@@ -644,6 +649,7 @@ def special_attack_button():
         pg.draw.rect(screen, LIGHT_BLUE_SELECTED, [327, 432, 147, 47])
         pg.draw.rect(screen, BLACK, [325, 430, 150, 50], 3)
         text_speech(screen, "RobotoSlab-Black.ttf", 25, "Special", BLACK, 400, 453, True)
+        sound_ambient_hover_over_special_attack_btn()
     else:
         pg.draw.rect(screen, LIGHT_BLUE_UNSELECTED, [327, 432, 147, 47])
         pg.draw.rect(screen, BLACK, [325, 430, 150, 50], 3)
@@ -656,6 +662,7 @@ def quiz_button():
         pg.draw.rect(screen, LIGHT_GREEN_SELECTED, [565, 432, 147, 47])
         pg.draw.rect(screen, BLACK, [563, 430, 150, 50], 3)
         text_speech(screen, "RobotoSlab-Black.ttf", 25, "Quiz", BLACK, 638, 453, True)
+        sound_ambient_hover_quizz_btn()
     else:
         pg.draw.rect(screen, LIGHT_GREEN_UNSELECTED, [565, 432, 147, 47])
         pg.draw.rect(screen, BLACK, [563, 430, 150, 50], 3)
@@ -737,6 +744,28 @@ def music_battle():
     pg.mixer.music.load("battle_time_1.mp3")
     pg.mixer.music.play(-1)
     pg.mixer.music.set_volume(0.1)
+
+def music_lose_game_melody():
+    pg.mixer.init()
+    pg.mixer.music.load("lose_game_melody.mp3")
+    pg.mixer.music.play(-1)
+    pg.mixer.music.set_volume(0.2)
+
+def sound_ambient_hover_over_attack_btn():
+    sound = mixer.Sound("ambient_attack_c.mp3")
+    sound.play()
+    sound.set_volume(0.1)
+
+def sound_ambient_hover_over_special_attack_btn():
+    sound = mixer.Sound("ambient_special_attack_c1.mp3")
+    sound.play()
+    sound.set_volume(0.1)
+
+def sound_ambient_hover_quizz_btn():
+    sound = mixer.Sound("ambient_quizz_c2.mp3")
+    sound.play()
+    sound.set_volume(0.1)
+
 
 
 if __name__ == '__main__':
