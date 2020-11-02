@@ -106,6 +106,12 @@ def special_attack(poketer):
         else:
             return active_health_gunnar
 
+def cpu_random_attack():
+    random_number = randint(1, 11)
+    if random_number <= 7:
+        return True
+    if random_number >= 8:
+        return False
 
 class StartScreen:
     def __init__(self):
@@ -139,6 +145,8 @@ class StartScreen:
         text_speech(screen, "RobotoSlab-Medium.ttf", 15, "Press [enter] for moodscores", BLACK, 397, 330, True)
 
 
+text_ada = ""
+text_gunnar = ""
 class BattleScreen:
     def __init__(self):
         self.music = music_battle()
@@ -150,7 +158,8 @@ class BattleScreen:
         return self
 
     def handle_mouse_button(self, button):
-        global shield_blit
+        global text_ada
+        global text_gunnar
         mx, my = pg.mouse.get_pos()
         quit_button_rect = pg.Rect(650, 30, 140, 40)
         back_button_rect = pg.Rect(30, 540, 140, 40)
@@ -167,9 +176,23 @@ class BattleScreen:
                 return StartScreen()
             if attack_button_rect.collidepoint((mx,my)):
                 attack_function(gunnar)
+                text_gunnar = "Gunnar attacked Ada!"
+                if cpu_random_attack():
+                    attack_function(ada)
+                    text_ada = "Ada attacked Gunnar!"
+                if not cpu_random_attack():
+                    special_attack(ada)
+                    text_ada = "Ada special attacked Gunnar!"
                 return AttackScreen()
             if block_button_rect.collidepoint((mx, my)):
                 special_attack(gunnar)
+                text_gunnar = "Gunnar special attacked Ada!"
+                if cpu_random_attack():
+                    attack_function(ada)
+                    text_ada = "Ada attacked Gunnar!"
+                if not cpu_random_attack():
+                    special_attack(ada)
+                    text_ada = "Ada special attacked Gunnar!"
                 return SpecialAttackScreen()
             if quiz_button.collidepoint((mx, my)):
                 print("In BattleScreen")
@@ -177,6 +200,8 @@ class BattleScreen:
         return self
 
     def render(self, screen):
+        global text_ada
+        global text_gunnar
         screen.fill(WHITE)
         screen.blit(background, (0, 0))
 
@@ -192,6 +217,8 @@ class BattleScreen:
         attack_button()
         special_attack_button()
         quiz_button()
+        text_speech(screen, "RobotoSlab-Medium.ttf", 15, text_gunnar, BLACK, 375, 100, True)
+        text_speech(screen, "RobotoSlab-Medium.ttf", 15, text_ada, BLACK, 375, 125, True)
 
 
 class AttackScreen:
@@ -207,6 +234,8 @@ class AttackScreen:
         return self
 
     def handle_mouse_button(self, button):
+        global text_ada
+        global text_gunnar
         mx, my = pg.mouse.get_pos()
         quit_button_rect = pg.Rect(650, 30, 140, 40)
         back_button_rect = pg.Rect(30, 540, 140, 40)
@@ -223,6 +252,13 @@ class AttackScreen:
                 sys.exit()
             if special_attack_button.collidepoint((mx, my)):
                 special_attack(gunnar)
+                text_gunnar = "Gunnar special attacked Ada!"
+                if cpu_random_attack():
+                    attack_function(ada)
+                    text_ada = "Ada attacked Gunnar!"
+                if not cpu_random_attack():
+                    special_attack(ada)
+                    text_ada = "Ada special attacked Gunnar!"
                 if active_health_ada <= 0:
                     return WinnerScreenGunnar()
                 if active_health_gunnar <= 0:
@@ -230,6 +266,13 @@ class AttackScreen:
                 return SpecialAttackScreen()
             if attack_button_rect.collidepoint((mx, my)):
                 attack_function(gunnar)
+                text_gunnar = 'Gunnar attacked Ada!'
+                if cpu_random_attack():
+                    attack_function(ada)
+                    text_ada = 'Ada attacked Gunnar!'
+                if not cpu_random_attack():
+                    special_attack(ada)
+                    text_ada = "Ada special attacked Gunnar!"
                 if active_health_ada <= 0:
                     return WinnerScreenGunnar()
                 if active_health_gunnar <= 0:
@@ -241,6 +284,8 @@ class AttackScreen:
             return self
 
     def render(self, screen):
+        global text_ada
+        global text_gunnar
         screen.fill(WHITE)
         screen.blit(background, (0, 0))
 
@@ -256,7 +301,8 @@ class AttackScreen:
         special_attack_button()
         quiz_button()
         sword()
-
+        text_speech(screen, "RobotoSlab-Medium.ttf", 20, text_gunnar, BLACK, 400, 100, True)
+        text_speech(screen, "RobotoSlab-Medium.ttf", 20, text_ada, BLACK, 400, 130, True)
 
 click = False
 button = 0
@@ -593,6 +639,7 @@ def music_intro():
     pg.mixer.music.load("intro_song_1.mp3")
     pg.mixer.music.play(-1)
     pg.mixer.music.set_volume(0.1)
+
 
 def music_battle():
     pg.mixer.init()
