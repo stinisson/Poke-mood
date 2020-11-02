@@ -188,6 +188,9 @@ class QuizStartScreen:
                 category_button.enabled = False
             common.next_screen = QuizScreen(self.categories[clicked_button_idx])
 
+    def handle_timer(self):
+        return self
+
     def render(self, screen):
         screen.fill(BLACK)
         screen.blit(self.background_image, (0, 0))
@@ -256,6 +259,9 @@ class QuizScreen:
             #self.set_question()
         return self
 
+    def handle_timer(self):
+        return self
+
     def handle_mouse_button(self, mouse_button):
         clicked_button_idx = None
         quiz_button = None
@@ -283,6 +289,9 @@ class QuizScreen:
 
             for quiz_button in self.quiz_answer_buttons:
                 quiz_button.enabled = False
+
+    def handle_timer(self):
+        return self
 
     def render(self, screen):
         time_now = pygame.time.get_ticks()
@@ -341,6 +350,9 @@ class QuizFinishedScreen:
             common.next_screen = return_screen
             music("music/battle_time_1.mp3")
 
+    def handle_timer(self):
+        return self
+
     def render(self, screen):
         screen.fill(BLACK)
         screen.blit(self.background_image, (0, 0))
@@ -381,6 +393,8 @@ def mainloop(screen, font):
             print("changing frames to", type(common.next_screen))
             current_screen = common.next_screen
             common.next_screen = None
+
+        current_screen.handle_timer()
 
         # Render
         current_screen.render(screen)
