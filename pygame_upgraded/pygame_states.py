@@ -118,6 +118,8 @@ def cpu_random_attack():
 
 
 class MenuStartScreen:
+    def __init__(self):
+        self.music = music_intro()
     def handle_keydown(self, key):
         if key == pg.K_SPACE:
             pass
@@ -171,7 +173,7 @@ class InstructionsScreen:
 
 class StartScreen:
     def __init__(self):
-        self.music = music_intro()
+        #self.music = music_intro()
         print(self)
 
     def handle_keydown(self, key):
@@ -754,12 +756,12 @@ def crossed_sword():
     screen.blit(double_sword, (305, 160))
 
 def winning_crown_hasse():
-    winning_crown = pg.image.load("rsz_w_crown_75.png")
+    winning_crown = pg.image.load("crown.png")
     winning_crown = pg.transform.scale(winning_crown, (170, 140))
     screen.blit(winning_crown, (270, 180))
 
 def winning_crown_ada():
-    winning_crown = pg.image.load("rsz_w_crown_75.png")
+    winning_crown = pg.image.load("crown.png")
     winning_crown = pg.transform.scale(winning_crown, (151, 124))
     screen.blit(winning_crown, (340, 245))
 
