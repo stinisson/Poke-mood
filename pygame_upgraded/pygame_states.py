@@ -30,6 +30,9 @@ logo = pg.transform.scale(logo, (360, 222))
 start_background = pg.image.load("background_start.png")
 start_background = pg.transform.scale(start_background, (800, 600))
 
+instructions_frame = pg.image.load("Frame_background.PNG")
+instructions_frame = pg.transform.scale(instructions_frame, (650, 450))
+
 
 def text_speech(screen, font: str, size: int, text: str, color, x, y, bold: bool):
     font = pg.font.Font(font, size)
@@ -221,9 +224,6 @@ class BattleScreen:
         mx, my = pg.mouse.get_pos()
         quit_button_rect = pg.Rect(650, 30, 140, 40)
         back_button_rect = pg.Rect(30, 540, 140, 40)
-        # attack_button_rect = pg.Rect(200, 430, 150, 50)
-        # block_button_rect = pg.Rect(445, 430, 150, 50)
-        # Kristin
         attack_button_rect = pg.Rect(87, 430, 150, 50)
         block_button_rect = pg.Rect(325, 430, 150, 50)
         quiz_button = pg.Rect(563, 430, 150, 50)
@@ -234,20 +234,20 @@ class BattleScreen:
                 return StartScreen()
             if attack_button_rect.collidepoint((mx,my)):
                 attack_function(gunnar)
-                text_gunnar = "Gunnar attacked Ada!"
+                text_gunnar = f"Gunnar attacked Ada! Ada took {gunnar.attack} in damage!"
                 if cpu_random_attack():
                     attack_function(ada)
-                    text_ada = "Ada attacked Gunnar!"
+                    text_ada = f"Ada attacked Gunnar! You took {ada.attack} in damage!"
                 if not cpu_random_attack():
                     special_attack(ada)
                     text_ada = "Ada special attacked Gunnar!"
                 return AttackScreen()
             if block_button_rect.collidepoint((mx, my)):
                 special_attack(gunnar)
-                text_gunnar = "Gunnar special attacked Ada!"
+                text_gunnar = f"Gunnar special attacked Ada! Ada took {ada.attack}"
                 if cpu_random_attack():
                     attack_function(ada)
-                    text_ada = "Ada attacked Gunnar!"
+                    text_ada = f"Ada attacked Gunnar! You took {ada.attack} in damage"
                 if not cpu_random_attack():
                     special_attack(ada)
                     text_ada = "Ada special attacked Gunnar!"
@@ -297,9 +297,6 @@ class AttackScreen:
         mx, my = pg.mouse.get_pos()
         quit_button_rect = pg.Rect(650, 30, 140, 40)
         back_button_rect = pg.Rect(30, 540, 140, 40)
-        #special_attack_button = pg.Rect(445, 430, 150, 50)
-        #attack_button_rect = pg.Rect(200, 430, 150, 50)
-        # Kristin
         attack_button_rect = pg.Rect(87, 430, 150, 50)
         special_attack_button = pg.Rect(325, 430, 150, 50)
         quiz_button = pg.Rect(563, 430, 150, 50)
@@ -313,7 +310,7 @@ class AttackScreen:
                 text_gunnar = "Gunnar special attacked Ada!"
                 if cpu_random_attack():
                     attack_function(ada)
-                    text_ada = "Ada attacked Gunnar!"
+                    text_ada = f"Ada attacked Gunnar! Gunnar took {ada.attack} in damage!"
                 if not cpu_random_attack():
                     special_attack(ada)
                     text_ada = "Ada special attacked Gunnar!"
@@ -324,10 +321,10 @@ class AttackScreen:
                 return SpecialAttackScreen()
             if attack_button_rect.collidepoint((mx, my)):
                 attack_function(gunnar)
-                text_gunnar = 'Gunnar attacked Ada!'
+                text_gunnar = f'Gunnar attacked Ada! Ada took {gunnar.attack} in damage!'
                 if cpu_random_attack():
                     attack_function(ada)
-                    text_ada = 'Ada attacked Gunnar!'
+                    text_ada = f'Ada attacked Gunnar! You took {ada.attack} in damage!'
                 if not cpu_random_attack():
                     special_attack(ada)
                     text_ada = "Ada special attacked Gunnar!"
@@ -381,9 +378,6 @@ class SpecialAttackScreen:
         mx, my = pg.mouse.get_pos()
         quit_button_rect = pg.Rect(650, 30, 140, 40)
         back_button_rect = pg.Rect(30, 540, 140, 40)
-        # attack_button_rect = pg.Rect(200, 430, 150, 50)
-        # special_attack_button = pg.Rect(445, 430, 150, 50)
-        # Kristin
         attack_button_rect = pg.Rect(87, 430, 150, 50)
         special_attack_button = pg.Rect(325, 430, 150, 50)
         quiz_button = pg.Rect(563, 430, 150, 50)
@@ -394,10 +388,10 @@ class SpecialAttackScreen:
                 sys.exit()
             if attack_button_rect.collidepoint((mx, my)):
                 attack_function(gunnar)
-                text_gunnar = "Gunnar attacked Ada!"
+                text_gunnar = f"Gunnar attacked Ada! Ada took {gunnar.attack} in damage!"
                 if cpu_random_attack():
                     attack_function(ada)
-                    text_ada = "Ada attacked Gunnar!"
+                    text_ada = f"Ada attacked Gunnar! You took {ada.attack} in damage!"
                 if not cpu_random_attack():
                     special_attack(ada)
                     text_ada = "Ada special attacked Gunnar!"
@@ -411,7 +405,7 @@ class SpecialAttackScreen:
                 text_gunnar = 'Gunnar special attacked Ada!'
                 if cpu_random_attack():
                     attack_function(ada)
-                    text_ada = "Ada attacked Gunnar!"
+                    text_ada = f"Ada attacked Gunnar! You took {ada.attack} in damage!"
                 if not cpu_random_attack():
                     special_attack(ada)
                     text_ada = "Ada special attacked Gunnar!"
@@ -631,41 +625,6 @@ def back_button():
         pg.draw.rect(screen, BLACK, [30, 540, 140, 40], 3)
         text_speech(screen, "RobotoSlab-Black.ttf", 25, "BACK", BLACK, 97, 558, True)
 
-
-# def attack_button():
-#     mouse = pg.mouse.get_pos()
-#     if 200 <= mouse[0] <= 200 + 150 and 430 <= mouse[1] <= 430 + 50:
-#         pg.draw.rect(screen, LIGHT_RED_SELECTED, [202, 432, 147, 47])
-#         pg.draw.rect(screen, BLACK, [200, 430, 150, 50], 3)
-#         text_speech(screen, "RobotoSlab-Black.ttf", 25, "Attack", BLACK, 272, 453, True)
-#     else:
-#         pg.draw.rect(screen, LIGHT_RED_UNSELECTED, [202, 432, 147, 47])
-#         pg.draw.rect(screen, BLACK, [200, 430, 150, 50], 3)
-#         text_speech(screen, "RobotoSlab-Black.ttf", 25, "Attack", BLACK, 272, 453, True)
-#
-#
-# def special_attack_button():
-#     mouse = pg.mouse.get_pos()
-#     if 445 <= mouse[0] <= 445 + 150 and 430 <= mouse[1] <= 430 + 50:
-#         pg.draw.rect(screen, LIGHT_BLUE_SELECTED, [447, 432, 147, 47])
-#         pg.draw.rect(screen, BLACK, [445, 430, 150, 50], 3)
-#         text_speech(screen, "RobotoSlab-Black.ttf", 25, "Special", BLACK, 517, 453, True)
-#     else:
-#         pg.draw.rect(screen, LIGHT_BLUE_UNSELECTED, [447, 432, 147, 47])
-#         pg.draw.rect(screen, BLACK, [445, 430, 150, 50], 3)
-#         text_speech(screen, "RobotoSlab-Black.ttf", 25, "Special", BLACK, 517, 453, True)
-#
-#
-# def quiz_button():
-#     mouse = pg.mouse.get_pos()
-#     if 445 <= mouse[0] <= 445 + 150 and 430 <= mouse[1] <= 430 + 50:
-#         pg.draw.rect(screen, LIGHT_GREEN_SELECTED, [447, 432, 147, 47])
-#         pg.draw.rect(screen, BLACK, [445, 430, 150, 50], 3)
-#         text_speech(screen, "RobotoSlab-Black.ttf", 25, "Quiz", BLACK, 517, 453, True)
-#     else:
-#         pg.draw.rect(screen, LIGHT_GREEN_UNSELECTED, [447, 432, 147, 47])
-#         pg.draw.rect(screen, BLACK, [445, 430, 150, 50], 3)
-#         text_speech(screen, "RobotoSlab-Black.ttf", 25, "Quiz", BLACK, 517, 453, True)
 
 def attack_button():
     mouse = pg.mouse.get_pos()
