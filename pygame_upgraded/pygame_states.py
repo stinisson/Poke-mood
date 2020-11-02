@@ -115,6 +115,7 @@ def special_attack(poketer):
         else:
             return active_health_gunnar
 
+
 def cpu_random_attack():
     random_number = randint(1, 11)
     if random_number <= 7:
@@ -261,13 +262,14 @@ class BattleScreen:
     def render(self, screen):
         global text_ada
         global text_gunnar
+
         screen.fill(WHITE)
         screen.blit(background, (0, 0))
 
         x_off, y_off = periodic_movement(1, 5)
-
         aggressive_ada(504 + x_off, 156, 650, 550, active_health_ada)
         glada_gunnar(24, 144 + y_off, 122, 45, active_health_gunnar)
+
         screen.blit(vs_sign, (300, 225))
         quit_button()
         back_button()
@@ -331,12 +333,9 @@ class AttackScreen:
                 if cpu_random_attack():
                     return AttackScreen("cpu")
                 else:
-                    print("special_attack(ada)")
-                    special_attack(ada)
-                    text_ada = "Ada special attacked Gunnar!"
                     return SpecialAttackScreen("cpu")
 
-            # when the cpu's attack is finished - return to battlescreen
+            # when the cpu's attack is finished - return to Battlescreen
             if self.turn == "cpu":
                 return BattleScreen()
 
@@ -359,7 +358,6 @@ class AttackScreen:
         glada_gunnar(24 + x_off, 144, 122, 45, active_health_gunnar)
         quit_button()
         back_button()
-
 
         # Rotate sword depending on whose turn it is
         sword(self.turn)
