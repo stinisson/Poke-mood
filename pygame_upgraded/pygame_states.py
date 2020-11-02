@@ -476,6 +476,9 @@ class WinnerScreenGunnar:
 
 
 class WinnerScreenAda:
+    def __init__(self):
+        self.music = music_lose_game_melody()
+
     def handle_keydown(self, key):
         if key == pg.K_ESCAPE:
             return StartScreen()
@@ -778,6 +781,12 @@ def music_battle():
     pg.mixer.music.load("battle_time_1.mp3")
     pg.mixer.music.play(-1)
     pg.mixer.music.set_volume(0.1)
+
+def music_lose_game_melody():
+    pg.mixer.init()
+    pg.mixer.music.load("lose_game_melody.mp3")
+    pg.mixer.music.play(-1)
+    pg.mixer.music.set_volume(0.2)
 
 
 if __name__ == '__main__':
