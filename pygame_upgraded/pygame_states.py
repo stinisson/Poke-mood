@@ -11,6 +11,8 @@ from pygame import mixer
 import common
 #common.common_init()
 
+from common import TextBox, periodic_movement
+
 pg.init()
 width = 800
 height = 600
@@ -142,6 +144,9 @@ class MenuStartScreen:
             if quit_game_button_rect.collidepoint((mx, my)):
                 sys.exit()
 
+    def handle_timer(self):
+        return self
+
     def render(self, screen):
         screen.fill(WHITE)
         screen.blit(start_background, (0, 0))
@@ -166,6 +171,9 @@ class InstructionsScreen:
                 return MenuStartScreen()
             if quit_button_rect.collidepoint((mx, my)):
                 sys.exit()
+
+    def handle_timer(self):
+        return self
 
     def render(self, screen):
         screen.fill(WHITE)
@@ -194,6 +202,9 @@ class StartScreen:
                 return BattleScreen()
             if quit_button_rect.collidepoint((mx, my)):
                 sys.exit()
+        return self
+
+    def handle_timer(self):
         return self
 
     def render(self, screen):
@@ -234,28 +245,17 @@ class BattleScreen:
             if back_button_rect.collidepoint((mx, my)):
                 return StartScreen()
             if attack_button_rect.collidepoint((mx, my)):
-                attack_function(gunnar)
-                text_gunnar = f"Gunnar attacked Ada! Ada took {gunnar.attack} in damage!"
-                if cpu_random_attack():
-                    attack_function(ada)
-                    text_ada = f"Ada attacked Gunnar! You took {ada.attack} in damage!"
-                if not cpu_random_attack():
-                    special_attack(ada)
-                    text_ada = "Ada special attacked Gunnar!"
-                return AttackScreen()
+                return AttackScreen("user")
+
             if block_button_rect.collidepoint((mx, my)):
-                special_attack(gunnar)
-                text_gunnar = f"Gunnar special attacked Ada! Ada took {ada.attack}"
-                if cpu_random_attack():
-                    attack_function(ada)
-                    text_ada = f"Ada attacked Gunnar! You took {ada.attack} in damage"
-                if not cpu_random_attack():
-                    special_attack(ada)
-                    text_ada = "Ada special attacked Gunnar!"
-                return SpecialAttackScreen()
+                return SpecialAttackScreen("user")
+
             if quiz_button.collidepoint((mx, my)):
-                print("In BattleScreen")
                 common.next_screen = QuizStartScreen(5, quiz_categories, self, gunnar)
+
+        return self
+
+    def handle_timer(self):
         return self
 
     def render(self, screen):
@@ -264,9 +264,7 @@ class BattleScreen:
         screen.fill(WHITE)
         screen.blit(background, (0, 0))
 
-        time = pg.time.get_ticks()
-        x_off = 5 * math.cos(time * 3.14 / 1000)
-        y_off = 5 * math.sin(time * 3.14 / 1000)
+        x_off, y_off = periodic_movement(1, 5)
 
         aggressive_ada(504 + x_off, 156, 650, 550, active_health_ada)
         glada_gunnar(24, 144 + y_off, 122, 45, active_health_gunnar)
@@ -276,13 +274,25 @@ class BattleScreen:
         attack_button()
         special_attack_button()
         quiz_button()
-        text_speech(screen, "RobotoSlab-Medium.ttf", 15, text_gunnar, BLACK, 375, 100, True)
-        text_speech(screen, "RobotoSlab-Medium.ttf", 15, text_ada, BLACK, 375, 125, True)
+        textbox_gunnar = TextBox((0.5, 0.2), "RobotoSlab-Medium.ttf", 30, False, WHITE, "It's your turn!")
+        textbox_gunnar.render(screen)
 
 
 class AttackScreen:
-    def __init__(self):
-        print(self)
+    def __init__(self, turn_):
+        print(self, turn_)
+        self.turn = turn_
+        self.timeout = pg.time.get_ticks()
+
+        global text_gunnar, text_ada
+        if self.turn == "user":
+            attack_function(gunnar)
+            text_gunnar = f"Gunnar attacked Ada! Ada took {gunnar.attack} in damage!"
+            text_ada = ""
+        else:
+            attack_function(ada)
+            text_ada = f"Ada attacked Gunnar! You took {ada.attack} in damage!"
+            text_gunnar = ""
 
     global active_health_ada
     global active_health_gunnar
@@ -293,52 +303,44 @@ class AttackScreen:
         return self
 
     def handle_mouse_button(self, button):
-        global text_ada
-        global text_gunnar
+
         mx, my = pg.mouse.get_pos()
         quit_button_rect = pg.Rect(650, 30, 140, 40)
         back_button_rect = pg.Rect(30, 540, 140, 40)
-        attack_button_rect = pg.Rect(87, 430, 150, 50)
 
-        special_attack_button = pg.Rect(325, 430, 150, 50)
-        quiz_button = pg.Rect(563, 430, 150, 50)
         if button == 1:
             if back_button_rect.collidepoint((mx, my)):
                 return BattleScreen()
             if quit_button_rect.collidepoint((mx, my)):
                 sys.exit()
-            if special_attack_button.collidepoint((mx, my)):
-                special_attack(gunnar)
-                text_gunnar = "Gunnar special attacked Ada!"
-                if cpu_random_attack():
-                    attack_function(ada)
-                    text_ada = f"Ada attacked Gunnar! Gunnar took {ada.attack} in damage!"
-                if not cpu_random_attack():
-                    special_attack(ada)
-                    text_ada = "Ada special attacked Gunnar!"
-                if active_health_ada <= 0:
-                    return WinnerScreenGunnar()
-                if active_health_gunnar <= 0:
-                    return WinnerScreenAda()
-                return SpecialAttackScreen()
-            if attack_button_rect.collidepoint((mx, my)):
-                attack_function(gunnar)
-                text_gunnar = f'Gunnar attacked Ada! Ada took {gunnar.attack} in damage!'
-                if cpu_random_attack():
-                    attack_function(ada)
-                    text_ada = f'Ada attacked Gunnar! You took {ada.attack} in damage!'
-                if not cpu_random_attack():
-                    special_attack(ada)
-                    text_ada = "Ada special attacked Gunnar!"
-                if active_health_ada <= 0:
-                    return WinnerScreenGunnar()
-                if active_health_gunnar <= 0:
-                    return WinnerScreenAda()
-            # Kristin
-            if quiz_button.collidepoint((mx, my)):
-                print("In AttackScreen")
-                common.next_screen = QuizStartScreen(5, quiz_categories, self, gunnar)
             return self
+
+    def handle_timer(self):
+
+        time_now = pg.time.get_ticks()
+        if time_now - self.timeout > 2500 and self.timeout != 0:
+            self.timeout = 0
+
+            if active_health_ada <= 0:
+                return WinnerScreenGunnar()
+            if active_health_gunnar <= 0:
+                return WinnerScreenAda()
+
+            # when the users attack is finished - let cpu make a move
+            if self.turn == "user":
+                if cpu_random_attack():
+                    return AttackScreen("cpu")
+                else:
+                    print("special_attack(ada)")
+                    special_attack(ada)
+                    text_ada = "Ada special attacked Gunnar!"
+                    return SpecialAttackScreen("cpu")
+
+            # when the cpu's attack is finished - return to battlescreen
+            if self.turn == "cpu":
+                return BattleScreen()
+
+        return self
 
     def render(self, screen):
         global text_ada
@@ -346,28 +348,38 @@ class AttackScreen:
         screen.fill(WHITE)
         screen.blit(background, (0, 0))
 
-        time = pg.time.get_ticks()
-        x_off = 5 * math.cos(time * 3.14 / 1000)
-        y_off = 5 * math.sin(time * 3.14 / 1000)
+        textbox_gunnar = TextBox((0.5, 0.2), "RobotoSlab-Medium.ttf", 25, False, YELLOW, text_gunnar)
+        textbox_gunnar.render(screen)
 
+        textbox_ada = TextBox((0.5, 0.2), "RobotoSlab-Medium.ttf", 25, False, RED, text_ada)
+        textbox_ada.render(screen)
+
+        x_off, y_off = periodic_movement(1, 5)
         aggressive_ada(504, 156 + y_off, 650, 550, active_health_ada)
         glada_gunnar(24 + x_off, 144, 122, 45, active_health_gunnar)
         quit_button()
         back_button()
-        attack_button()
-        special_attack_button()
-        quiz_button()
-        sword()
-        text_speech(screen, "RobotoSlab-Medium.ttf", 20, text_gunnar, BLACK, 400, 100, True)
-        text_speech(screen, "RobotoSlab-Medium.ttf", 20, text_ada, BLACK, 400, 130, True)
 
-click = False
-button = 0
+
+        # Rotate sword depending on whose turn it is
+        sword(self.turn)
 
 
 class SpecialAttackScreen:
-    def __init__(self):
+    def __init__(self, turn_):
         print(self)
+        self.turn = turn_
+        self.timeout = pg.time.get_ticks()
+
+        global text_gunnar, text_ada
+        if self.turn == "user":
+            special_attack(gunnar)
+            text_gunnar = f"Gunnar special attacked Ada! Ada took {gunnar.attack} in damage!"
+            text_ada = ""
+        else:
+            special_attack(ada)
+            text_ada = f"Ada special attacked Gunnar! You took {ada.attack} in damage!"
+            text_gunnar = ""
 
     def handle_keydown(self, key):
         if key == pg.K_ESCAPE:
@@ -380,44 +392,36 @@ class SpecialAttackScreen:
         mx, my = pg.mouse.get_pos()
         quit_button_rect = pg.Rect(650, 30, 140, 40)
         back_button_rect = pg.Rect(30, 540, 140, 40)
-        attack_button_rect = pg.Rect(87, 430, 150, 50)
-        special_attack_button = pg.Rect(325, 430, 150, 50)
-        quiz_button = pg.Rect(563, 430, 150, 50)
+
         if button == 1:
             if back_button_rect.collidepoint((mx, my)):
                 return BattleScreen()
             if quit_button_rect.collidepoint((mx, my)):
                 sys.exit()
-            if attack_button_rect.collidepoint((mx, my)):
-                attack_function(gunnar)
-                text_gunnar = f"Gunnar attacked Ada! Ada took {gunnar.attack} in damage!"
+        return self
+
+    def handle_timer(self):
+
+        time_now = pg.time.get_ticks()
+        if time_now - self.timeout > 2500 and self.timeout != 0:
+            self.timeout = 0
+
+            if active_health_ada <= 0:
+                return WinnerScreenGunnar()
+            if active_health_gunnar <= 0:
+                return WinnerScreenAda()
+
+            # when the users attack is finished - let cpu make a move
+            if self.turn == "user":
                 if cpu_random_attack():
-                    attack_function(ada)
-                    text_ada = f"Ada attacked Gunnar! You took {ada.attack} in damage!"
-                if not cpu_random_attack():
-                    special_attack(ada)
-                    text_ada = "Ada special attacked Gunnar!"
-                if active_health_ada <= 0:
-                    return WinnerScreenGunnar()
-                if active_health_gunnar <= 0:
-                    return WinnerScreenAda()
-                return AttackScreen()
-            if special_attack_button.collidepoint((mx, my)):
-                special_attack(gunnar)
-                text_gunnar = 'Gunnar special attacked Ada!'
-                if cpu_random_attack():
-                    attack_function(ada)
-                    text_ada = f"Ada attacked Gunnar! You took {ada.attack} in damage!"
-                if not cpu_random_attack():
-                    special_attack(ada)
-                    text_ada = "Ada special attacked Gunnar!"
-                if active_health_ada <= 0:
-                    return WinnerScreenGunnar()
-                if active_health_gunnar <= 0:
-                    return WinnerScreenAda()
-            if quiz_button.collidepoint((mx, my)):
-                print("In specialAttackScreen")
-                common.next_screen = QuizStartScreen(5, quiz_categories, self, gunnar)
+                    return AttackScreen("cpu")
+                else:
+                    return SpecialAttackScreen("cpu")
+
+            # when the cpu's attack is finished - return to Battlescreen
+            if self.turn == "cpu":
+                return BattleScreen()
+
         return self
 
     def render(self, screen):
@@ -426,17 +430,19 @@ class SpecialAttackScreen:
         screen.fill(WHITE)
         screen.blit(background, (0, 0))
 
-        time = pg.time.get_ticks()
-        x_off = 5 * math.cos(time * 3.14 / 1000)
-        y_off = 5 * math.sin(time * 3.14 / 1000)
+        textbox_gunnar = TextBox((0.5, 0.2), "RobotoSlab-Medium.ttf", 25, False, YELLOW, text_gunnar)
+        textbox_gunnar.render(screen)
+
+        textbox_ada = TextBox((0.5, 0.2), "RobotoSlab-Medium.ttf", 25, False, RED, text_ada)
+        textbox_ada.render(screen)
+
+        x_off, y_off = periodic_movement(1, 5)
 
         aggressive_ada(504 + x_off, 156, 650, 550, active_health_ada)
         glada_gunnar(24, 144 + y_off, 122, 45, active_health_gunnar)
         quit_button()
         back_button()
-        attack_button()
-        special_attack_button()
-        quiz_button()
+
         crossed_sword()
 
 class WinnerScreenGunnar:
@@ -451,6 +457,9 @@ class WinnerScreenGunnar:
         if button == 1:
             if quit_button_rect.collidepoint((mx, my)):
                 sys.exit()
+        return self
+
+    def handle_timer(self):
         return self
 
     def render(self, screen):
@@ -488,6 +497,9 @@ class WinnerScreenAda:
                 sys.exit()
         return self
 
+    def handle_timer(self):
+        return self
+
     def render(self, screen):
         screen.fill(WHITE)
         screen.blit(background_win, (0, 0))
@@ -505,7 +517,8 @@ class WinnerScreenAda:
         text_speech(screen, "RobotoSlab-Medium.ttf", 30, f"{ada.name} won!", YELLOW_LIGHT, 385, 200, True)
         quit_button()
 
-
+click = False
+button = 0
 
 def mainloop(screen):
     global button
@@ -531,6 +544,8 @@ def mainloop(screen):
             print("changing frames to", type(common.next_screen))
             state = common.next_screen
             common.next_screen = None
+
+        state = state.handle_timer()
 
         # Render
         state.render(screen)
@@ -711,7 +726,7 @@ def quit_button_start():
                     height / 1.27, True)
 
 
-def sword():
+def sword(turn):
     sword = pg.image.load("sword_resized.png")
     screen.blit(sword, (315, 170))
 
