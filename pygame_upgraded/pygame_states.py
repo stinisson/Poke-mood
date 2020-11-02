@@ -449,7 +449,7 @@ class WinnerScreenGunnar:
             return StartScreen()
         return self
 
-    def handle_button(self, button):
+    def handle_mouse_button(self, button):
         mx, my = pg.mouse.get_pos()
         quit_button_rect = pg.Rect(650, 30, 140, 40)
         if button == 1:
@@ -481,7 +481,7 @@ class WinnerScreenAda:
             return StartScreen()
         return self
 
-    def handle_button(self, button):
+    def handle_mouse_button(self, button):
         mx, my = pg.mouse.get_pos()
         quit_button_rect = pg.Rect(650, 30, 140, 40)
         if button == 1:
