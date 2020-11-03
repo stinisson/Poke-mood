@@ -55,7 +55,6 @@ class QuizStartScreen:
         for category_button in self.category_buttons:
             if category_button.handle_mouse_button(mouse_button):
                 clicked_button_idx = self.category_buttons.index(category_button)
-                print(clicked_button_idx, "the_clicked_button")
                 sound("music/cartoon_cymbal_hit.mp3")
                 break
 
@@ -144,23 +143,19 @@ class QuizScreen:
         for quiz_button in self.quiz_answer_buttons:
             if quiz_button.handle_mouse_button(mouse_button):
                 clicked_button_idx = self.quiz_answer_buttons.index(quiz_button)
-                print(clicked_button_idx, "the_clicked_button")
                 break
 
         if clicked_button_idx is not None:
 
             self.next_question_timeout = pygame.time.get_ticks()
 
-            print("correct_answer_idx", self.correct_answer_idx)
             if clicked_button_idx == self.correct_answer_idx:
-                print("Rätt svar!")
                 quiz_button.color = QUIZ_TRANSP_GREEN_LIGHT
                 self.num_of_correct_ans += 1
                 sound("music/kids_cheering.mp3")
             else:
                 quiz_button.color = QUIZ_TRANSP_RED
                 self.quiz_answer_buttons[self.correct_answer_idx].color = QUIZ_TRANSP_GREEN_LIGHT
-                print("Det var fel, rätt svar var knapp", self.correct_answer_idx)
                 sound("music/dinosaur_growl.mp3")
 
             for quiz_button in self.quiz_answer_buttons:
@@ -266,7 +261,6 @@ def mainloop(screen, font):
             break
 
         if common.next_screen is not None:
-            print("changing frames to", type(common.next_screen))
             current_screen = common.next_screen
             common.next_screen = None
 
@@ -277,6 +271,7 @@ def mainloop(screen, font):
 
         pygame.display.update()
         clock.tick(30)
+
 
 if __name__ == '__main__':
     common.common_init()
