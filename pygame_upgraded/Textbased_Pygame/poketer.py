@@ -87,7 +87,7 @@ class Poketer:
         return self.health
 
     def get_stats(self):
-        return f"{self.name} har {self.health} i hälsa och {self.attack} i attack."
+        return f"{self.name} have {self.health} p Health and {self.attack} p Attack-power."
 
     def set_attack(self, attack_score):
         self.attack = attack_score
