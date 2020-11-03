@@ -1,22 +1,12 @@
-import textwrap
-import sys
-import time
-from termcolor import colored, cprint
-from colorama import init
-import warnings
 import random
-from Textbased_Pygame.cards_helper import get_cities, choose_city, get_emotions, choose_emotion, take_integer_input
-from pokemood_text_based.common import choose_poketer
-from pokemood_text_based.mood_analysis import mood_analysis
+import textwrap
+
+from colorama import init
+from termcolor import cprint
+
+from Textbased_Pygame.cards_helper import get_cities, choose_city
 from Textbased_Pygame.mood_score import calc_mood_score
 from Textbased_Pygame.print_module import print_frame
-from pokemood_text_based.quiz import quiz
-
-
-
-
-from pokemood_text_based.sentiment_analysis import sentiment_analysis
-from pygame_states import gunnar, ada
 from poketer import *
 
 init()
@@ -59,8 +49,8 @@ def draw_welcome_screen():
 def poketer_mood_explanation_text(username):
     row1 = f"Hello {username}!"
     row2 = f"""All Pokeéters has its own mood. These moods can be either  {colored('Happy', 'yellow')} or {colored('Angry', 'red')}."""
-    row3 = f"{colored('Happy Poketers preform best in surroundings with happy shouts, laughter and a cheerful atmosphere. Life is a party!', 'yellow')}"
-    row4 = f"{colored('Angry Poketers grow in strength under controversy and hostile conditions. Shoot, dig, shut up!', 'red')}"
+    row3 = f"{colored('Happy Pokeéter preform best in surroundings with happy shouts, laughter and a cheerful atmosphere. Life is a party!', 'yellow')}"
+    row4 = f"{colored('Angry Pokeéter grow in strength under controversy and hostile conditions. Shoot, dig, shut up!', 'red')}"
 
     print_frame_with_newline([row1, row2, row3, row4], 'white', 15)
 
@@ -90,10 +80,10 @@ def intro_card(poketer, is_cpu, live):
     else:
         x = """
 
-        Your Poketer has a certain mood. You now have the opportunity to increase your Poketer's health
-        by searching for a city in Sweden where you think the inhabitants are in the same mood as your Poketer.
+        Your Pokeéter has a certain mood. You now have the opportunity to increase your Pokeéter's health
+        by searching for a city in Sweden where you think the inhabitants are in the same mood as your Pokeéter.
         The residents' mood is based on what they tweet. The more emotional they are, the more they increase
-        your Poketer's health. Good luck!
+        your Pokeéter's health. Good luck!
 
         """
         print_frame([x], 'white', 15)

@@ -32,10 +32,11 @@ class User:
 
 def draw_welcome_screen():
     print("")
-    cprint(f'    Varmt välkomna till PokéMood!', 'cyan')
-    cprint(f'    Ett textbaserat spel med humörstyrda Poketerer!', 'cyan')
-    cprint(f'    Med hjälp av Twitter kommer du få en chans att \n    påverka din Poketers pokemör!', 'cyan')
-    cprint(f'    Men passa dig, är du fel ute kan det också bli minus!\n', 'cyan')
+    print("")
+    cprint(f'    Welcome to PookéMood!', 'cyan')
+    cprint(f'    Use your Pokeéter to defeat your opponent! !', 'cyan')
+    cprint(f'    Your Pokeéter has its own mood. By using Twitter\n    you are able to incresse the health and \n'
+           f'    power of your Pokeéter.', 'cyan')
 
     cprint(colored("""    ⢀⣠⣾⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿
     ⣿⣿⣿⣿⣿⡏⠉⠛⢿⣿⣿Pik'a'mood-⣿⣿⣿⣿⣿⣿⣿⡿⣿
@@ -49,17 +50,16 @@ def draw_welcome_screen():
     ⣿⣿⣿⣿⣿⣿⣿⣿⡀⠉⠀⠀⠀⠀⠀⢄⠀⢀⠀⠀⠀⠀⠉⠉⠁⠀⠀⣿⣿⣿
     ⣿⣿⣿⣿⣿⣿⣿⣿⣧⠀⠀⠀⠀⠀⠀⠀⠈⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢹⣿⣿
     ⣿⣿⣿⣿⣿⣿⣿⣿⣿⠃⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢸⣿⣿""", "yellow"))
-    cprint(f'    Nu kör vi!! \n', 'yellow')
+    cprint(f'    Let us begin!! \n', 'yellow')
 
 
 def poketer_mood_explanation_text(username):
-    row1 = f"Hej {username}!"
-    row2 = f"""Alla Poketerer har ett visst grundhumör. De kan vara {colored('glada', 'yellow')}, {colored('arga', 'red')}, {colored('ledsna', 'blue')} eller {colored('kärleksfulla', 'magenta')}."""
-    row3 = f"{colored('Glada Poketerer trivs bäst i omgivningar med glada tillrop, skratt och uppsluppen stämning. Livet är en fest!', 'yellow')}"
-    row4 = f"{colored('Arga Poketerer växer i styrka under kontroverser och fientliga förhållanden. Skjut, gräv, tig!', 'red')}"
-    row5 = f"{colored('Ledsna Poketerer mår som bäst omgivna av nedstämdhet, sorg och ledsamheter. Saliga äro de som sörja!', 'blue')}"
-    row6 = f"{colored('Kärleksfulla Poketerer frodas i miljöer med mycket värme, kramar och omtänksamhet. Man kan aldrig få för många kramar!', 'magenta')}"
-    print_frame_with_newline([row1, row2, row3, row4, row5, row6], 'white', 15)
+    row1 = f"Hello {username}!"
+    row2 = f"""All Pokeéters has its own mood. These moods can be either  {colored('Happy', 'yellow')} or {colored('Angry', 'red')}."""
+    row3 = f"{colored('Happy Pokeéter preform best in surroundings with happy shouts, laughter and a cheerful atmosphere. Life is a party!', 'yellow')}"
+    row4 = f"{colored('Angry Pokeéter grow in strength under controversy and hostile conditions. Shoot, dig, shut up!', 'red')}"
+
+    print_frame_with_newline([row1, row2, row3, row4], 'white', 15)
 
 
 def print_frame_with_newline(rows, table_color, indentation):
@@ -125,11 +125,11 @@ def intro_card(poketer, is_cpu, live):
 
 def start_game(live):
     draw_welcome_screen()
-    username = input("Vänligen ange ditt namn: ")
+    username = input("Please enter your name: ")
     poketer_mood_explanation_text(username)
-    input("\nTryck enter för att fortsätta\n")
+    input("\nPress Enter to continue\n")
 
-    gunnar = Poketer(colored("Glada Gunnar", 'yellow'), 'happy', 'yellow', 50, 50, 45, catchword="#YOLO")
+    gunnar = Poketer(colored("Happy Gunnar", 'yellow'), 'happy', 'yellow', 50, 50, 45, catchword="#YOLO")
     ada = Poketer(colored("Aggressiva Ada", 'red'), 'angry', 'red', 50, 50, 45, catchword="#FTW")
     #louise = Poketer(colored("Ledsna Louise", 'blue'), 'sad', 'blue', 50, 50, 45, catchword="#TGIF")
     #kalle = Poketer(colored("Kärleksfulla Kalle", 'magenta'), 'loving', 'magenta', 50, 50, 45, catchword="#XOXO")
@@ -141,14 +141,14 @@ def start_game(live):
     cpu = User(colored("Olof", ada.color))
     cpu.add_team(ada)
 
-    x = f"\n{user.name}, din Poketer är {gunnar.name}."
+    x = f"\n{user.name}, your Pokeéter is {gunnar.name}."
     y = gunnar.get_stats()
     print_frame([x, y], gunnar.color, 15)
 
-    x = f"Din motståndare är {cpu.name}. {cpu.name} valde poketer {ada.name}. {ada.get_stats()}"
+    x = f"Your opponent is {cpu.name}. {cpu.name} has choosen Pokeéter {ada.name}. {ada.get_stats()}"
     print_frame([x], ada.color, 15)
 
-    input("\nTryck enter för att fortsätta")
+    input("\nPress Enter to continue")
     intro_card(poketer=gunnar, is_cpu=False, live=live)
     intro_card(poketer=ada, is_cpu=True, live=live)
     pg.init()
