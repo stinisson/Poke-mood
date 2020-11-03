@@ -5,14 +5,14 @@ from termcolor import colored, cprint
 from colorama import init
 import warnings
 import random
-from pokemood_text_based.cards_helper import get_cities, choose_city, get_emotions, choose_emotion, take_integer_input
+from Textbased_Pygame.cards_helper import get_cities, choose_city, get_emotions, choose_emotion, take_integer_input
 from pokemood_text_based.common import choose_poketer
 from pokemood_text_based.mood_analysis import mood_analysis
-from pokemood_text_based.mood_score import calc_mood_score
-from pokemood_text_based.print_module import print_frame
+from Textbased_Pygame.mood_score import calc_mood_score
+from Textbased_Pygame.print_module import print_frame
 from pokemood_text_based.quiz import quiz
 from pokemood_text_based.sentiment_analysis import sentiment_analysis
-from pygame_upgraded.pygame_states import gunnar, ada
+from pygame_states import gunnar, ada
 from poketer import *
 
 init()
