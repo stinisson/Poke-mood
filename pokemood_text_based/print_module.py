@@ -50,7 +50,7 @@ def delay_print(intro_text, s, a):
 
 
 def atk_txt(attacker, reciver, text):
-    print(f"{attacker} attackerar {reciver} ")
+    print(f"{attacker} attacks {reciver} ")
     for i in text:
         sys.stdout.write(i)
         sys.stdout.flush()
