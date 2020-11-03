@@ -19,8 +19,8 @@ def choose_city():
         if city:
             print(idx + 1, city.capitalize())
 
-    city_choice = take_integer_input(f"Vilken stad väljer du? (1-{len(geocodes) - 1}): ",
-                                     len(geocodes), f"Ogiltligt val! Ange en siffra 1-{len(geocodes) - 1}.")
+    city_choice = take_integer_input(f"Choose a city: (1-{len(geocodes) - 1}): ",
+                                     len(geocodes), f"Invalid option! Enter a valid number 1-{len(geocodes) - 1}.")
 
     # One of the elements in geocodes is an empty placeholder
     temp_city_list = list(geocodes)
@@ -40,9 +40,9 @@ def choose_emotion(city):
         print(idx + 1, emotion.capitalize())
 
     emotion_choice = take_integer_input(
-        f"Vilken känsla är mest förekommande i {city.capitalize()}? (1-{len(text_emotions)}): ",
+        f"Which mood is the most common in {city.capitalize()}? (1-{len(text_emotions)}): ",
         len(text_emotions) + 1,
-        f"Ogiltligt val! Ange en siffra 1-{len(text_emotions)}.")
+        f"Invalid option! Enter a valid number 1-{len(text_emotions)}.")
 
     emotion_list = list(text_emotions)
     emotion = emotion_list[emotion_choice - 1]
