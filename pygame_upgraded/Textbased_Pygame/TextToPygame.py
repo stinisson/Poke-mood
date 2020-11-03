@@ -123,7 +123,7 @@ def intro_card(poketer, is_cpu, live):
     input("\nPress Enter to continue")
 
 
-def start_game():
+def start_game(live):
     draw_welcome_screen()
     username = input("Vänligen ange ditt namn: ")
     poketer_mood_explanation_text(username)
@@ -149,7 +149,9 @@ def start_game():
     print_frame([x], ada.color, 15)
 
     input("\nTryck enter för att fortsätta")
-    intro_card(poketer=gunnar, is_cpu=False, live=False)
-    intro_card(poketer=ada, is_cpu=True, live=False)
+    intro_card(poketer=gunnar, is_cpu=False, live=live)
+    intro_card(poketer=ada, is_cpu=True, live=live)
 
-start_game()
+
+if __name__ == '__main__':
+    start_game(live=False)
