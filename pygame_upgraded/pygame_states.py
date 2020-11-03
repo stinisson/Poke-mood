@@ -467,7 +467,7 @@ class WinnerScreenAda:
         ada_win_pic = pg.image.load("Pink_dragon_08.png")
         ada_win_pic = pg.transform.scale(ada_win_pic, (350, 350))
         screen.blit(ada_win_pic, (205, 285))
-        winning_crown_ada()
+        winning_crown_ada_moving()
         gunnar_lose = pg.transform.scale(gunnar.image, (200, 200))
         screen.blit(gunnar_lose, (25, 355))
         tear_drop = pg.image.load("tear-png-20.png")
@@ -693,10 +693,11 @@ def winning_crown_hasse_moving():
     x_off, y_off = periodic_movement(1, 5)
     screen.blit(winning_crown, (270, 180 + y_off))
 
-def winning_crown_ada():
+def winning_crown_ada_moving():
     winning_crown = pg.image.load("crown.png")
     winning_crown = pg.transform.scale(winning_crown, (151, 124))
-    screen.blit(winning_crown, (340, 245))
+    x_off, y_off = periodic_movement(1, 5)
+    screen.blit(winning_crown, (340, 245 + y_off))
 
 
 def music_intro():
