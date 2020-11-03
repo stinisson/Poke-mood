@@ -88,11 +88,9 @@ def cpu_random_attack():
 
 class MenuStartScreen:
     def __init__(self):
-        self.music = music_intro()
+        music_intro()
 
     def handle_keydown(self, key):
-        if key == pg.K_SPACE:
-            pass
         return self
 
     def handle_mouse_button(self, button):
@@ -122,8 +120,6 @@ class MenuStartScreen:
 
 class InstructionsScreen:
     def handle_keydown(self, key):
-        if key == pg.K_SPACE:
-            pass
         return self
 
     def handle_mouse_button(self, button):
@@ -198,7 +194,7 @@ class StartScreen:
 class BattleScreen:
     def __init__(self):
         #self.music = music_battle() #CL
-        print(self)
+        pass
 
     def handle_keydown(self, key):
         if key == pg.K_BACKSPACE:
@@ -251,7 +247,6 @@ class BattleScreen:
 
 class AttackScreen:
     def __init__(self, turn_):
-        print(self, turn_)
         self.turn = turn_
         self.timeout = pg.time.get_ticks()
 
@@ -270,7 +265,6 @@ class AttackScreen:
         return self
 
     def handle_mouse_button(self, button):
-
         mx, my = pg.mouse.get_pos()
         quit_button_rect = pg.Rect(650, 30, 140, 40)
         back_button_rect = pg.Rect(30, 540, 140, 40)
@@ -283,7 +277,6 @@ class AttackScreen:
             return self
 
     def handle_timer(self):
-
         time_now = pg.time.get_ticks()
         if time_now - self.timeout > 5000 and self.timeout != 0:
             self.timeout = 0
@@ -364,7 +357,6 @@ class SpecialAttackScreen:
         return self
 
     def handle_timer(self):
-
         time_now = pg.time.get_ticks()
         if time_now - self.timeout > 5000 and self.timeout != 0:
             self.timeout = 0
@@ -384,7 +376,6 @@ class SpecialAttackScreen:
             # when the cpu's attack is finished - return to Battlescreen
             if self.turn == "cpu":
                 return BattleScreen()
-
         return self
 
     def render(self, screen):
@@ -405,10 +396,8 @@ class SpecialAttackScreen:
             glada_gunnar(24, 144, 122, 45)
             aggressive_ada(504, 156 + y_off, 650, 550)
 
-
         quit_button()
         back_button()
-
         crossed_sword()
 
 
@@ -490,7 +479,6 @@ class WinnerScreenAda:
 
 
 def mainloop(screen):
-
     # To be able to go back to startscreen and run popups if not run before
     global start_screen
     start_screen = StartScreen()
