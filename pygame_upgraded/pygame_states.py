@@ -317,8 +317,13 @@ class AttackScreen:
         textbox_ada.render(screen)
 
         x_off, y_off = periodic_movement(1, 5)
-        aggressive_ada(504, 156 + y_off, 650, 550)
-        glada_gunnar(24 + x_off, 144, 122, 45)
+        if self.turn == "user":
+            glada_gunnar(24, 144 + y_off, 122, 45)
+            aggressive_ada(504, 156, 650, 550)
+        else:
+            glada_gunnar(24, 144, 122, 45)
+            aggressive_ada(504, 156 + y_off, 650, 550)
+
         quit_button()
         back_button()
 
@@ -393,9 +398,14 @@ class SpecialAttackScreen:
         textbox_ada.render(screen)
 
         x_off, y_off = periodic_movement(1, 5)
+        if self.turn == "user":
+            glada_gunnar(24, 144 + y_off, 122, 45)
+            aggressive_ada(504, 156, 650, 550)
+        else:
+            glada_gunnar(24, 144, 122, 45)
+            aggressive_ada(504, 156 + y_off, 650, 550)
 
-        aggressive_ada(504 + x_off, 156, 650, 550)
-        glada_gunnar(24, 144 + y_off, 122, 45)
+
         quit_button()
         back_button()
 
@@ -685,7 +695,13 @@ def sword(turn):
 def crossed_sword():
     double_sword = pg.image.load("Sword_crossed_01.PNG")
     double_sword = pg.transform.smoothscale(double_sword, (230, 230))
-    screen.blit(double_sword, (305, 160))
+
+    x_off, y_off = periodic_movement(1, 7)
+    rect = double_sword.get_rect()
+    shield = pg.transform.smoothscale(double_sword, (rect.width + int(x_off), rect.height + int(x_off)))
+    blit_rect = shield.get_rect()
+    blit_rect.center = (420, 280)
+    screen.blit(shield, blit_rect)
 
 def winning_crown_hasse_moving():
     winning_crown = pg.image.load("crown.png")
