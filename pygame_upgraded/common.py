@@ -110,7 +110,7 @@ class Button:
 def periodic_movement(frequency, amplitude):
     time = pygame.time.get_ticks()
     x_off = amplitude * math.cos(frequency * time * math.pi / 1000)
-    y_off = amplitude * math.sin(time * math.pi / 1000)
+    y_off = amplitude * math.sin(frequency * time * math.pi / 1000)
     return x_off, y_off
 
 
