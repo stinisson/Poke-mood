@@ -428,7 +428,7 @@ class WinnerScreenGunnar:
         x_off, y_off = periodic_movement(1, 5) #CL
         gunnar_bigger = pg.transform.scale(gunnar.image, (350, 350))
         screen.blit(gunnar_bigger, (220, 235 + y_off))
-        winning_crown_hasse()
+        winning_crown_hasse_moving()
         pink_dragon_sad = pg.image.load("Pink_dragon_05.png")
         pink_dragon_sad = pg.transform.scale(pink_dragon_sad, (204, 235))
         screen.blit(pink_dragon_sad, (25, 340))
@@ -687,10 +687,11 @@ def crossed_sword():
     double_sword = pg.transform.smoothscale(double_sword, (230, 230))
     screen.blit(double_sword, (305, 160))
 
-def winning_crown_hasse():
+def winning_crown_hasse_moving():
     winning_crown = pg.image.load("crown.png")
     winning_crown = pg.transform.scale(winning_crown, (170, 140))
-    screen.blit(winning_crown, (270, 180))
+    x_off, y_off = periodic_movement(1, 5)
+    screen.blit(winning_crown, (270, 180 + y_off))
 
 def winning_crown_ada():
     winning_crown = pg.image.load("crown.png")
