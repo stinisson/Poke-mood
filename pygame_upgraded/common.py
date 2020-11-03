@@ -1,9 +1,8 @@
 import math
 import textwrap
-
 import pygame
-from Pygame.constants import BLACK, WHITE
 
+BLACK = (0, 0, 0)
 screen_size = (800, 600)
 
 
