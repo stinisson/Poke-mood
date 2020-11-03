@@ -179,7 +179,7 @@ class InstructionsScreen:
     def render(self, screen):
         screen.fill(WHITE)
         screen.blit(start_background, (0, 0))
-        screen.blit(logo, (215, -55))
+        screen.blit(instructions_frame, (75, 75))
         back_button()
         quit_button()
 
