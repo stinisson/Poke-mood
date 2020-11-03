@@ -3,9 +3,9 @@ from random import randint
 import sys
 import math
 from Pygame.constants import *
-from mood_score import calc_mood_score
-from quiz import QuizStartScreen
-from quiz_api import quiz_categories
+from pygame_upgraded.mood_score import calc_mood_score
+from pygame_upgraded.quiz import QuizStartScreen
+from pygame_upgraded.quiz_api import quiz_categories
 from pygame import mixer
 
 import common
