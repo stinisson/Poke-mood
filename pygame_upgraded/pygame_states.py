@@ -15,6 +15,8 @@ from common import TextBox, periodic_movement
 from TextToPygame import start_game
 
 
+pg.init()
+
 width = 800
 height = 600
 screen = pg.display.set_mode((width, height))
@@ -201,6 +203,7 @@ class StartScreen:
         quit_button_rect = pg.Rect(650, 30, 140, 40)
         if button == 1:
             if battle_button_rect.collidepoint((mx, my)):
+                music_battle()
                 return BattleScreen()
             if quit_button_rect.collidepoint((mx, my)):
                 sys.exit()
@@ -224,7 +227,7 @@ text_ada = ""
 text_gunnar = ""
 class BattleScreen:
     def __init__(self):
-        self.music = music_battle()
+        #self.music = music_battle() #CL
         print(self)
 
     def handle_keydown(self, key):
@@ -268,7 +271,7 @@ class BattleScreen:
         screen.blit(background, (0, 0))
 
         x_off, y_off = periodic_movement(1, 5)
-        aggressive_ada(504 + x_off, 156, 650, 550, active_health_ada)
+        aggressive_ada(504, 156, 650, 550, active_health_ada) #aggressive_ada(504 + x_off, 156, 650, 550, active_health_ada) #CL
         glada_gunnar(24, 144 + y_off, 122, 45, active_health_gunnar)
 
         screen.blit(vs_sign, (300, 225))
@@ -445,6 +448,9 @@ class SpecialAttackScreen:
         crossed_sword()
 
 class WinnerScreenGunnar:
+    def __init__(self):
+        self.music = music_win_game_melody()
+
     def handle_keydown(self, key):
         if key == pg.K_ESCAPE:
             return StartScreen()
@@ -464,8 +470,9 @@ class WinnerScreenGunnar:
     def render(self, screen):
         screen.fill(WHITE)
         screen.blit(background_win, (0, 0))
+        x_off, y_off = periodic_movement(1, 5) #CL
         gunnar_bigger = pg.transform.scale(gunnar.image, (350, 350))
-        screen.blit(gunnar_bigger, (220, 235))
+        screen.blit(gunnar_bigger, (220, 235 + y_off))
         winning_crown_hasse()
         pink_dragon_sad = pg.image.load("Pink_dragon_05.png")
         pink_dragon_sad = pg.transform.scale(pink_dragon_sad, (204, 235))
@@ -727,12 +734,18 @@ def quit_button_start():
 
 def sword(turn):
     sword = pg.image.load("sword_resized.png")
-    screen.blit(sword, (315, 170))
-
+    #screen.blit(sword, (315, 170))
+    x_off, y_off = periodic_movement(1, 5)
+    if turn == "user":
+        rotate_image = pg.transform.rotozoom(sword, 0 + x_off, 1)
+    else:
+        rotate_image = pg.transform.rotozoom(sword, 70 + x_off, 1)
+    new_rect = rotate_image.get_rect(center=(400, 300))
+    screen.blit(rotate_image, new_rect)
 
 def crossed_sword():
     double_sword = pg.image.load("Sword_crossed_01.PNG")
-    double_sword = pg.transform.scale(double_sword, (230, 230))
+    double_sword = pg.transform.smoothscale(double_sword, (230, 230))
     screen.blit(double_sword, (305, 160))
 
 def winning_crown_hasse():
@@ -758,6 +771,12 @@ def music_battle():
     pg.mixer.music.load("battle_time_1.mp3")
     pg.mixer.music.play(-1)
     pg.mixer.music.set_volume(0.1)
+
+def music_win_game_melody():
+    pg.mixer.init()
+    pg.mixer.music.load("vinnar_låt_utkast.mp3")
+    pg.mixer.music.play(-1)
+    pg.mixer.music.set_volume(0.3)
 
 
 def music_lose_game_melody():
