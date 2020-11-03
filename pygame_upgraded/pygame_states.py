@@ -207,7 +207,7 @@ class BattleScreen:
         back_button_rect = pg.Rect(30, 540, 140, 40)
         attack_button_rect = pg.Rect(87, 430, 150, 50)
         block_button_rect = pg.Rect(325, 430, 150, 50)
-        quiz_button = pg.Rect(563, 430, 150, 50)
+        quiz_button_rect = pg.Rect(563, 430, 150, 50)
         if button == 1:
             if quit_button_rect.collidepoint((mx, my)):
                 sys.exit()
@@ -215,13 +215,10 @@ class BattleScreen:
                 return start_screen
             if attack_button_rect.collidepoint((mx, my)):
                 return AttackScreen("user")
-
             if block_button_rect.collidepoint((mx, my)):
                 return SpecialAttackScreen("user")
-
-            if quiz_button.collidepoint((mx, my)):
+            if quiz_button_rect.collidepoint((mx, my)):
                 common.next_screen = QuizStartScreen(5, quiz_categories, self, gunnar)
-
         return self
 
     def handle_timer(self):
