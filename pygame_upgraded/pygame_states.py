@@ -12,8 +12,9 @@ import common
 #common.common_init()
 
 from common import TextBox, periodic_movement
+from TextToPygame import start_game
 
-pg.init()
+
 width = 800
 height = 600
 screen = pg.display.set_mode((width, height))
@@ -758,21 +759,25 @@ def music_battle():
     pg.mixer.music.play(-1)
     pg.mixer.music.set_volume(0.1)
 
+
 def music_lose_game_melody():
     pg.mixer.init()
     pg.mixer.music.load("lose_game_melody.mp3")
     pg.mixer.music.play(-1)
     pg.mixer.music.set_volume(0.2)
 
+
 def sound_ambient_hover_over_attack_btn():
     sound = mixer.Sound("ambient_attack_c.mp3")
     sound.play()
     sound.set_volume(0.1)
 
+
 def sound_ambient_hover_over_special_attack_btn():
     sound = mixer.Sound("ambient_special_attack_c1.mp3")
     sound.play()
     sound.set_volume(0.1)
+
 
 def sound_ambient_hover_quizz_btn():
     sound = mixer.Sound("ambient_quizz_c2.mp3")
@@ -780,8 +785,8 @@ def sound_ambient_hover_quizz_btn():
     sound.set_volume(0.1)
 
 
-
 if __name__ == '__main__':
+    start_game(False)
     common.common_init()
     pg.display.set_caption("PokeMood")
     font = pg.font.Font(pg.font.match_font('arial'), 30)
