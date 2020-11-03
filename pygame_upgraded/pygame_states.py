@@ -59,10 +59,7 @@ class Poketer:
 
     def add_health(self, health_score):
         self.health += health_score
-
-    def get_health(self):
-        return self.health
-
+        
 
 gunnar = Poketer("Glada Gunnar", 'happy', 'yellow', 50, 50, 45, catchword="#YOLO", img_name="Green_monster_resized.png")
 ada = Poketer("Aggressiva Ada", 'angry', 'red', 50, 50, 45, catchword="#FTW", img_name="Pink_dragon_01.png")
