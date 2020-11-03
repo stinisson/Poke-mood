@@ -320,7 +320,7 @@ class AttackScreen:
     def handle_timer(self):
 
         time_now = pg.time.get_ticks()
-        if time_now - self.timeout > 2500 and self.timeout != 0:
+        if time_now - self.timeout > 5000 and self.timeout != 0:
             self.timeout = 0
 
             if active_health_ada <= 0:
@@ -401,7 +401,7 @@ class SpecialAttackScreen:
     def handle_timer(self):
 
         time_now = pg.time.get_ticks()
-        if time_now - self.timeout > 2500 and self.timeout != 0:
+        if time_now - self.timeout > 5000 and self.timeout != 0:
             self.timeout = 0
 
             if active_health_ada <= 0:
