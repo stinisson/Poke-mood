@@ -11,6 +11,7 @@ import common
 from common import TextBox, periodic_movement
 from TextToPygame import start_game
 
+#print("Lets use your new stats, press [Enter] to ge in to the World of Poketeers")
 pg.init()
 width = 800
 height = 600
@@ -728,19 +729,19 @@ def music_lose_game_melody():
 
 
 def sound_ambient_hover_over_attack_btn():
-    sound = mixer.Sound("ambient_attack_c.mp3")
-    sound.play()
+    sound = mixer.Sound("ambient_attack_c_short.mp3")
+    sound.play(1)
     sound.set_volume(0.1)
 
 
 def sound_ambient_hover_over_special_attack_btn():
-    sound = mixer.Sound("ambient_special_attack_c1.mp3")
+    sound = mixer.Sound("ambient_special_attack_c1_short.mp3")
     sound.play()
     sound.set_volume(0.1)
 
 
 def sound_ambient_hover_quizz_btn():
-    sound = mixer.Sound("ambient_quizz_c2.mp3")
+    sound = mixer.Sound("ambient_quizz_c2_short.mp3")
     sound.play()
     sound.set_volume(0.1)
 
