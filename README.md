@@ -8,5 +8,3 @@ Eighth International Conference on Weblogs and Social Media (ICWSM-14). Ann Arbo
 Swedish-translated VADER-Sentiment-Analysis https://pypi.org/project/vaderSentiment-swedish/
 
 Quiz questions from Open Trivia DB - a free to use, user-contibuted trivia question database. https://opentdb.com/
-
-Test123
