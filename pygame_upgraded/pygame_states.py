@@ -323,7 +323,6 @@ class AttackScreen:
 
 class SpecialAttackScreen:
     def __init__(self, turn_):
-        print(self)
         self.turn = turn_
         self.timeout = pg.time.get_ticks()
 
@@ -470,7 +469,7 @@ class WinnerScreenAda:
         tear_drop = pg.transform.scale(tear_drop, (25, 25))
         screen.blit(tear_drop, (90, 430))
         screen.blit(logo, (215, -55))
-        text_speech(screen, "RobotoSlab-Medium.ttf", 30, "Congratulations,", YELLOW_LIGHT, 386, 150, True)
+        text_speech(screen, "RobotoSlab-Medium.ttf", 30, "Better luck next time,", YELLOW_LIGHT, 386, 150, True)
         text_speech(screen, "RobotoSlab-Medium.ttf", 30, f"{ada.name} won!", YELLOW_LIGHT, 385, 200, True)
         quit_button()
 
@@ -499,7 +498,7 @@ def mainloop(screen):
             break
 
         if common.next_screen is not None:
-            print("changing frames to", type(common.next_screen))
+            #print("changing frames to", type(common.next_screen))
             state = common.next_screen
             common.next_screen = None
 
