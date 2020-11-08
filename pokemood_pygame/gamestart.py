@@ -658,7 +658,6 @@ def winning_crown_ada_moving():
 
 
 if __name__ == '__main__':
-    common.common_init()
     pg.display.set_caption("PokeMood")
     gunnar = Poketer("Happy Hasse", 'happy', 'yellow', 50, 50, 45, catchword="#YOLO",
                      img_name="media/images/Green_monster_resized.png")

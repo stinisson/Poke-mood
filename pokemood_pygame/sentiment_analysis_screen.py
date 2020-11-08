@@ -1,16 +1,14 @@
 import sys
 import pygame
 
-from constants import WHITE
-from common import screen_size, TextBox, Button, QUIZ_TRANSP_GREEN_LIGHT, QUIZ_TRANSP_GREEN_HIGHL, BLACK, QUIZ_DARKGREEN
+from constants import *
+from common import TextBox, Button, periodic_movement, rel_to_pix
 from twitter.sentiment_analysis import sentiment_analysis
-from common import periodic_movement, rel_to_pix
 
 bg = pygame.image.load("media/images/Background_forest.jpg")
-background = pygame.transform.scale(bg, (800, 600))
+background = pygame.transform.scale(bg, screen_size)
 screen = pygame.display.set_mode(screen_size)
 
-#from poketer import Poketer
 
 class InputBox:
     def __init__(self, rel_pos, rel_size, color, highlight, font_size, font_color):

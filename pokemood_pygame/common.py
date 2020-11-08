@@ -3,26 +3,7 @@ import textwrap
 import pygame
 from pygame import mixer
 
-
-BLACK = (0, 0, 0)
-WHITE = (255, 255, 255)
-#QUIZ_TRANSP_GREEN_LIGHT = (14, 213, 41, 210)
-QUIZ_TRANSP_GREEN_LIGHT = (14, 213, 41, 240)
-# QUIZ_TRANSP_GREEN_HIGHL = (14, 213, 41, 150
-QUIZ_TRANSP_GREEN_HIGHL = (14, 213, 41, 130)
-QUIZ_TRANSP_GREEN = (5, 85, 15, 150)
-QUIZ_TRANSP_RED = (215, 2, 30, 210)
-QUIZ_DARKGREEN = (10, 150, 25)
-
-FONT_ROBOTO = "fonts/RobotoSlab-Medium.ttf"
-
-screen_size = (800, 600)
-
-
-# https://stackoverflow.com/questions/13034496/using-global-variables-between-files
-def common_init():
-    global next_screen
-    next_screen = None
+from constants import *
 
 
 class TextBox:
