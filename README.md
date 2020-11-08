@@ -1,4 +1,4 @@
-# Poke-mood
+# PokeMood
 
 VADER: A Parsimonious Rule-based Model for Sentiment Analysis of Social Media Text
 (by C.J. Hutto and Eric Gilbert)
