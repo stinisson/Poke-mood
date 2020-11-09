@@ -7,36 +7,8 @@ from poketer import Poketer
 from twitter.mood_score import calc_mood_score
 from quiz.quiz import QuizStartScreen
 from quiz.quiz_api import quiz_categories
-from common import TextBox, periodic_movement, music, Button
+from common import TextBox, periodic_movement, music, Button, background, logo, start_background
 from sentiment_analysis_screen import SentimentAnalysisScreen
-
-
-width = 800
-height = 600
-screen = pg.display.set_mode((width, height))
-
-programIcon = pg.image.load('media/images/icon.png')
-icon = pg.transform.smoothscale(programIcon, (32, 32))
-pg.display.set_icon(icon)
-
-
-bg = pg.image.load("media/images/Background_forest.jpg")
-background = pg.transform.scale(bg, (800, 600))
-
-vs_sign = pg.image.load("media/images/VS.PNG")
-vs_sign = pg.transform.scale(vs_sign, (200, 150))
-
-background_win = pg.image.load("media/images/winning_pic.jpg")
-background_win = pg.transform.scale(background_win, (800, 600))
-
-logo = pg.image.load("media/images/LOGO.PNG")
-logo = pg.transform.scale(logo, (360, 222))
-
-start_background = pg.image.load("media/images/background_start.png")
-start_background = pg.transform.scale(start_background, (800, 600))
-
-instructions_frame = pg.image.load("media/images/Frame_background.PNG")
-instructions_frame = pg.transform.scale(instructions_frame, (650, 450))
 
 start_screen = None
 
@@ -70,25 +42,56 @@ def cpu_random_attack():
     if random_number >= 8:
         return False
 
-
-class MenuStartScreen:
+class FirstScreen():
     def __init__(self):
         music("media/music/intro_song_1.mp3", 0.0)
+
+        self.start_button = Button((0.5, 0.8), (0.3, 0.12), PASTEL_3,
+                                    PASTEL_6, 27, WHITE, "Let's begin!", frame=PASTEL_4)
 
     def handle_keydown(self, key):
         return self
 
     def handle_mouse_button(self, button):
-        mx, my = pg.mouse.get_pos()
-        start_game_button_rect = pg.Rect(275, 280, 240, 65)
-        instructions_button_rect = pg.Rect(275, 360, 240, 65)
-        quit_game_button_rect = pg.Rect(275, 440, 240, 65)
         if button == 1:
-            if start_game_button_rect.collidepoint((mx, my)):
+            if self.start_button.handle_mouse_button(button):
+                return MenuScreen()
+
+    def handle_timer(self):
+        return self
+
+    def render(self, screen):
+        screen.fill(WHITE)
+        screen.blit(start_background, (0, 0))
+        screen.blit(logo, (215, -55))
+        self.start_button.render(screen)
+
+class MenuScreen:
+    def __init__(self):
+        music("media/music/intro_song_1.mp3", 0.0)
+
+        self.button_positions = [(0.5, 0.35), (0.5, 0.5), (0.5, 0.65), (0.5, 0.8)]
+        self.option_buttons = []
+        self.attitude_options = ["Start game", "How to play", "Settings", "Quit"]
+        self.button_colors = [PASTEL_1, PASTEL_2, PASTEL_3, PASTEL_4, PASTEL_5]
+        for idx in range(len(self.button_positions)):
+            self.option_button = Button(self.button_positions[idx], (0.3, 0.12), self.button_colors[idx],
+                                        PASTEL_6, 27, WHITE, self.attitude_options[idx], frame=self.button_colors[idx+1])
+            self.option_buttons.append(self.option_button)
+
+    def handle_keydown(self, key):
+        return self
+
+    def handle_mouse_button(self, button):
+        if button == 1:
+            if self.option_buttons[0].handle_mouse_button(button):
                 return start_screen
-            if instructions_button_rect.collidepoint((mx, my)):
+            if self.option_buttons[1].handle_mouse_button(button):
                 return InstructionsScreen()
-            if quit_game_button_rect.collidepoint((mx, my)):
+            if self.option_buttons[2].handle_mouse_button(button):
+                pass
+            if self.option_buttons[3].handle_mouse_button(button):
+                print("The End! :)")
                 sys.exit()
 
     def handle_timer(self):
@@ -98,12 +101,15 @@ class MenuStartScreen:
         screen.fill(WHITE)
         screen.blit(start_background, (0, 0))
         screen.blit(logo, (215, -55))
-        start_game_button()
-        instructions_button()
-        quit_button_start()
+        for button in self.option_buttons:
+            button.render(screen)
 
 
 class InstructionsScreen:
+    def __init__(self):
+        instructions_frame = pg.image.load("media/images/Frame_background.PNG")
+        self.instructions_frame = pg.transform.smoothscale(instructions_frame, (650, 450))
+
     def handle_keydown(self, key):
         return self
 
@@ -113,7 +119,7 @@ class InstructionsScreen:
         quit_button_rect = pg.Rect(650, 30, 140, 40)
         if button == 1:
             if back_button_rect.collidepoint((mx, my)):
-                return MenuStartScreen()
+                return MenuScreen()
             if quit_button_rect.collidepoint((mx, my)):
                 sys.exit()
 
@@ -123,7 +129,7 @@ class InstructionsScreen:
     def render(self, screen):
         screen.fill(WHITE)
         screen.blit(start_background, (0, 0))
-        screen.blit(instructions_frame, (75, 75))
+        screen.blit(self.instructions_frame, (75, 75))
         back_button()
         quit_button()
 
@@ -183,9 +189,14 @@ class BattleScreen:
     def __init__(self):
         self.attack_button = Button((0.14, 0.8), (0.2, 0.1), PURPLE_1, PURPLE_5, 22, WHITE, "Attack", frame=PURPLE_2)
         self.special_button = Button((0.38, 0.8), (0.2, 0.1), PURPLE_2, PURPLE_5, 22, WHITE, "Special", frame=PURPLE_3)
-        self.sentiment_button = Button((0.62, 0.8), (0.2, 0.1), PURPLE_3, PURPLE_5, 22, WHITE, "Sentiment", frame=PURPLE_4)
+        self.sentiment_button = Button((0.62, 0.8), (0.2, 0.1), PURPLE_3, PURPLE_5, 22, WHITE, "Sentiment",
+                                       frame=PURPLE_4)
         self.quiz_button = Button((0.86, 0.8), (0.2, 0.1), PURPLE_4, PURPLE_5, 22, WHITE, "Quiz", frame=PURPLE_1)
-        self.quit_button = Button((0.7, 0.1), (0.2, 0.1), LIGHT_GREEN_UNSELECTED, LIGHT_GREEN_SELECTED, 22, WHITE, "QUIT")
+        self.quit_button = Button((0.7, 0.1), (0.2, 0.1), LIGHT_GREEN_UNSELECTED, LIGHT_GREEN_SELECTED, 22, WHITE,
+                                  "QUIT")
+
+        vs_sign = pg.image.load("media/images/VS.PNG")
+        self.vs_sign = pg.transform.smoothscale(vs_sign, (200, 150))
 
     def handle_keydown(self, key):
         if key == pg.K_BACKSPACE:
@@ -228,7 +239,7 @@ class BattleScreen:
 
         self.quiz_button.render(screen)
 
-        screen.blit(vs_sign, (300, 200))
+        screen.blit(self.vs_sign, (300, 200))
         textbox_gunnar = TextBox((0.5, 0.2), 30, False, WHITE, "It's your turn!")
         textbox_gunnar.render(screen)
 
@@ -400,6 +411,8 @@ class SpecialAttackScreen:
 
 class WinnerScreenGunnar:
     def __init__(self):
+        background_win = pg.image.load("media/images/winning_pic.jpg")
+        self.background_win = pg.transform.smoothscale(background_win, SCREEN_SIZE)
         music("media/music/vinnar_låt_utkast.mp3", 0.0)
 
     def handle_keydown(self, key):
@@ -420,7 +433,7 @@ class WinnerScreenGunnar:
 
     def render(self, screen):
         screen.fill(WHITE)
-        screen.blit(background_win, (0, 0))
+        screen.blit(self.background_win, (0, 0))
         x_off, y_off = periodic_movement(1, 5)
         gunnar_bigger = pg.transform.scale(gunnar.image, (350, 350))
         screen.blit(gunnar_bigger, (220, 235 + y_off))
@@ -439,6 +452,8 @@ class WinnerScreenGunnar:
 
 class WinnerScreenAda:
     def __init__(self):
+        background_win = pg.image.load("media/images/winning_pic.jpg")
+        self.background_win = pg.transform.smoothscale(background_win, SCREEN_SIZE)
         music("media/music/lose_game_melody.mp3", 0.0)
 
     def handle_keydown(self, key):
@@ -459,7 +474,7 @@ class WinnerScreenAda:
 
     def render(self, screen):
         screen.fill(WHITE)
-        screen.blit(background_win, (0, 0))
+        screen.blit(self.background_win, (0, 0))
         ada_win_pic = pg.image.load("media/images/Pink_dragon_08.png")
         ada_win_pic = pg.transform.scale(ada_win_pic, (350, 350))
         screen.blit(ada_win_pic, (205, 285))
@@ -480,7 +495,7 @@ def mainloop(screen):
     global start_screen
     start_screen = StartScreen()
 
-    state = MenuStartScreen()
+    state = FirstScreen()
 
     clock = pg.time.Clock()
     while True:
@@ -506,11 +521,11 @@ def mainloop(screen):
 
 
 def glada_gunnar(x, y, name_relx, name_rely, stats_relx, stats_rely):
-        screen.blit(gunnar.image, (x, y))
-        name = TextBox((name_relx, name_rely), 18, False, LIGHT_GREEN, f"{gunnar.name}")
-        stats = TextBox((stats_relx, stats_rely), 18, False, WHITE,
-                        f"Mood: {gunnar.mood.capitalize()} Attack: {gunnar.attack} Health: {gunnar.health}")
-        return name, stats
+    screen.blit(gunnar.image, (x, y))
+    name = TextBox((name_relx, name_rely), 18, False, LIGHT_GREEN, f"{gunnar.name}")
+    stats = TextBox((stats_relx, stats_rely), 18, False, WHITE,
+                    f"Mood: {gunnar.mood.capitalize()} Attack: {gunnar.attack} Health: {gunnar.health}")
+    return name, stats
 
 
 def aggressive_ada(x, y, name_relx, name_rely, stats_relx, stats_rely):
@@ -549,13 +564,13 @@ def battle_time_button():
     if 275 <= mouse[0] <= 275 + 240 and 245 <= mouse[1] <= 225 + 100:
         pg.draw.rect(screen, BLACK, (285, 245, 225, 70), 3)
         pg.draw.rect(screen, COLOR_LIGHT_SELECTED, (287, 247, 221, 66))
-        text_speech(screen, "fonts/RobotoSlab-Black.ttf", 30, "Battle time!", BLACK, width / 2.02,
-                    height / 2.15, True)
+        text_speech(screen, "fonts/RobotoSlab-Black.ttf", 30, "Battle time!", BLACK, WIDTH / 2.02,
+                    HEIGHT / 2.15, True)
     else:
         pg.draw.rect(screen, BLACK, (285, 245, 225, 70), 3)
         pg.draw.rect(screen, COLOR_LIGHT_UNSELECTED, (287, 247, 221, 66))
-        text_speech(screen, "fonts/RobotoSlab-Black.ttf", 30, "Battle time!", BLACK, width / 2.02,
-                    height / 2.15, True)
+        text_speech(screen, "fonts/RobotoSlab-Black.ttf", 30, "Battle time!", BLACK, WIDTH / 2.02,
+                    HEIGHT / 2.15, True)
 
 
 def quit_button():
@@ -587,13 +602,13 @@ def start_game_button():
     if 275 <= mouse[0] <= 275 + 225 and 280 <= mouse[1] <= 280 + 65:
         pg.draw.rect(screen, BLACK, (275, 280, 240, 65), 3)
         pg.draw.rect(screen, COLOR_LIGHT_SELECTED, (277, 282, 236, 61))
-        text_speech(screen, "fonts/RobotoSlab-Black.ttf", 30, "Start Game", BLACK, width / 2.025,
-                    height / 1.93, True)
+        text_speech(screen, "fonts/RobotoSlab-Black.ttf", 30, "Start Game", BLACK, WIDTH / 2.025,
+                    HEIGHT / 1.93, True)
     else:
         pg.draw.rect(screen, BLACK, (275, 280, 240, 65), 3)
         pg.draw.rect(screen, COLOR_LIGHT_UNSELECTED, (277, 282, 236, 61))
-        text_speech(screen, "fonts/RobotoSlab-Black.ttf", 30, "Start Game", BLACK, width / 2.025,
-                    height / 1.93, True)
+        text_speech(screen, "fonts/RobotoSlab-Black.ttf", 30, "Start Game", BLACK, WIDTH / 2.025,
+                    HEIGHT / 1.93, True)
 
 
 def instructions_button():
@@ -601,13 +616,13 @@ def instructions_button():
     if 275 <= mouse[0] <= 275 + 240 and 360 <= mouse[1] <= 360 + 65:
         pg.draw.rect(screen, BLACK, (275, 360, 240, 65), 3)
         pg.draw.rect(screen, COLOR_LIGHT_SELECTED, (277, 362, 236, 61))
-        text_speech(screen, "fonts/RobotoSlab-Black.ttf", 30, "How To Play", BLACK, width / 2.025,
-                    height / 1.54, True)
+        text_speech(screen, "fonts/RobotoSlab-Black.ttf", 30, "How To Play", BLACK, WIDTH / 2.025,
+                    HEIGHT / 1.54, True)
     else:
         pg.draw.rect(screen, BLACK, (275, 360, 240, 65), 3)
         pg.draw.rect(screen, COLOR_LIGHT_UNSELECTED, (277, 362, 236, 61))
-        text_speech(screen, "fonts/RobotoSlab-Black.ttf", 30, "How To Play", BLACK, width / 2.025,
-                    height / 1.54, True)
+        text_speech(screen, "fonts/RobotoSlab-Black.ttf", 30, "How To Play", BLACK, WIDTH / 2.025,
+                    HEIGHT / 1.54, True)
 
 
 def quit_button_start():
@@ -615,13 +630,13 @@ def quit_button_start():
     if 275 <= mouse[0] <= 275 + 225 and 440 <= mouse[1] <= 440 + 65:
         pg.draw.rect(screen, BLACK, (275, 440, 240, 65), 3)
         pg.draw.rect(screen, COLOR_LIGHT_SELECTED, (277, 442, 236, 61))
-        text_speech(screen, "fonts/RobotoSlab-Black.ttf", 30, "Quit Game", BLACK, width / 2.025,
-                    height / 1.27, True)
+        text_speech(screen, "fonts/RobotoSlab-Black.ttf", 30, "Quit Game", BLACK, WIDTH / 2.025,
+                    HEIGHT / 1.27, True)
     else:
         pg.draw.rect(screen, BLACK, (275, 440, 240, 65), 3)
         pg.draw.rect(screen, COLOR_LIGHT_UNSELECTED, (277, 442, 236, 61))
-        text_speech(screen, "fonts/RobotoSlab-Black.ttf", 30, "Quit Game", BLACK, width / 2.025,
-                    height / 1.27, True)
+        text_speech(screen, "fonts/RobotoSlab-Black.ttf", 30, "Quit Game", BLACK, WIDTH / 2.025,
+                    HEIGHT / 1.27, True)
 
 
 def sword(turn):
@@ -662,7 +677,12 @@ def winning_crown_ada_moving():
 
 if __name__ == '__main__':
     pg.init()
+    screen = pg.display.set_mode(SCREEN_SIZE)
+
     pg.display.set_caption("PokeMood")
+    programIcon = pg.image.load('media/images/icon.png')
+    icon = pg.transform.smoothscale(programIcon, (32, 32))
+    pg.display.set_icon(icon)
     gunnar = Poketer("Happy Hasse", 'happy', 'yellow', 50, 45, catchword="#YOLO",
                      img_name="media/images/Green_monster_resized.png")
     ada = Poketer("Aggressive Ada", 'angry', 'red', 50, 45, catchword="#FTW",

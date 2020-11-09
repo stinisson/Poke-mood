@@ -1,7 +1,7 @@
 import pygame
 
 from common import BLACK, WHITE, QUIZ_TRANSP_GREEN_LIGHT, QUIZ_TRANSP_GREEN_HIGHL, QUIZ_TRANSP_GREEN, QUIZ_TRANSP_RED
-from common import FONT_ROBOTO, screen_size, music, sound, TextBox, Button, periodic_movement, rel_to_pix
+from common import FONT_ROBOTO, SCREEN_SIZE, music, sound, TextBox, Button, periodic_movement, rel_to_pix
 from pokemood_pygame.quiz.quiz_api import get_quiz, quiz_categories
 
 return_screen = None
@@ -15,7 +15,7 @@ class QuizStartScreen:
         return_screen = return_screen_
         music("media/music/quizz_music.mp3", 0.0)
         background_image_raw = pygame.image.load("media/images/Background_forest.jpg").convert()
-        self.background_image = pygame.transform.scale(background_image_raw, screen_size)
+        self.background_image = pygame.transform.scale(background_image_raw, SCREEN_SIZE)
         self.title = TextBox(rel_pos=(0.5, 0.1), font_name=FONT_ROBOTO,
                              font_size=30, font_bold=False, color=WHITE, text="It's quiz time!")
 
@@ -70,7 +70,7 @@ class QuizStartScreen:
 class QuizScreen:
     def __init__(self, quiz_category, poketer):
         background_image_raw = pygame.image.load("media/images/Background_forest.jpg").convert()
-        self.background_image = pygame.transform.scale(background_image_raw, screen_size)
+        self.background_image = pygame.transform.scale(background_image_raw, SCREEN_SIZE)
         self.title = None
         self.question_text = None
         self.quiz_answer_buttons = []
@@ -179,7 +179,7 @@ class QuizFinishedScreen:
             sound("media/music/booing_crowd.mp3")
 
         background_image_raw = pygame.image.load("media/images/Background_forest.jpg").convert()
-        self.background_image = pygame.transform.scale(background_image_raw, screen_size)
+        self.background_image = pygame.transform.scale(background_image_raw, SCREEN_SIZE)
 
         self.title = TextBox(rel_pos=(0.5, 0.1), font_name=FONT_ROBOTO,
                              font_size=30, font_bold=False, color=WHITE,
@@ -250,7 +250,7 @@ def mainloop(screen, font):
 
 if __name__ == '__main__':
     pygame.init()
-    screen = pygame.display.set_mode(screen_size)
+    screen = pygame.display.set_mode(SCREEN_SIZE)
     pygame.display.set_caption("PokeMood")
     font = FONT_ROBOTO
     mainloop(screen, font)

@@ -6,8 +6,8 @@ from common import TextBox, Button, periodic_movement, rel_to_pix
 from twitter.sentiment_analysis import sentiment_analysis
 
 bg = pygame.image.load("media/images/Background_forest.jpg")
-background = pygame.transform.scale(bg, screen_size)
-screen = pygame.display.set_mode(screen_size)
+background = pygame.transform.scale(bg, SCREEN_SIZE)
+screen = pygame.display.set_mode(SCREEN_SIZE)
 
 
 class InputBox:

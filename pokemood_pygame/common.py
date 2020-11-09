@@ -5,10 +5,18 @@ from pygame import mixer
 
 from constants import *
 
+bg = pygame.image.load("media/images/Background_forest.jpg")
+background = pygame.transform.smoothscale(bg, SCREEN_SIZE)
+
+logo = pygame.image.load("media/images/LOGO.PNG")
+logo = pygame.transform.smoothscale(logo, (360, 222))
+
+start_background = pygame.image.load("media/images/background_start.png")
+start_background = pygame.transform.scale(start_background, SCREEN_SIZE)
 
 class TextBox:
     def __init__(self, rel_pos, font_size, font_bold, color, text, font_name=FONT_ROBOTO, line_width=100):
-        self.position = (screen_size[0] * rel_pos[0], screen_size[1] * rel_pos[1])
+        self.position = (SCREEN_SIZE[0] * rel_pos[0], SCREEN_SIZE[1] * rel_pos[1])
         self.font_size = font_size
         self.font = pygame.font.Font(font_name, font_size)
         self.font.set_bold(font_bold)
@@ -44,8 +52,8 @@ class TextBox:
 
 class Button:
     def __init__(self, rel_pos, rel_size, color, highlight, font_size, font_color, text, frame=QUIZ_DARKGREEN):
-        self.position = (screen_size[0] * rel_pos[0], screen_size[1] * rel_pos[1])
-        self.size = (screen_size[0] * rel_size[0], screen_size[1] * rel_size[1])
+        self.position = (SCREEN_SIZE[0] * rel_pos[0], SCREEN_SIZE[1] * rel_pos[1])
+        self.size = (SCREEN_SIZE[0] * rel_size[0], SCREEN_SIZE[1] * rel_size[1])
         self.color = color
         self.highlight = highlight
         self.text = TextBox(rel_pos=rel_pos, font_name=FONT_ROBOTO,
@@ -96,8 +104,8 @@ def periodic_movement(frequency, amplitude):
 
 
 def rel_to_pix(rel_pos):
-    x = rel_pos[0] * screen_size[0]
-    y = rel_pos[1] * screen_size[1]
+    x = rel_pos[0] * SCREEN_SIZE[0]
+    y = rel_pos[1] * SCREEN_SIZE[1]
     pix_pos = (x, y)
     return pix_pos
 
