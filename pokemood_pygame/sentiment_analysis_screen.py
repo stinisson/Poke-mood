@@ -44,13 +44,7 @@ class InputBox:
 
     def handle_mouse_button(self, button):
         if button == 1:
-            # if self.button.handle_mouse_button(button):
-            #     self.button.highlight = WHITE
-            # self.active = False
-            # if self.button.handle_mouse_button(button):
-            #     self.active = True
             self.button.handle_mouse_button(button)
-
         return self
 
     def handle_timer(self):
@@ -110,13 +104,11 @@ If your guess is wrong, you will be punished with {health_bonus} p in reduced he
 
             for idx, sentiment_button in enumerate(self.sentiment_buttons):
                 if sentiment_button.handle_mouse_button(button):
-
-                    print("en sentiment är klickad")
                     sentiment_button.color = QUIZ_TRANSP_GREEN_LIGHT
                     self.chosen_sentiment = self.attitude_options[idx]
                     self.input_field_keyword.finished = True
 
-                    # Disable buttons when a choice is made TODO FIX THIS!
+                    # Disable buttons when a choice is made TODO UGLY TEMP FIX, FIX THIS!
                     for sentiment_button in self.sentiment_buttons:
                         sentiment_button.enabled = False
 
@@ -244,9 +236,9 @@ class SentimentResultScreen:
 
 
 def mainloop(screen):
-    gunnar = Poketer("Happy Hasse", 'happy', 'yellow', 50, 50, 45, catchword="#YOLO",
-                     img_name="media/images/Green_monster_resized.png")
-    state = SentimentAnalysisScreen(gunnar, None)
+    # gunnar = Poketer("Happy Hasse", 'happy', 'yellow', 50, 50, 45, catchword="#YOLO",
+    #                  img_name="media/images/Green_monster_resized.png")
+    #state = SentimentAnalysisScreen(gunnar, None)
     clock = pygame.time.Clock()
     while True:
         # Event handling

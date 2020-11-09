@@ -112,4 +112,4 @@ def music(filename, volume):
 def sound(filename):
     sound = mixer.Sound(filename)
     sound.play()
-    sound.set_volume(0.2)
+    sound.set_volume(0.0)

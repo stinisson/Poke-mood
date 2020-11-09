@@ -7,15 +7,18 @@ from poketer import Poketer
 from twitter.mood_score import calc_mood_score
 from quiz.quiz import QuizStartScreen
 from quiz.quiz_api import quiz_categories
-import common
 from common import TextBox, periodic_movement, music, Button
 from sentiment_analysis_screen import SentimentAnalysisScreen
 
 
-pg.init()
 width = 800
 height = 600
 screen = pg.display.set_mode((width, height))
+
+programIcon = pg.image.load('media/images/icon.png')
+icon = pg.transform.smoothscale(programIcon, (32, 32))
+pg.display.set_icon(icon)
+
 
 bg = pg.image.load("media/images/Background_forest.jpg")
 background = pg.transform.scale(bg, (800, 600))
@@ -70,7 +73,7 @@ def cpu_random_attack():
 
 class MenuStartScreen:
     def __init__(self):
-        music("media/music/intro_song_1.mp3", 0.04)
+        music("media/music/intro_song_1.mp3", 0.0)
 
     def handle_keydown(self, key):
         return self
@@ -149,7 +152,7 @@ class StartScreen:
         quit_button_rect = pg.Rect(650, 30, 140, 40)
         if button == 1:
             if battle_button_rect.collidepoint((mx, my)):
-                music("media/music/battle_time_1.mp3", 0.05)
+                music("media/music/battle_time_1.mp3", 0.0)
                 return BattleScreen()
             if quit_button_rect.collidepoint((mx, my)):
                 sys.exit()
@@ -397,7 +400,7 @@ class SpecialAttackScreen:
 
 class WinnerScreenGunnar:
     def __init__(self):
-        music("media/music/vinnar_låt_utkast.mp3", 0.05)
+        music("media/music/vinnar_låt_utkast.mp3", 0.0)
 
     def handle_keydown(self, key):
         if key == pg.K_ESCAPE:
@@ -436,7 +439,7 @@ class WinnerScreenGunnar:
 
 class WinnerScreenAda:
     def __init__(self):
-        music("media/music/lose_game_melody.mp3", 0.05)
+        music("media/music/lose_game_melody.mp3", 0.0)
 
     def handle_keydown(self, key):
         if key == pg.K_ESCAPE:
@@ -658,10 +661,11 @@ def winning_crown_ada_moving():
 
 
 if __name__ == '__main__':
+    pg.init()
     pg.display.set_caption("PokeMood")
-    gunnar = Poketer("Happy Hasse", 'happy', 'yellow', 50, 50, 45, catchword="#YOLO",
+    gunnar = Poketer("Happy Hasse", 'happy', 'yellow', 50, 45, catchword="#YOLO",
                      img_name="media/images/Green_monster_resized.png")
-    ada = Poketer("Aggressive Ada", 'angry', 'red', 50, 50, 45, catchword="#FTW",
+    ada = Poketer("Aggressive Ada", 'angry', 'red', 50, 45, catchword="#FTW",
                   img_name="media/images/Pink_dragon_01.png")
     mainloop(screen)
     pg.quit()

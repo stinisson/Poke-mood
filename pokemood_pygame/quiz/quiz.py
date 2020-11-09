@@ -1,25 +1,19 @@
-import math
 import pygame
 
-import common
 from common import BLACK, WHITE, QUIZ_TRANSP_GREEN_LIGHT, QUIZ_TRANSP_GREEN_HIGHL, QUIZ_TRANSP_GREEN, QUIZ_TRANSP_RED
-from common import FONT_ROBOTO, screen_size, music, sound, rel_to_pix, TextBox, Button, periodic_movement, rel_to_pix
-
+from common import FONT_ROBOTO, screen_size, music, sound, TextBox, Button, periodic_movement, rel_to_pix
 from pokemood_pygame.quiz.quiz_api import get_quiz, quiz_categories
 
-
 return_screen = None
-poketer = None
 
 
 class QuizStartScreen:
-    def __init__(self, number_of_quiz_questions, quiz_categories, return_screen_, poketer_):
-        global poketer
-        poketer = poketer_
+    def __init__(self, number_of_quiz_questions, quiz_categories, return_screen_, poketer):
+        self.poketer = poketer
 
         global return_screen
         return_screen = return_screen_
-        music("media/music/quizz_music.mp3", 0.01)
+        music("media/music/quizz_music.mp3", 0.0)
         background_image_raw = pygame.image.load("media/images/Background_forest.jpg").convert()
         self.background_image = pygame.transform.scale(background_image_raw, screen_size)
         self.title = TextBox(rel_pos=(0.5, 0.1), font_name=FONT_ROBOTO,
@@ -44,8 +38,6 @@ class QuizStartScreen:
             self.category_buttons.append(quiz_button)
 
     def handle_keydown(self, key):
-        if key == pygame.K_SPACE:
-            return QuizScreen()
         return self
 
     def handle_mouse_button(self, mouse_button):
@@ -60,8 +52,7 @@ class QuizStartScreen:
         if clicked_button_idx is not None:
             for category_button in self.category_buttons:
                 category_button.enabled = False
-            return QuizScreen(self.categories[clicked_button_idx])
-            #common.next_screen = QuizScreen(self.categories[clicked_button_idx])
+            return QuizScreen(self.categories[clicked_button_idx], self.poketer)
 
     def handle_timer(self):
         return self
@@ -77,8 +68,7 @@ class QuizStartScreen:
 
 
 class QuizScreen:
-
-    def __init__(self, quiz_category):
+    def __init__(self, quiz_category, poketer):
         background_image_raw = pygame.image.load("media/images/Background_forest.jpg").convert()
         self.background_image = pygame.transform.scale(background_image_raw, screen_size)
         self.title = None
@@ -101,6 +91,7 @@ class QuizScreen:
                                  (0.7, 0.8)]
         self.set_question()
         self.next_question_timeout = 0
+        self.poketer = poketer
 
     def set_question(self):
 
@@ -108,10 +99,7 @@ class QuizScreen:
         self.current_question += 1
 
         if self.current_question == self.number_of_quiz_questions + 1:
-            #common.next_screen = QuizFinishedScreen
-            #return
-            print("vill returnera quiz finished screen")
-            return QuizFinishedScreen(self.num_of_correct_ans, self.number_of_quiz_questions)
+            return QuizFinishedScreen(self.num_of_correct_ans, self.number_of_quiz_questions, self.poketer)
 
         self.correct_answer_idx = self.answer_options[self.current_question - 1].index(
             self.correct_answers[self.current_question - 1])
@@ -129,7 +117,6 @@ class QuizScreen:
                                  color=QUIZ_TRANSP_GREEN, highlight=QUIZ_TRANSP_GREEN_HIGHL,
                                  font_size=22, font_color=WHITE, text=answer_option)
             self.quiz_answer_buttons.append(quiz_button)
-
         return self
 
     def handle_keydown(self, key):
@@ -149,7 +136,6 @@ class QuizScreen:
                 break
 
         if clicked_button_idx is not None:
-
             self.next_question_timeout = pygame.time.get_ticks()
 
             if clicked_button_idx == self.correct_answer_idx:
@@ -173,18 +159,15 @@ class QuizScreen:
     def render(self, screen):
         screen.fill(BLACK)
         screen.blit(self.background_image, (0, 0))
-
         self.title.render(screen)
-
         self.question_text.render(screen)
-
         for quiz_answer_button in self.quiz_answer_buttons:
             quiz_answer_button.render(screen)
 
 
 class QuizFinishedScreen:
-    def __init__(self, num_of_correct_ans, number_of_quiz_questions):
-
+    def __init__(self, num_of_correct_ans, number_of_quiz_questions, poketer):
+        self.poketer = poketer
         pygame.mixer.music.stop()
         if num_of_correct_ans >= number_of_quiz_questions - 1:
             info_text = "WOW you're awesome! You get 10 health points as an award! "
@@ -203,23 +186,20 @@ class QuizFinishedScreen:
                              text=f"You answered {num_of_correct_ans} out of {number_of_quiz_questions} questions correctly.")
 
         self.info_text = TextBox(rel_pos=(0.5, 0.25), font_name=FONT_ROBOTO,
-                                     font_size=25, font_bold=False, color=WHITE, text=info_text, line_width=55)
+                                     font_size=25, font_bold=False, color=WHITE, text=info_text, line_width=60)
 
-        self.poketer_image = pygame.image.load("media/images/Green_monster_resized.png").convert_alpha()
-        self.poketer_image = pygame.transform.smoothscale(self.poketer_image, (207, 207))
+        self.poketer_image = pygame.transform.smoothscale(self.poketer.image, (207, 207))
 
         self.quiz_finished_button = Button(rel_pos=(0.5, 0.85), rel_size=(0.3, 0.15),
                                            color=QUIZ_TRANSP_GREEN, highlight=QUIZ_TRANSP_GREEN_HIGHL,
                                            font_size=22, font_color=WHITE, text="CONTINUE")
 
     def handle_keydown(self, key):
-        if key == pygame.K_ESCAPE:
-            return QuizScreen()
         return self
 
     def handle_mouse_button(self, mouse_button):
         if self.quiz_finished_button.handle_mouse_button(mouse_button):
-            music("media/music/battle_time_1.mp3", 0.1)
+            music("media/music/battle_time_1.mp3", 0.0)
             return return_screen
         return self
 
@@ -237,7 +217,6 @@ class QuizFinishedScreen:
         poketer_image_rect = self.poketer_image.get_rect()
         poketer_image_rect.center = pixel_pos[0], pixel_pos[1] + y_off
         screen.blit(self.poketer_image, poketer_image_rect)
-
         self.quiz_finished_button.render(screen)
 
 
@@ -258,18 +237,11 @@ def mainloop(screen, font):
             temp_state = current_screen.handle_mouse_button(ev.button)
             if temp_state is not None:
                 current_screen = temp_state
-            #current_screen.handle_mouse_button(ev.button)
 
         elif ev.type == pygame.QUIT:
             break
 
-        # if common.next_screen is not None:
-        #     current_screen = common.next_screen
-        #     common.next_screen = None
-
         current_screen.handle_timer()
-
-        # Render
         current_screen.render(screen)
 
         pygame.display.update()
@@ -277,7 +249,6 @@ def mainloop(screen, font):
 
 
 if __name__ == '__main__':
-    common.common_init()
     pygame.init()
     screen = pygame.display.set_mode(screen_size)
     pygame.display.set_caption("PokeMood")

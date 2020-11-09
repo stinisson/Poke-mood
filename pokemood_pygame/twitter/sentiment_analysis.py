@@ -101,7 +101,6 @@ def sentiment_analysis(keyword, language, file_name='', live=False):
     plot2.text(0, 0, f"Most negative tweet:\n{wrap_text(most_negative_tweet, 100)}", fontproperties=font)
 
     plt.savefig('./twitter/sentiment_analysis.png', bbox_inches='tight')
-    print("saves fig")
     plt.close()
 
     if positive_score > negative_score:
