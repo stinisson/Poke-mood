@@ -2,10 +2,12 @@ import pygame as pg
 
 from constants import *
 from intro_screens import FirstScreen
+from mood_analysis_screen import ChooseCityMoodScreen
 
 
 def mainloop(screen):
-    state = FirstScreen()
+    #state = FirstScreen()
+    state = ChooseCityMoodScreen()
     clock = pg.time.Clock()
 
     while True:
