@@ -170,6 +170,9 @@ class SentimentGraphScreen:
         if self.result == "too_few_results":
             return SentimentResultScreen(keyword=self.keyword, attitude=self.attitude, result=self.result,
                                          poketer=self.poketer, return_screen=self.return_screen)
+        elif self.result == "connection_error":
+            SentimentResultScreen(keyword=self.keyword, attitude=self.attitude, result=self.result,
+                                  poketer=self.poketer, return_screen=self.return_screen)
         return self
 
     def render(self, screen):
@@ -192,6 +195,8 @@ class SentimentResultScreen:
         elif self.result == "too_few_results":
             self.result_text = f"Found too few tweets containing {keyword}. One tip is to search for something " \
                                f"that is more relevant in the public debate. "
+        elif self.result == "connection_error":
+            self.result_text = f"It is not possible to connect to Twitter right now. Try again later!"
         else:
             self.result_text = f"That was incorrect! {self.keyword} has mostly {self.result} content on Twitter. " \
                                f"You get a 10 p decrease in attack strength as a penalty."

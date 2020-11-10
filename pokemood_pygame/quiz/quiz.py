@@ -172,7 +172,7 @@ class QuizFinishedScreen:
         if num_of_correct_ans >= number_of_quiz_questions - 1:
             info_text = "WOW you're awesome! You get 10 health points as an award! "
             sound("media/music/kids_cheering.mp3")
-            poketer.add_health(10)
+            self.poketer.add_health(10)
         else:
             info_text = f"You need at least {number_of_quiz_questions - 1} correct answers to get a bonus. " \
                         f"Better luck next time!"

@@ -1,4 +1,4 @@
-import pygame as pg
+import pygame
 
 
 class Poketer:
@@ -9,7 +9,7 @@ class Poketer:
         self.attack = attack
         self.color = color
         self.catchword = catchword
-        self.image = pg.image.load(img_name).convert_alpha()
+        self.image = pygame.image.load(img_name).convert_alpha()
 
     def add_health(self, health_score):
         self.health += health_score

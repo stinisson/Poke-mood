@@ -14,6 +14,7 @@ logo = pygame.transform.smoothscale(logo, (360, 222))
 start_background = pygame.image.load("media/images/background_start.png")
 start_background = pygame.transform.scale(start_background, SCREEN_SIZE)
 
+
 class TextBox:
     def __init__(self, rel_pos, font_size, font_bold, color, text, font_name=FONT_ROBOTO, line_width=100):
         self.position = (SCREEN_SIZE[0] * rel_pos[0], SCREEN_SIZE[1] * rel_pos[1])
