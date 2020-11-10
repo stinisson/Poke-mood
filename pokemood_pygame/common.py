@@ -97,6 +97,60 @@ class Button:
         self.text.render(screen)
 
 
+class InputBox:
+    def __init__(self, rel_pos, rel_size, color, highlight, font_size, font_color):
+        self.cursor = ""
+        self.timeout = 0
+        self.button = Button(rel_pos, rel_size, color, highlight, font_size, font_color, self.cursor)
+        self.active = False
+        self.text = ""
+        self.finished = False
+
+    def handle_keydown(self, key):
+        alphabet = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ "
+
+        if not self.finished:
+            mods = pygame.key.get_mods()
+            if key == pygame.K_RETURN:
+                print(self.text)
+                print("managed return")
+                self.finished = True
+            elif key == pygame.K_BACKSPACE:
+                self.text = self.text[:-1]
+            elif key == pygame.K_SPACE:
+                if len(self.text) < 15:
+                    self.text += " "
+            elif mods & pygame.KMOD_LSHIFT:
+                if pygame.key.name(key) in alphabet:
+                    if mods & pygame.KMOD_LSHIFT:
+                        self.text += pygame.key.name(key).upper()
+            elif pygame.key.name(key) in alphabet:
+                if len(self.text) < 15:
+                    self.text += pygame.key.name(key)
+        return self
+
+    def handle_mouse_button(self, button):
+        if button == 1:
+            self.button.handle_mouse_button(button)
+        return self
+
+    def handle_timer(self):
+        if self.finished:
+            self.button.text.set_text(self.text)
+        else:
+            self.button.text.set_text(self.text)
+            time_now = pygame.time.get_ticks()
+            if (time_now - self.timeout) % 2000 < 1000:
+                if self.text:
+                    self.button.text.set_text(self.text + "|")
+                else:
+                    self.button.text.set_text("|")
+        return self
+
+    def render(self, screen):
+        self.button.render(screen)
+
+
 def periodic_movement(frequency, amplitude):
     time = pygame.time.get_ticks()
     x_off = amplitude * math.cos(frequency * time * math.pi / 1000)
