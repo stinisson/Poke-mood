@@ -1,18 +1,14 @@
 import sys
-
 import pygame
 
 from common import music, Button, start_background, logo
 from constants import *
 from game_screen import PoketerIntroScreen
 
-#start_screen = None
-
 
 class FirstScreen:
     def __init__(self):
         music("media/music/intro_song_1.mp3", 0.0)
-
         self.start_button = Button((0.5, 0.8), (0.3, 0.12), PASTEL_3,
                                    PASTEL_6, 27, WHITE, "Let's begin!", frame=PASTEL_4)
 
@@ -37,7 +33,6 @@ class FirstScreen:
 class MenuScreen:
     def __init__(self):
         music("media/music/intro_song_1.mp3", 0.0)
-
         self.button_positions = [(0.5, 0.35), (0.5, 0.5), (0.5, 0.65), (0.5, 0.8)]
         self.option_buttons = []
         self.attitude_options = ["Start game", "How to play", "Settings", "Quit"]
@@ -55,7 +50,6 @@ class MenuScreen:
         if button == 1:
             if self.option_buttons[0].handle_mouse_button(button):
                 return PoketerIntroScreen()
-                #return start_screen
             if self.option_buttons[1].handle_mouse_button(button):
                 return InstructionsScreen()
             if self.option_buttons[2].handle_mouse_button(button):

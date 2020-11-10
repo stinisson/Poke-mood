@@ -254,7 +254,6 @@ class SpecialAttackScreen:
         self.poketer_stats.render(screen)
         self.cpu_poketer_name.render(screen)
         self.cpu_poketer_stats.render(screen)
-
         crossed_sword(screen)
 
 

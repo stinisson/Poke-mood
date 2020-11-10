@@ -60,8 +60,6 @@ If your guess is wrong, you will be punished with {health_bonus} p in reduced he
 
             if self.continue_button.handle_mouse_button(button):
                 self.continue_button.color = QUIZ_TRANSP_GREEN_LIGHT
-                print(self.input_field_keyword.text)
-                print(self.chosen_sentiment)
                 return SentimentGraphScreen(keyword=self.input_field_keyword.text, attitude=self.chosen_sentiment,
                                             poketer=self.poketer, return_screen=self.return_screen)
         return self
@@ -109,7 +107,6 @@ class SentimentGraphScreen:
                 self.continue_button.color = QUIZ_DARKGREEN
                 return SentimentResultScreen(keyword=self.keyword, attitude=self.attitude, result=self.result,
                                              poketer=self.poketer, return_screen=self.return_screen)
-
         return self
 
     def handle_timer(self):
@@ -187,9 +184,6 @@ class SentimentResultScreen:
 
 
 def mainloop(screen):
-    # gunnar = Poketer("Happy Hasse", 'happy', 'yellow', 50, 50, 45, catchword="#YOLO",
-    #                  img_name="media/images/Green_monster_resized.png")
-    #state = SentimentAnalysisScreen(gunnar, None)
     clock = pygame.time.Clock()
     while True:
         # Event handling
