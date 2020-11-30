@@ -1,6 +1,6 @@
 import random
 
-from common import TextBox, Button, background
+from common import TextBox, Button, background, Screen
 from constants import *
 from battle_screens import BattleScreen
 from twitter.twitter_search import geocodes
@@ -8,7 +8,7 @@ from twitter.mood_score import calc_mood_score
 from poketer import Poketer
 
 
-class ChooseCityMoodScreen:
+class ChooseCityMoodScreen(Screen):
     #def __init__(self, poketer, cpu_poketer):
         # self.poketer = poketer
         # self.cpu_poketer = cpu_poketer
@@ -30,11 +30,19 @@ your Poketer will be punished and lose {self.attack_score} p in attack strength.
         self.attitude_options = geocodes  # 8 st
         self.cities = list(self.attitude_options.keys())
         self.cities = self.cities[:-1]
-        self.button_colors = [PASTEL_1, PASTEL_2, PASTEL_3, PASTEL_4, PASTEL_5, PASTEL_6, PASTEL_1]
+
+
+        #self.button_colors = [PASTEL_1, PASTEL_2, PASTEL_3, PASTEL_4, PASTEL_5, PASTEL_6, PASTEL_1]
+
+
+        self.button_colors = [BLUE_1, BLUE_2, BLUE_3, BLUE_4, BLUE_5, BLUE_6, BLUE_7]
+
+        # 254, 109, 115
+
         for idx in range(len(self.city_button_positions)):
-            self.city_button = Button(self.city_button_positions[idx], (0.25, 0.12), self.button_colors[idx],
-                                      PASTEL_7, 27, WHITE, self.cities[idx].capitalize(),
-                                      frame=self.button_colors[idx + 1])
+            self.city_button = Button(self.city_button_positions[idx], (0.25, 0.12), (53, 90, 105, 150),
+                                      (127, 180, 192, 200), 27, WHITE, self.cities[idx].capitalize(),
+                                      frame=(37, 50, 55))
             self.city_buttons.append(self.city_button)
 
         self.button_colors = [HAPPY, SAD, ANGRY, LOVING]
@@ -44,7 +52,7 @@ your Poketer will be punished and lose {self.attack_score} p in attack strength.
         self.mood_options = ["happy", "sad", "angry", "loving"]
         for idx in range(len(self.mood_button_positions)):
             self.mood_button = Button(self.mood_button_positions[idx], (0.18, 0.1), self.button_colors[idx],
-                                      PASTEL_7, 22, WHITE, self.mood_options[idx].capitalize(),
+                                      (188, 231, 132, 200), 22, WHITE, self.mood_options[idx].capitalize(),
                                       frame=self.frame_colors[idx])
             self.mood_buttons.append(self.mood_button)
 
@@ -55,9 +63,6 @@ your Poketer will be punished and lose {self.attack_score} p in attack strength.
         self.chosen_mood = ""
         self.city_is_chosen = False
         self.mood_is_chosen = False
-
-    def handle_keydown(self, key):
-        return self
 
     def handle_mouse_button(self, button):
         if button == 1:
@@ -77,9 +82,6 @@ your Poketer will be punished and lose {self.attack_score} p in attack strength.
             return MoodAnalysisScreen(self.chosen_city, self.chosen_mood, self.poketer, self.cpu_city, self.cpu_mood, self.cpu_poketer)
         return self
 
-    def handle_timer(self):
-        return self
-
     def render(self, screen):
         screen.fill(WHITE)
         screen.blit(background, (0, 0))
@@ -92,7 +94,7 @@ your Poketer will be punished and lose {self.attack_score} p in attack strength.
             button.render(screen)
 
 
-class MoodAnalysisScreen:
+class MoodAnalysisScreen(Screen):
     def __init__(self, city, mood, poketer, cpu_city, cpu_mood, cpu_poketer):
         self.city = city
         self.mood = mood
@@ -139,16 +141,10 @@ class MoodAnalysisScreen:
         self.continue_button = Button((0.5, 0.85), (0.2, 0.1), PASTEL_3, PASTEL_6, 22, WHITE, "Begin battle!",
                                       frame=PASTEL_4)
 
-    def handle_keydown(self, key):
-        return self
-
     def handle_mouse_button(self, button):
         if button == 1:
             if self.continue_button.handle_mouse_button(button):
                 return BattleScreen(self.poketer, self.cpu_poketer)
-        return self
-
-    def handle_timer(self):
         return self
 
     def render(self, screen):
@@ -159,5 +155,3 @@ class MoodAnalysisScreen:
         self.line.render(screen)
         self.row3.render(screen)
         self.continue_button.render(screen)
-
-

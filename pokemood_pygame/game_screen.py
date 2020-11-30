@@ -1,7 +1,7 @@
 import random
 import pygame
 
-from common import TextBox, Button, background
+from common import TextBox, Button, background, Screen
 from constants import *
 from battle_screens import BattleScreen
 from poketer import Poketer
@@ -9,7 +9,7 @@ from twitter.twitter_search import geocodes
 from twitter.mood_score import calc_mood_score
 
 
-class PoketerIntroScreen:
+class PoketerIntroScreen(Screen):
     def __init__(self):
         self.gunnar = Poketer("Happy Hasse", 'happy', 'yellow', 100, 50, catchword="#YOLO",
                               img_name="media/images/Green_monster_resized.png")
@@ -31,17 +31,11 @@ class PoketerIntroScreen:
         self.p2_stats = TextBox((0.22, 0.92), 18, False, WHITE,
                                 f"Attack: {self.ada.attack} Health: {self.ada.health}")
 
-    def handle_keydown(self, key):
-        return self
-
     def handle_mouse_button(self, button):
         if button == 1:
             if self.continue_button.handle_mouse_button(button):
                 self.ada.image = pygame.transform.flip(self.ada.image, True, False)
                 return ChooseCityScreen(self.gunnar, self.ada)
-        return self
-
-    def handle_timer(self):
         return self
 
     def render(self, screen):
@@ -56,7 +50,7 @@ class PoketerIntroScreen:
         self.continue_button.render(screen)
 
 
-class ChooseCityScreen:
+class ChooseCityScreen(Screen):
     def __init__(self, poketer, cpu_poketer):
         self.poketer = poketer
         self.cpu_poketer = cpu_poketer
@@ -82,17 +76,11 @@ your Poketer's health. Good luck!"""
 
         self.cpu_city = random.choice(self.cities)
 
-    def handle_keydown(self, key):
-        return self
-
     def handle_mouse_button(self, button):
         if button == 1:
             for idx, city_button in enumerate(self.city_buttons):
                 if city_button.handle_mouse_button(button):
                     return MoodScoreScreen(self.cities[idx], self.poketer, self.cpu_city, self.cpu_poketer)
-        return self
-
-    def handle_timer(self):
         return self
 
     def render(self, screen):
@@ -104,7 +92,7 @@ your Poketer's health. Good luck!"""
             button.render(screen)
 
 
-class MoodScoreScreen:
+class MoodScoreScreen(Screen):
     def __init__(self, city, poketer, cpu_city, cpu_poketer):
         self.poketer = poketer
         self.cpu_poketer = cpu_poketer
@@ -147,16 +135,10 @@ class MoodScoreScreen:
         self.continue_button = Button((0.5, 0.85), (0.2, 0.1), PASTEL_3, PASTEL_6, 22, WHITE, "Begin battle!",
                                       frame=PASTEL_4)
 
-    def handle_keydown(self, key):
-        return self
-
     def handle_mouse_button(self, button):
         if button == 1:
             if self.continue_button.handle_mouse_button(button):
                 return BattleScreen(self.poketer, self.cpu_poketer)
-        return self
-
-    def handle_timer(self):
         return self
 
     def render(self, screen):

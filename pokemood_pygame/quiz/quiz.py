@@ -1,13 +1,13 @@
 import pygame
 
 from common import BLACK, WHITE, QUIZ_TRANSP_GREEN_LIGHT, QUIZ_TRANSP_GREEN_HIGHL, QUIZ_TRANSP_GREEN, QUIZ_TRANSP_RED
-from common import FONT_ROBOTO, SCREEN_SIZE, music, sound, TextBox, Button, periodic_movement, rel_to_pix
-from pokemood_pygame.quiz.quiz_api import get_quiz, quiz_categories
+from common import FONT_ROBOTO, SCREEN_SIZE, music, sound, TextBox, Button, periodic_movement, rel_to_pix, Screen
+from quiz.quiz_api import get_quiz, quiz_categories
 
 return_screen = None
 
 
-class QuizStartScreen:
+class QuizStartScreen(Screen):
     def __init__(self, number_of_quiz_questions, quiz_categories, return_screen_, poketer):
         self.poketer = poketer
 
@@ -37,9 +37,6 @@ class QuizStartScreen:
                                  font_size=22, font_color=WHITE, text=category)
             self.category_buttons.append(quiz_button)
 
-    def handle_keydown(self, key):
-        return self
-
     def handle_mouse_button(self, mouse_button):
         clicked_button_idx = None
 
@@ -54,9 +51,6 @@ class QuizStartScreen:
                 category_button.enabled = False
             return QuizScreen(self.categories[clicked_button_idx], self.poketer)
 
-    def handle_timer(self):
-        return self
-
     def render(self, screen):
         screen.fill(BLACK)
         screen.blit(self.background_image, (0, 0))
@@ -67,7 +61,7 @@ class QuizStartScreen:
             category_button.render(screen)
 
 
-class QuizScreen:
+class QuizScreen(Screen):
     def __init__(self, quiz_category, poketer):
         background_image_raw = pygame.image.load("media/images/Background_forest.jpg").convert()
         self.background_image = pygame.transform.scale(background_image_raw, SCREEN_SIZE)
@@ -94,7 +88,6 @@ class QuizScreen:
         self.poketer = poketer
 
     def set_question(self):
-
         self.next_question_timeout = 0
         self.current_question += 1
 
@@ -117,14 +110,6 @@ class QuizScreen:
                                  color=QUIZ_TRANSP_GREEN, highlight=QUIZ_TRANSP_GREEN_HIGHL,
                                  font_size=22, font_color=WHITE, text=answer_option)
             self.quiz_answer_buttons.append(quiz_button)
-        return self
-
-    def handle_keydown(self, key):
-        if key == pygame.K_SPACE:
-            pass
-        return self
-
-    def handle_timer(self):
         return self
 
     def handle_mouse_button(self, mouse_button):
@@ -165,7 +150,7 @@ class QuizScreen:
             quiz_answer_button.render(screen)
 
 
-class QuizFinishedScreen:
+class QuizFinishedScreen(Screen):
     def __init__(self, num_of_correct_ans, number_of_quiz_questions, poketer):
         self.poketer = poketer
         pygame.mixer.music.stop()
@@ -194,16 +179,10 @@ class QuizFinishedScreen:
                                            color=QUIZ_TRANSP_GREEN, highlight=QUIZ_TRANSP_GREEN_HIGHL,
                                            font_size=22, font_color=WHITE, text="CONTINUE")
 
-    def handle_keydown(self, key):
-        return self
-
     def handle_mouse_button(self, mouse_button):
         if self.quiz_finished_button.handle_mouse_button(mouse_button):
             music("media/music/battle_time_1.mp3", 0.0)
             return return_screen
-        return self
-
-    def handle_timer(self):
         return self
 
     def render(self, screen):

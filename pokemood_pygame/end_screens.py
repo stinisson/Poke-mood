@@ -2,11 +2,11 @@ import sys
 
 import pygame
 
-from common import periodic_movement, music, TextBox, Button, logo
+from common import periodic_movement, music, TextBox, Button, logo, Screen
 from constants import SCREEN_SIZE, WHITE, PINK, YELLOW_LIGHT, LIGHT_GREEN, LIGHT_PINK
 
 
-class WinnerScreen:
+class WinnerScreen(Screen):
     def __init__(self, gunnar, won):
         background_win = pygame.image.load("media/images/winning_pic.jpg")
         self.background_win = pygame.transform.smoothscale(background_win, SCREEN_SIZE)
@@ -19,17 +19,11 @@ class WinnerScreen:
         self.gunnar = gunnar
         self.won = won
 
-    def handle_keydown(self, key):
-        return self
-
     def handle_mouse_button(self, button):
         if button == 1:
             if self.quit_button.handle_mouse_button(button):
                 print("The End! :)")
                 sys.exit()
-        return self
-
-    def handle_timer(self):
         return self
 
     def render(self, screen):

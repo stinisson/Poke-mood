@@ -3,14 +3,14 @@ from random import randint
 import pygame
 
 from constants import *
-from common import music, background, TextBox, Button, periodic_movement
+from common import music, background, TextBox, Button, periodic_movement, Screen
 from sentiment_analysis_screen import SentimentAnalysisScreen
 from quiz.quiz import QuizStartScreen
 from quiz.quiz_api import quiz_categories
 from end_screens import WinnerScreen
 
 
-class BattleScreen:
+class BattleScreen(Screen):
     def __init__(self, poketer, cpu_poketer):
         self.poketer = poketer
         self.cpu_poketer = cpu_poketer
@@ -32,9 +32,6 @@ class BattleScreen:
         self.cpu_poketer_name = TextBox((0.79, 0.05), 20, False, LIGHT_PINK, f"{self.cpu_poketer.name}")
         self.cpu_poketer_stats = TextBox((0.78, 0.1), 20, False, WHITE, '')
 
-    def handle_keydown(self, key):
-        return self
-
     def handle_mouse_button(self, button):
         if button == 1:
             if self.attack_button.handle_mouse_button(button):
@@ -48,9 +45,6 @@ class BattleScreen:
             if self.quit_button.handle_mouse_button(button):
                 print("The End! :)")
                 sys.exit()
-        return self
-
-    def handle_timer(self):
         return self
 
     def render(self, screen):
@@ -80,7 +74,7 @@ class BattleScreen:
         textbox_gunnar.render(screen)
 
 
-class AttackScreen:
+class AttackScreen(Screen):
     def __init__(self, turn, poketer, cpu_poketer):
         self.turn = turn
         self.poketer = poketer
@@ -106,9 +100,6 @@ class AttackScreen:
         self.cpu_poketer_name = TextBox((0.79, 0.05), 20, False, LIGHT_PINK, f"{self.cpu_poketer.name}")
         self.cpu_poketer_stats = TextBox((0.78, 0.1), 20, False, WHITE,
                                          f"Attack: {self.cpu_poketer.attack} Health: {self.cpu_poketer.health}")
-
-    def handle_keydown(self, key):
-        return self
 
     def handle_mouse_button(self, button):
         mx, my = pygame.mouse.get_pos()
@@ -169,7 +160,7 @@ class AttackScreen:
         sword(self.turn, screen)
 
 
-class SpecialAttackScreen:
+class SpecialAttackScreen(Screen):
     def __init__(self, turn, poketer, cpu_poketer):
         self.turn = turn
         self.poketer = poketer
@@ -195,9 +186,6 @@ class SpecialAttackScreen:
         self.cpu_poketer_name = TextBox((0.79, 0.05), 20, False, LIGHT_PINK, f"{self.cpu_poketer.name}")
         self.cpu_poketer_stats = TextBox((0.78, 0.1), 20, False, WHITE,
                                          f"Attack: {self.cpu_poketer.attack} Health: {self.cpu_poketer.health}")
-
-    def handle_keydown(self, key):
-        return self
 
     def handle_mouse_button(self, button):
         mx, my = pygame.mouse.get_pos()

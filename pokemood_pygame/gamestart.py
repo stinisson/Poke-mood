@@ -6,8 +6,8 @@ from mood_analysis_screen import ChooseCityMoodScreen
 
 
 def mainloop(screen):
-    #state = FirstScreen()
-    state = ChooseCityMoodScreen()
+    state = FirstScreen()
+    #state = ChooseCityMoodScreen()
     clock = pg.time.Clock()
 
     while True:

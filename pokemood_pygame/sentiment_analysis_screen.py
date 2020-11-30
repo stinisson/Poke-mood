@@ -2,7 +2,7 @@ import sys
 import pygame
 
 from constants import *
-from common import TextBox, Button, InputBox, periodic_movement, rel_to_pix
+from common import TextBox, Button, InputBox, periodic_movement, rel_to_pix, Screen
 from twitter.sentiment_analysis import sentiment_analysis
 
 bg = pygame.image.load("media/images/Background_forest.jpg")
@@ -10,7 +10,7 @@ background = pygame.transform.scale(bg, SCREEN_SIZE)
 screen = pygame.display.set_mode(SCREEN_SIZE)
 
 
-class SentimentAnalysisScreen:
+class SentimentAnalysisScreen(Screen):
     def __init__(self, poketer, return_screen):
         self.return_screen = return_screen
         self.poketer = poketer
@@ -79,7 +79,7 @@ If your guess is wrong, you will be punished with {health_bonus} p in reduced he
         self.continue_button.render(screen)
 
 
-class SentimentGraphScreen:
+class SentimentGraphScreen(Screen):
     def __init__(self, keyword, attitude, poketer, return_screen):
         self.return_screen = return_screen
         self.poketer = poketer
@@ -92,9 +92,6 @@ class SentimentGraphScreen:
 
         res = pygame.image.load("./twitter/sentiment_analysis.png")
         self.graph = pygame.transform.smoothscale(res, (800, 480))
-
-    def handle_keydown(self, key):
-        return self
 
     def handle_mouse_button(self, button):
         mx, my = pygame.mouse.get_pos()
@@ -124,7 +121,7 @@ class SentimentGraphScreen:
         self.continue_button.render(screen)
 
 
-class SentimentResultScreen:
+class SentimentResultScreen(Screen):
     def __init__(self, keyword, attitude, result, poketer, return_screen):
         self.return_screen = return_screen
         self.poketer = poketer
@@ -152,9 +149,6 @@ class SentimentResultScreen:
         self.poketer_image = pygame.image.load("media/images/Green_monster_resized.png").convert_alpha()
         self.poketer_image = pygame.transform.smoothscale(self.poketer_image, (207, 207))
 
-    def handle_keydown(self, key):
-        return self
-
     def handle_mouse_button(self, button):
         mx, my = pygame.mouse.get_pos()
         quit_button_rect = pygame.Rect(650, 30, 140, 40)
@@ -165,9 +159,6 @@ class SentimentResultScreen:
                 if self.result == "too_few_results":
                     return SentimentAnalysisScreen(self.poketer, return_screen=self.return_screen)
                 return self.return_screen
-        return self
-
-    def handle_timer(self):
         return self
 
     def render(self, screen):

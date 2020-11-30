@@ -151,6 +151,23 @@ class InputBox:
         self.button.render(screen)
 
 
+class Screen:
+    def __init__(self):
+        pass
+
+    def handle_keydown(self, key):
+        return self
+
+    def handle_mouse_button(self, button):
+        return self
+
+    def handle_timer(self):
+        return self
+
+    def render(self, screen):
+        return self
+
+
 def periodic_movement(frequency, amplitude):
     time = pygame.time.get_ticks()
     x_off = amplitude * math.cos(frequency * time * math.pi / 1000)
