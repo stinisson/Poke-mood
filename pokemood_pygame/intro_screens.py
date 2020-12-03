@@ -4,11 +4,23 @@ import pygame
 from common import music, Button, start_background, logo, Screen
 from constants import *
 from game_screen import PoketerIntroScreen
+from poketer import Poketer
 
 
 class FirstScreen(Screen):
     def __init__(self):
         music("media/music/intro_song_1.mp3", 0.0)
+        self.gunnar = Poketer("Happy Hasse", 'happy', 'yellow', 100, 50, catchword="#YOLO",
+                              img_name="media/images/Green_monster_resized.png")
+        self.gunnar.image = pygame.transform.smoothscale(self.gunnar.image, (220, 220))
+
+        self.ada = Poketer("Aggressive Ada", 'angry', 'red', 100, 50, catchword="#FTW",
+                           img_name="media/images/Pink_dragon_01.png")
+        self.ada.image = pygame.transform.flip(self.ada.image, True, False)
+
+        self.ada.image = pygame.transform.flip(self.ada.image, True, False)
+        self.ada.image = pygame.transform.smoothscale(self.ada.image, (225, 218))
+
         self.start_button = Button((0.5, 0.8), (0.3, 0.12), PASTEL_3,
                                    PASTEL_6, 27, WHITE, "Let's begin!", frame=PASTEL_4)
 
@@ -21,6 +33,8 @@ class FirstScreen(Screen):
         screen.fill(WHITE)
         screen.blit(start_background, (0, 0))
         screen.blit(logo, (215, -55))
+        screen.blit(self.gunnar.image, (0, 200))
+        screen.blit(self.ada.image, (580, 200))
         self.start_button.render(screen)
 
 
